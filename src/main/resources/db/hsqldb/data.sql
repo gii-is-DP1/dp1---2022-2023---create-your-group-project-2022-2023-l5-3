@@ -7,11 +7,11 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 
 -- One owner jorsilman, named jorge with passwor jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (3,'jorge','owner');
+INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
 
 -- One owner barbaat, named barba with passwor barba
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (3,'barba','owner');
+INSERT INTO authorities(id,username,authority) VALUES (5,'barba','owner');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
