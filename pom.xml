@@ -44,7 +44,17 @@
             <properties>
             </properties>
         </developer>
-        
+        <developer>
+            <id>jorsilman</id>
+            <name>Jorge Sillero Manchon</name>
+            <email>jorgesilleromanchon@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
         <developer>
             <id>Donnie</id>
             <name>Donatello</name>
