@@ -32,6 +32,34 @@
 
     </properties>
 
+    <developers>
+        <developer>
+            <id>barbaat</id>
+            <name>Francisco Javier Barba</name>
+            <email>barbatrejofco@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>leader</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
+        
+        <developer>
+            <id>Donnie</id>
+            <name>Donatello</name>
+            <email>donnie@tmht.com</email>
+            <url>http://www.tmht.com/donnie</url>
+            <roles>
+                <role>tech master</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
+ <!-- More developers ...-->
+    </developers>
+
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
