@@ -1,17 +1,22 @@
--- One admin user, named admin1 with passwor 4dm1n and authority admin
+-- One admin user, named admin1 with password 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
--- One owner user, named owner1 with passwor 0wn3r
+-- One owner user, named owner1 with password 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 
--- One owner jorsilman, named jorge with passwor jorge
+-- One owner jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
 
--- One owner barbaat, named barba with passwor barba
+-- One owner barbaat, named barba with password barba
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'barba','owner');
+
+
+-- One owner albgalhue, named gallego with password gallego
+INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'gallego','owner');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
