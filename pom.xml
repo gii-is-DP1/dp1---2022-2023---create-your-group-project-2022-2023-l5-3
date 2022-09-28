@@ -90,6 +90,20 @@
                 </picUrl>
             </properties>
         </developer>
+         <developer>
+            <id>albgalhue</id>
+            <name>Alberto Gallego Huerta</name>
+            <email>albertogalleg365@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://s3.abcstatics.com/Media/201007/07/12361765--644x362.jpg
+                </picUrl>
+            </properties>
+        </developer>
  <!-- More developers ...-->
     </developers>
 
