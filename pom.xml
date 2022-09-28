@@ -54,6 +54,17 @@
             <properties>
             </properties>
         </developer>
+         <developer>
+            <id>fracaralb</id>
+            <name>Francisco Andrés Caro ALbarrán</name>
+            <email>francaroalb@gmail.com</email>
+            <url>https://www.realbetisbalompie.es/</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
         <developer>
             <id>marsannar2</id>
             <name>Mario Sánchez Naranjo</name>
