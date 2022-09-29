@@ -31,7 +31,6 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-
     <developers>
         <developer>
             <id>barbaat</id>
@@ -44,7 +43,28 @@
             <properties>
             </properties>
         </developer>
-        
+        <developer>
+            <id>jorsilman</id>
+            <name>Jorge Sillero Manchon</name>
+            <email>jorgesilleromanchon@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
+         <developer>
+            <id>fracaralb</id>
+            <name>Francisco Andrés Caro ALbarrán</name>
+            <email>francaroalb@gmail.com</email>
+            <url>https://www.realbetisbalompie.es/</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+            </properties>
+        </developer>
         <developer>
             <id>marsannar2</id>
             <name>Mario Sánchez Naranjo</name>
@@ -54,6 +74,34 @@
                 <role>developer</role>
             </roles>
             <properties>
+            </properties>
+        </developer>
+        <developer>
+            <id>alvnavriv</id>
+            <name>Alvaro Navarro Rivera</name>
+            <email>alvaronr0402@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpgname=large
+                </picUrl>
+            </properties>
+        </developer>
+         <developer>
+            <id>albgalhue</id>
+            <name>Alberto Gallego Huerta</name>
+            <email>albertogalleg365@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <picUrl>
+                    https://s3.abcstatics.com/Media/201007/07/12361765--644x362.jpg
+                </picUrl>
             </properties>
         </developer>
  <!-- More developers ...-->
