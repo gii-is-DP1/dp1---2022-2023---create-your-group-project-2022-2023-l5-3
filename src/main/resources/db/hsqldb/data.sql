@@ -13,15 +13,13 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'barba','owner');
 
-
 -- One owner fracaralb, named fran with passwor fran
 INSERT INTO users(username,password,enabled) VALUES ('fran','fran',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'fran','owner');
 
 -- One owner albgalhue, named gallego with password gallego
 INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'gallego','owner');
-
+INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','owner');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
