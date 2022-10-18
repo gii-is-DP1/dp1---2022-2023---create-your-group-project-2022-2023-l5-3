@@ -87,3 +87,5 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 1);
 INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 2);
 
+INSERT INTO partidas(id, momento_inicio, momento_fin) VALUES (1,'2013-01-01 17:02:00' , '2013-01-01 17:05:00' );
+INSERT INTO partidas(id, momento_inicio, momento_fin) VALUES (2,'2013-01-01 17:56:00' , '2013-01-01 18:03:00' );

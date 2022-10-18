@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				
 
 				.antMatchers("/cartas/**").authenticated()
+				.antMatchers("/partidas/**").authenticated()
 
 				.anyRequest().denyAll()
 				.and()

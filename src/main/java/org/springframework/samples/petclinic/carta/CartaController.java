@@ -25,5 +25,6 @@ public class CartaController {
 		model.put("cartas", cartas);
 		return "cartas/cartaList";
 	}
+	
     
 }
