@@ -11,6 +11,7 @@
         <div class="col-md-12">
             <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="logoUS"/>
             <img class="img-responsive" src="${logoUS}"/>
+
         </div>
         <div class="row">
             <h2>Project ${title}</h2>
@@ -22,6 +23,7 @@
                     </c:forEach>
                 </ul>
             </p>
+
         </div>
     </div>
 </petclinic:layout>
