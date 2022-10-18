@@ -6,7 +6,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.springframework.samples.petclinic.jugador.Jugador;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +28,9 @@ public class User{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Jugador jugador;
 }
+
