@@ -6,7 +6,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.samples.petclinic.jugador.Jugador;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,15 +21,26 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+
 @Table(name = "users")
 public class User{
 	@Id
-	String username;
+	@Length(min = 3, max = 10)
+	@NotEmpty
 	
-	String password;
+	protected String username;
+	
+	@Length(min = 3, max = 10)
+	@NotEmpty
+	protected String password;
 	
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Jugador jugador;
 }
+
