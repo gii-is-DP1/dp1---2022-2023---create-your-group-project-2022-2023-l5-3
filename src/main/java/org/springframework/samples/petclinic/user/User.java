@@ -8,7 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.petclinic.jugador.Jugador;
 
 import lombok.Getter;
@@ -20,8 +23,12 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 	@Id
+	@Length(min = 3, max = 10)
+	@NotEmpty
 	String username;
 	
+	@Length(min = 3, max = 10)
+	@NotEmpty
 	String password;
 	
 	boolean enabled;
