@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.jugador;
 
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,7 +32,7 @@ public class JugadorService {
 	}
     
     @Transactional
-	public void saveJugador(Jugador jugador) throws DataAccessException {
+	public void saveJugador(@Valid Jugador jugador) throws DataAccessException {
 		//creating owner
 		jugadorRepository.save(jugador);		
 		//creating user

@@ -22,8 +22,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -40,7 +38,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createOwnerForm";
+	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
 
