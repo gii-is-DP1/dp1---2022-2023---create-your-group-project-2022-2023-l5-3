@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.partida;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -26,18 +27,43 @@ public class Partida extends BaseEntity {
 	@Column(name = "momento_fin")
 	private LocalDateTime momentoFin;
 	
+	@NotNull
+	@Column(name = "victoria")
+	private Boolean victoria;
 	
-	private int duracion() {
-		int minutos = 0;
-		if(momentoInicio.getMinute() > momentoFin.getMinute()) {
-			minutos = 60 -  momentoInicio.getMinute() + momentoFin.getMinute(); 
+	
+	@Column(name = "num_movimientos")
+	private long numMovimientos;
+	
+	
+	public long puntos() {
+		if(numMovimientos==0) {
+			return 0;
+		}else {
+			long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+			return diffInSeconds/numMovimientos;
 		}
-		else {
-			minutos = momentoFin.getMinute() - momentoInicio.getMinute();
-		}
-		
-		return minutos;
 	}
+	
+	
+	public String duracion() {
+		
+		long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+		long minutos = diffInSeconds/60;
+		long segundos = diffInSeconds%60;
+		
+		return String.valueOf(minutos) + " minutos y " + String.valueOf(segundos) + " segundos";
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 
 }

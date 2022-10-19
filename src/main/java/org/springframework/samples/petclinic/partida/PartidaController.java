@@ -22,6 +22,7 @@ public class PartidaController {
 
 	@GetMapping(value = { "/partidas" })
 	public String showPartidaList(Map<String, Object> model) {
+		
 		List<Partida> partidas = new ArrayList<>();
         partidas = (List<Partida>) partidaService.findPartidas();
 		model.put("partidas", partidas);
