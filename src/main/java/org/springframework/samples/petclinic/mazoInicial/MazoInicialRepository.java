@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MazoInicialRepository extends CrudRepository<MazoInicial, Integer> {
     Optional<MazoInicial> findById(Integer id) throws DataAccessException;
-    Collection<MazoInicial> findAll() throws DataAccessException;
 }

@@ -1,12 +1,12 @@
 package org.springframework.samples.petclinic.mazoInicial;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MazoInicialController {
@@ -17,12 +17,16 @@ public class MazoInicialController {
 		this.mazoinicialservice = mazoinicialservice;
 	}
 
-	@GetMapping(value = { "/mazos" })
-	public String showMazosIniciales(Map<String, Object> model) {
-		List<MazoInicial> mazosIniciales = new ArrayList<>();
-        mazosIniciales = (List<MazoInicial>) mazoinicialservice.findAllMazosIniciales();
-		model.put("mazosiniciales",  mazosIniciales);
-		return "mazos/mazosiniciales";
+	@GetMapping(value = { "/mazoinicial" })
+	public String showMazoInicial(Map<String, Object> model,@PathVariable Integer id) {
+        Optional<MazoInicial> mazosInicial = mazoinicialservice.findMazoInicialById(id);
+		if(mazosInicial.isPresent()){
+			model.put("mazosinicial",  mazosInicial);
+		}else{
+			model.put("message","No se pudo encontrar el mazo inicial con id <id>");
+		}
+		
+		return "mazoinicial";
 	}
 
 

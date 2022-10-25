@@ -24,10 +24,6 @@ public class MazoInicialService {
     public Optional<MazoInicial> findMazoInicialById(Integer id) throws DataAccessException{
         return mazoinicialRepository.findById(id);
     }
-    @Transactional(readOnly = true)
-    public Collection<MazoInicial> findAllMazosIniciales() throws DataAccessException{
-        return mazoinicialRepository.findAll();
-    }
 
 
 }
