@@ -1,0 +1,110 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>12</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>132</x><y>720</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Carta
+--
+-id: Long
+-valor:Integer{Range(1,13)}
+-palo:Palos
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>408</x><y>372</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Mazo
+--
+-id: Long
+-posición:Integer
+-cantidad:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>828</x><y>720</y><w>252</w><h>168</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+CartasPartida
+--
+-idCarta: Long
+-idPartida: Long
+-idMazo:Long
+-idMazoFinal:Long
+-idMazoInicial:Long
+-posCartaEnMazo:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>828</x><y>372</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoInicial
+--
+-id: Long
+-cantidad:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1224</x><y>372</y><w>336</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoFinal
+--
+-id: Long
+-posición:Integer
+-cantidad:Integer{Max(52)}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>828</x><y>996</y><w>252</w><h>192</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Partida
+--
+-id: Long
+-momentoInicio:Datetime{NotNull}
+-momentoFin:Datetime{NotNull}
+-victoria:boolean
+-/duración:Datetime
+-numMovimientos: int
+-/puntos: int
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>372</x><y>792</y><w>480</w><h>48</h></coordinates><panel_attributes>m1=1
+m2=1..*</panel_attributes><additional_attributes>380;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1068</x><y>492</y><w>192</w><h>252</h></coordinates><panel_attributes>m1=0..*
+m2=1..*</panel_attributes><additional_attributes>10;190;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>948</x><y>876</y><w>48</w><h>144</h></coordinates><panel_attributes>m1=1
+m2=1
+</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>936</x><y>492</y><w>60</w><h>252</h></coordinates><panel_attributes>m1=0..1
+m2=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>648</x><y>492</y><w>216</w><h>252</h></coordinates><panel_attributes>m1=0..*
+m2=1..*</panel_attributes><additional_attributes>150;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1068</x><y>1044</y><w>384</w><h>60</h></coordinates><panel_attributes>m1=1
+m2=1
+&lt;- Juega </panel_attributes><additional_attributes>300;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>192</y><w>252</w><h>168</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Palos
+--
+color:Color
+-DIAMANTES
+-PICAS
+-TREBOLES
+-CORAZONES
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>288</x><y>228</y><w>396</w><h>84</h></coordinates><panel_attributes>Los diamantes y los corazones tienen color ROJO
+Los treboles y las picas tienen color NEGRO
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>0</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Color
+--
+-ROJO
+-NEGRO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1068</x><y>1080</y><w>384</w><h>60</h></coordinates><panel_attributes>m1=1
+m2=0..*
+&lt;- Ha jugado </panel_attributes><additional_attributes>300;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1848</x><y>1008</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+User
+--
+-username:String{NotEmpty}
+-password:String
+-enabled:boolean
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1836</x><y>1260</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Authorities
+--
+-authority:String{Size(3,50)}
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1572</x><y>876</y><w>36</w><h>156</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1956</x><y>1128</y><w>48</w><h>156</h></coordinates><panel_attributes>m1=1
+m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1428</x><y>1008</y><w>288</w><h>240</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Jugador
+--
+-partidasJugadas:int
+-partidasGanadas:int
+-partidasNoGanadas:int
+-totalTiempoJugado:int
+-numTotalMovimientos:int
+-numTotalPuntos:int
+-numMaxMovimientosPartidaGanada:int
+-numMinMovimientosPartidaGanada:int
+-maxTiempoPartidaGanada:DateTime
+-minTiempoPartidaGanada:DateTime
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1440</x><y>756</y><w>252</w><h>132</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Person
+--
+-firstName:String{NotEmpty}
+-lastName:String{NotEmpty}
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1704</x><y>1068</y><w>168</w><h>48</h></coordinates><panel_attributes>m1=1
+m2=1</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1848</x><y>768</y><w>252</w><h>108</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Admnistrador
+--
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1680</x><y>828</y><w>192</w><h>36</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1956</x><y>864</y><w>48</w><h>168</h></coordinates><panel_attributes>m1=1
+m2=1</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element></diagram>
