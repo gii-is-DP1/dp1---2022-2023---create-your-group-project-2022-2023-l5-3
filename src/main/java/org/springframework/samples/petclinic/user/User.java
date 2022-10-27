@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.samples.petclinic.jugador.Jugador;
 
 import lombok.Getter;
