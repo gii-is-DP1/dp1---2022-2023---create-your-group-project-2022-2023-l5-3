@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
@@ -29,7 +30,7 @@ public class MazoFinal extends BaseEntity{
     @Max(52)
     private Integer cantidad;
 
-    @OneToMany(mappedBy = "mazos")
-    private Collection<Mazo> mazos;
+    @OneToMany
+    private Collection<CartasPartida> cartasPartida;
 
 }
