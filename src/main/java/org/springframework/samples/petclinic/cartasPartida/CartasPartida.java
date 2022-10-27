@@ -23,8 +23,5 @@ public class CartasPartida extends BaseEntity {
     @NotNull
     @Column(name = "posCartaMazo")
     private Integer posCartaMazo;
-
-    @ManyToMany()
-    private Collection<Mazo> mazos;
     
 }

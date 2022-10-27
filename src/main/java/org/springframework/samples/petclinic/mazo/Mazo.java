@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,6 +29,6 @@ public class Mazo extends BaseEntity{
     @NotNull
     private Integer cantidad;
 
-    @ManyToMany(mappedBy = "mazos")
-    private Collection<CartasPartida> cartasPartida;
+    @OneToMany
+    private Collection<CartasPartida> cartasPartidas;
 }
