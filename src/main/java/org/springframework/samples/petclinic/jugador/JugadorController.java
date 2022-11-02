@@ -40,8 +40,7 @@ public class JugadorController {
 
     @PostMapping(value = "/jugador/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
-		if (result.hasErrors()) {
-			
+		if (result.hasErrors()) {			
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
 		else {
@@ -50,12 +49,15 @@ public class JugadorController {
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
-			for(ConstraintViolation<User> v : violations){
-				result.rejectValue("user."+ v.getPropertyPath(),v.getMessage());
+			if(violations.isEmpty())
+				return "redirect:/jugadores/" + jugador.getId();
+			else{
+				for(ConstraintViolation<User> v : violations){
+					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+				}				
+				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
-			result.rejectValue("firstName", "fallo");
-
-			return "redirect:/jugadores/" + jugador.getId();
+			
 		}
 	}
 
