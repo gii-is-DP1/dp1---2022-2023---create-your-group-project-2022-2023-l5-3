@@ -49,12 +49,14 @@ public class JugadorController {
 			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
-			if(violations.isEmpty())
-				return "redirect:/jugadores/" + jugador.getId();
+			
+			if(violations.isEmpty() && violationsJ.isEmpty())
+				return "redirect:/";
 			else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
-				}				
+				}
+								
 				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
 			
