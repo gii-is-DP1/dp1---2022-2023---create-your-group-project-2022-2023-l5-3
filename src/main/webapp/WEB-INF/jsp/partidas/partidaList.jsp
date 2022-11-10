@@ -6,6 +6,8 @@
 
 <petclinic:layout pageName="partidas">
     <h2>Partidas</h2>
+    <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
+    <br></br>
 
     <table id="partidasTable" class="table table-striped">
         <thead>
@@ -25,7 +27,9 @@
                     <c:out value="${partida.momentoInicio}"/>
                 </td>
                 <td>
-                    <c:out value="${partida.momentoFin}"/>
+                	<c:if test="${partida.momentoFin == null}"><c:out value="Partida en curso"/></c:if>
+                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFin}"/></c:if>
+                    
                 </td>
                 <td>
                     <c:out value="${partida.victoria}"/>
