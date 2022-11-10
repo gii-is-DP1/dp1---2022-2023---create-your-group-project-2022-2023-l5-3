@@ -50,7 +50,7 @@ public class JugadorController {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
 			
-			if(violations.isEmpty() && violationsJ.isEmpty())
+			if(violations.isEmpty())
 				return "redirect:/";
 			else{
 				for(ConstraintViolation<User> v : violations){
