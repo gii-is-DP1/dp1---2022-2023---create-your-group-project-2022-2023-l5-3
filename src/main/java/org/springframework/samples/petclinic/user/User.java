@@ -24,12 +24,11 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 	@Id
-	@Length(min = 3, max = 10)
+	@Length(min = 3, max = 20)
 	@NotEmpty
-	
 	protected String username;
 	
-	@Length(min = 3, max = 10)
+	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String password;
 	
