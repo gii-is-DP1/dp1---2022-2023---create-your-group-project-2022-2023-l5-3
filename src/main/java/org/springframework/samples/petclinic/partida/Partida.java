@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.model.BaseEntity;
-
+ 
 import lombok.Getter;
 import lombok.Setter;
 @Entity
