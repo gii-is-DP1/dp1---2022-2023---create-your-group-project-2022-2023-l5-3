@@ -27,8 +27,8 @@ public class JugadorService {
     }
 
     @Transactional
-	public Jugador findOwnerById(int id) throws DataAccessException {
-		return jugadorRepository.findById(id);
+	public Jugador findJugadorByUsername(String username) throws DataAccessException {
+		return jugadorRepository.findByUsername(username);
 	}
     
     @Transactional
