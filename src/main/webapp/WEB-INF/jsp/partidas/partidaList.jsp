@@ -15,20 +15,20 @@
             <th>Momento Inicio</th>
             <th>Momento Fin</th>
             <th>Victoria</th>
-            <th>Número de Movimientos</th>
+            <th>Nï¿½mero de Movimientos</th>
             <th>Puntos</th>
-            <th>Duración</th>
+            <th>Duraciï¿½n</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${partidas}" var="partida">
             <tr>
                 <td>
-                    <c:out value="${partida.momentoInicio}"/>
+                    <c:out value="${partida.momentoInicioString()}"/>
                 </td>
                 <td>
                 	<c:if test="${partida.momentoFin == null}"><c:out value="Partida en curso"/></c:if>
-                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFin}"/></c:if>
+                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
                     
                 </td>
                 <td>

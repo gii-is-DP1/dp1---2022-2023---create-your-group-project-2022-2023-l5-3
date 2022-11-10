@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.partida;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +34,7 @@ public class PartidaController {
 		
 		List<Partida> partidas = new ArrayList<>();
         partidas = (List<Partida>) partidaService.findPartidas();
+
 		model.put("partidas", partidas);
 		return "partidas/partidaList";
 	}
