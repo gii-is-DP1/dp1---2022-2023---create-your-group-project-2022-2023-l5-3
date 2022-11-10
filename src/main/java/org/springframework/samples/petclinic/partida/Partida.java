@@ -1,20 +1,19 @@
 package org.springframework.samples.petclinic.partida;
 
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.model.BaseEntity;
   
 import lombok.Getter;
 import lombok.Setter;
+
 @Entity
 @Getter
 @Setter
@@ -38,6 +37,7 @@ public class Partida extends BaseEntity {
 		momentoInicio = LocalDateTime.now();
 		victoria = false;
 	}
+	
 	@Column(name = "num_movimientos")
 	private long numMovimientos;
 	
@@ -59,23 +59,23 @@ public class Partida extends BaseEntity {
 			long segundos = diffInSeconds%60;
 			return String.valueOf(minutos) + " minutos y " + String.valueOf(segundos) + " segundos";
 		}else {
-		long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
-		long minutos = diffInSeconds/60;
-		long segundos = diffInSeconds%60;
-		return String.valueOf(minutos) + " minutos y " + String.valueOf(segundos) + " segundos";
+			long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+			long minutos = diffInSeconds/60;
+			long segundos = diffInSeconds%60;
+			return String.valueOf(minutos) + " minutos y " + String.valueOf(segundos) + " segundos";
 		}
 		
 		
-		}
-	
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+	public String momentoInicioString() {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(momentoInicio);
+	}	
+	public String momentoFinString() {
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm dd'/'MM'/'yyyy");
+		return formato.format(momentoFin);
+	}	
+
 
 }
