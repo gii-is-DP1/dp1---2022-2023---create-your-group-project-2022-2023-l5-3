@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
@@ -39,10 +40,11 @@ public class JugadorService {
 	}
     
     @Transactional
-	public void saveJugador(@Valid Jugador jugador) throws DataAccessException {
+	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
 		//creating owner
 		jugadorRepository.save(jugador);		
 		//creating user
+		
 		userService.saveUser(jugador.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
