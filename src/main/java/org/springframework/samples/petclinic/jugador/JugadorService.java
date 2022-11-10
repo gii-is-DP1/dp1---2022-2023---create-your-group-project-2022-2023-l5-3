@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -29,6 +31,11 @@ public class JugadorService {
     @Transactional
 	public Jugador findJugadorByUsername(String username) throws DataAccessException {
 		return jugadorRepository.findByUsername(username);
+	}
+
+	@Transactional
+	public Collection<Jugador> findJugadorByLastName(String lastName) throws DataAccessException{
+		return jugadorRepository.findByLastName(lastName);
 	}
     
     @Transactional

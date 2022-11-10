@@ -13,7 +13,6 @@ INSERT INTO users(username,password,enabled) VALUES ('jugador1','jugador',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'jugador1','jugador');
 
 
-
 -- One owner jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
@@ -72,6 +71,7 @@ INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Wa
 INSERT INTO owners VALUES (11, 'Fran', 'Caro', '2335 Independence La Palma', 'Huelvaa', '6085443487', 'fran');
 
 INSERT INTO owners VALUES (12, 'FJ', 'Barba', '2335 Santa Aurelia', 'Texas', '6085443487', 'barba');
+
 
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
