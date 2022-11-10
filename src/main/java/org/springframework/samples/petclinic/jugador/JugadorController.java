@@ -10,7 +10,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -50,8 +50,16 @@ public class JugadorController {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
 			
-			if(violations.isEmpty())
-				return "redirect:/";
+			if(violations.isEmpty()){
+				try{
+
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+			}
 			else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
