@@ -8,14 +8,15 @@
 
 <petclinic:layout pageName="jugadores">
     <h2>
-        <c:if test="${juador['new']}">Nuevo</c:if> Jugador
+        <c:if test="${jugador['new']}">Nuevo</c:if> Jugador
     </h2>
     <form:form modelAttribute="jugador" class="form-horizontal" id="add-jugador-form">
         <div class="form-group has-feedback">
             <petclinic:inputField label="First Name" name="firstName"/>
             <petclinic:inputField label="Last Name" name="lastName"/>
             <petclinic:inputField label="Username" name="user.username"/>
-            <petclinic:inputField label="Password" name="user.password"/>
+            <c:if test="${jugador['new']}"><petclinic:inputField label="Password" name="user.password"/></c:if>
+            
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

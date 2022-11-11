@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -39,7 +41,12 @@ public class JugadorService {
 		userService.saveUser(jugador.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
-	}	
+	}
+	
+	@Transactional 
+	public Jugador findJugadorById(int id){
+		return jugadorRepository.findJugadorById(id);
+	}
 
 
 }

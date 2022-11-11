@@ -30,7 +30,7 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
-    private Integer partidasJugadas;
+    /*private Integer partidasJugadas;
 
     private Integer partidasGanadas;
 
@@ -48,7 +48,7 @@ public class Jugador extends Person{
 
     private LocalTime maxTiempoPartidaGanada;
 
-    private LocalTime minTiempoPartidaGanada;
+    private LocalTime minTiempoPartidaGanada;*/
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
