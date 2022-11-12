@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.user;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,9 @@ public class AuthoritiesService {
 		}else
 			throw new DataAccessException("User '"+username+"' not found!") {};
 	}
-
+	@Transactional
+	public List<Authorities> findAllUsers(){
+		return authoritiesRepository.findAll();
+	}
 
 }
