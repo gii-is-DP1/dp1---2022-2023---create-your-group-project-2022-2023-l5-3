@@ -12,7 +12,6 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'marsannar2','owner');
 INSERT INTO users(username,password,enabled) VALUES ('jugador1','jugador',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'jugador1','jugador');
 
-
 -- One owner jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
