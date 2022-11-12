@@ -1,7 +1,11 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+
 import java.time.LocalTime;
+
+import java.util.Set;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -42,6 +46,5 @@ public class Jugador extends Person{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
 	private User user;
-
 
 }

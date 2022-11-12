@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.carta;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -23,7 +25,8 @@ public class Carta extends BaseEntity{
     @Column(name = "valor")
     private Integer valor;
 
-    @NotEmpty
-    @Column(name = "palo")
+    @NotNull
+    @Enumerated(EnumType.STRING)
     private Palo palo;
+
 }
