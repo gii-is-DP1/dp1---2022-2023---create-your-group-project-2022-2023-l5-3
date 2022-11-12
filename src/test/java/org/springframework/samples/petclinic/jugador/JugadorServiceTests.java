@@ -80,7 +80,7 @@ class JugadorServiceTests {
 		
 
 	}
-
+/* 
 
 	@Test
 	void shouldFindJugadoresByLastName() {
@@ -90,10 +90,10 @@ class JugadorServiceTests {
 		
 		assertThat(jugadores.size()).isNotEqualTo(0);
 
-		Collection<Jugador> jugadores2 = this.jugadorService.findJugadorByLastName("Daaaviss");
-		assertThat(jugadores2.size()).isEqualTo(0);
+		jugadores = this.jugadorService.findJugadorByLastName("Daaaviss");
+		assertThat(jugadores.size()).isEqualTo(0);
 	}
-/*
+
 	@Test
 	void shouldFindSingleOwnerWithPet() {
 		Owner owner = this.ownerService.findOwnerById(1);
@@ -102,32 +102,31 @@ class JugadorServiceTests {
 		assertThat(owner.getPets().get(0).getType()).isNotNull();
 		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
 	}
-
+*/
 	@Test
 	@Transactional
 	public void shouldInsertOwner() {
-		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Schultz");
-		int found = owners.size();
+		Collection<Jugador> jugadores = this.jugadorService.findJugadoresByLastName("Davis");
+		int found = jugadores.size();
 
-		Owner owner = new Owner();
-		owner.setFirstName("Sam");
-		owner.setLastName("Schultz");
-		owner.setAddress("4, Evans Street");
-		owner.setCity("Wollongong");
-		owner.setTelephone("4444444444");
-                User user=new User();
-                user.setUsername("Sam");
-                user.setPassword("supersecretpassword");
-                user.setEnabled(true);
-                owner.setUser(user);                
-                
-		this.ownerService.saveOwner(owner);
-		assertThat(owner.getId().longValue()).isNotEqualTo(0);
+		Jugador george = new Jugador();
+		User user = new User();
+		Authorities rol = new Authorities();
+		rol.setAuthority("jugador");
+		user.setEnabled(true);
+		user.setUsername("Test");
+		user.setPassword("123");
+		george.setFirstName("George");
+		george.setLastName("Davis");
+		george.setUser(user);
+		rol.setUser(user);
+		this.jugadorService.saveJugador(george);
+		assertThat(george.getId().longValue()).isNotEqualTo(0);
 
-		owners = this.ownerService.findOwnerByLastName("Schultz");
-		assertThat(owners.size()).isEqualTo(found + 1);
+		jugadores = this.jugadorService.findJugadoresByLastName("Davis");
+		assertThat(jugadores.size()).isEqualTo(found + 1);
 	}
-
+/* 
 	@Test
 	@Transactional
 	void shouldUpdateOwner() {

@@ -35,7 +35,7 @@ public class JugadorService {
 	}
 
 	@Transactional
-	public Collection<Jugador> findJugadorByLastName(String lastName) throws DataAccessException{
+	public Collection<Jugador> findJugadoresByLastName(String lastName) throws DataAccessException{
 		return jugadorRepository.findByLastName(lastName);
 	}
     
