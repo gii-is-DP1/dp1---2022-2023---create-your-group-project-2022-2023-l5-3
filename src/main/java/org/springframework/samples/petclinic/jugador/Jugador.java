@@ -10,16 +10,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
-import javax.validation.constraints.NotNull;
-
-
 import org.springframework.samples.petclinic.model.Person;
-import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;

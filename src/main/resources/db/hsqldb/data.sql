@@ -30,6 +30,10 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'fran','owner');
 INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','owner');
 
+-- One owner alvnavriv, named alvaro with password alvaro
+INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'alvaro','owner');
+
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
