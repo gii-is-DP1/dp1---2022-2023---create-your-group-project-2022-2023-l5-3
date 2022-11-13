@@ -22,8 +22,6 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
-    private Integer partidasJugadas;
-
     private Integer partidasGanadas;
 
     private Integer partidasNoGanadas;
