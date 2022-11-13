@@ -29,5 +29,7 @@
                 </c:choose>
             </div>
         </div>
+        <form:errors></form:errors>
     </form:form>
+
 </petclinic:layout>

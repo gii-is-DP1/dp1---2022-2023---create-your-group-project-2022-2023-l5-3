@@ -1,10 +1,17 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Map;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,14 +40,34 @@ public class JugadorController {
 
     @PostMapping(value = "/jugador/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
-		if (result.hasErrors()) {
+		if (result.hasErrors()) {			
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
 		else {
-			//creating owner, user and authorities
-			this.jugadorService.saveJugador(jugador);
 			
-			return "redirect:/jugadores/" + jugador.getId();
+			User user = jugador.getUser();
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<User>> violations = validator.validate(user);
+			
+			if(violations.isEmpty()){
+				try{
+
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+			}
+			else{
+				for(ConstraintViolation<User> v : violations){
+					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+				}
+								
+				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+			}
+			
 		}
 	}
 
