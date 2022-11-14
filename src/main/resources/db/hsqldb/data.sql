@@ -102,3 +102,5 @@ INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (1,'2013-01-01 17:02:00' , '2013-01-01 17:05:33', False, 0);
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (2,'2013-01-01 17:56:45' , '2013-01-01 18:03:00', True, 2 );
+
+INSERT INTO jugador(id,first_name, last_name, username) VALUES (1,'jorge','sillero', 'jorge');

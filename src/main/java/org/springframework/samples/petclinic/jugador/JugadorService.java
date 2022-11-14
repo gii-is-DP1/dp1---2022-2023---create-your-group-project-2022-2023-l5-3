@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -28,8 +30,8 @@ public class JugadorService {
     }
 
     @Transactional
-	public Jugador findOwnerById(int id) throws DataAccessException {
-		return jugadorRepository.findById(id);
+	public Jugador findJugadorByUsername(String username) throws DataAccessException {
+		return jugadorRepository.findByUsername(username);
 	}
     
     @Transactional
@@ -41,7 +43,12 @@ public class JugadorService {
 		userService.saveUser(jugador.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
-	}	
+	}
+	
+	@Transactional 
+	public Jugador findJugadorById(int id){
+		return jugadorRepository.findJugadorById(id);
+	}
 
 
 }

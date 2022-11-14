@@ -10,11 +10,17 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.dao.DataIntegrityViolationException;
+
+import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
+
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -50,6 +56,7 @@ public class JugadorController {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
 			
+
 			if(violations.isEmpty()){
 				try{
 
@@ -60,6 +67,7 @@ public class JugadorController {
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
 			}
+
 			else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
@@ -67,7 +75,6 @@ public class JugadorController {
 								
 				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
-			
 		}
 	}
 

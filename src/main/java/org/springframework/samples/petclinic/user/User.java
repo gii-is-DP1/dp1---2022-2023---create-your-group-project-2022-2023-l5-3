@@ -25,6 +25,7 @@ import lombok.Setter;
 public class User{
 	@Id
 	@Column(unique = true)
+
 	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String username;
