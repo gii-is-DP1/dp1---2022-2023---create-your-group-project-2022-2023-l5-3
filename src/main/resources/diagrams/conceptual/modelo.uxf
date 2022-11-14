@@ -52,7 +52,7 @@ m1=n
 m2=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>615</y><w>255</w><h>315</h></coordinates><panel_attributes>lt=&lt;-
 m1=n
 m2=1</panel_attributes><additional_attributes>150;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1335</x><y>1305</y><w>480</w><h>75</h></coordinates><panel_attributes>m1=1
-m2=1
+m2=0..1
 &lt;- Juega </panel_attributes><additional_attributes>300;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>240</y><w>315</w><h>210</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
 Palos
 --
