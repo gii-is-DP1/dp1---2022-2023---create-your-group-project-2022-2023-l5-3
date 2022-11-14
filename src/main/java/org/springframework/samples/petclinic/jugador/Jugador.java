@@ -45,7 +45,6 @@ public class Jugador extends Person{
 	  private User user;
     
     @OneToOne
-    @NotNull
     @JoinColumn(name="partida_id")
     Partida partida;
 
