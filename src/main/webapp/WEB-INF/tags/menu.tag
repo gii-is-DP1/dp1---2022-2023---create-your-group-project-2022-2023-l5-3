@@ -33,6 +33,11 @@
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
 				</petclinic:menuItem>
+				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas/create"
+					title="Nueva partida">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>Nueva partida</span>
+				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
