@@ -10,7 +10,11 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
+
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -52,41 +56,18 @@ public class JugadorController {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
 			
-			if(violations.isEmpty())
-				return "redirect:/";
-			else{
-				for(ConstraintViolation<User> v : violations){
-					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+
+			if(violations.isEmpty()){
+				try{
+
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
-								
-				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
-			
-		}
-	}
 
-	//Editar jugador
-
-	@GetMapping(value = "/jugador/edit/{id}")
-	public String initEditForm(ModelMap model, @PathVariable("id") int id) {
-		Jugador jugador = jugadorService.findJugadorById(id);
-		model.addAttribute("jugador", jugador);
-		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping(value = "/jugador/edit/{id}")
-	public String processEditForm(ModelMap model, @Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
-		if(result.hasErrors()){
-			model.addAttribute("jugador", jugador);
-			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-		}else{
-			User user = jugador.getUser();
-			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-			Validator validator = factory.getValidator();
-			Set<ConstraintViolation<User>> violations = validator.validate(user);
-			
-			if(violations.isEmpty())
-				return "redirect:/";
 			else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());

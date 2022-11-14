@@ -1,11 +1,8 @@
 package org.springframework.samples.petclinic.jugador;
 
 
-
 import java.time.LocalTime;
-
 import java.util.Set;
-
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,7 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 
+
 import javax.validation.constraints.NotNull;
+
 
 
 import org.springframework.samples.petclinic.model.Person;
@@ -30,7 +29,9 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
-    /*private Integer partidasJugadas;
+
+    private Integer partidasJugadas;
+
 
     private Integer partidasGanadas;
 
@@ -48,10 +49,18 @@ public class Jugador extends Person{
 
     private LocalTime maxTiempoPartidaGanada;
 
-    private LocalTime minTiempoPartidaGanada;*/
+
+    private LocalTime minTiempoPartidaGanada;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	private User user;
+	  private User user;
+    
+    @OneToOne
+    @JoinColumn(name="partida_id")
+    Partida partida;
+
+    @OneToMany
+    Set<Partida> partidasJugadas;
 
 }

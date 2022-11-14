@@ -3,13 +3,13 @@ package org.springframework.samples.petclinic.user;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.petclinic.jugador.Jugador;
@@ -24,6 +24,8 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 	@Id
+	@Column(unique = true)
+
 	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String username;
