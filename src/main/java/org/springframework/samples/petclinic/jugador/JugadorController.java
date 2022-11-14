@@ -78,6 +78,51 @@ public class JugadorController {
 		}
 	}
 
+	//Editar jugador
+	@GetMapping(value = "/jugador/{id}/edit")
+	public String initEditForm(ModelMap model, @PathVariable("id") int id) {
+		Jugador jugador = jugadorService.findJugadorById(id);
+		String username = jugador.getUser().getUsername();
+		String pass = jugador.getUser().getPassword();
+		model.put("username", username);
+		model.put("pass", pass);
+		model.addAttribute("jugador", jugador);
+		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+	}
 
+	@PostMapping(value = "/jugador/{id}/edit")
+	public String processEditForm(ModelMap model, @Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
+		if(result.hasErrors()){
+			model.addAttribute("jugador", jugador);
+			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			
+			User user = jugador.getUser();
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<User>> violations = validator.validate(user);
+			
+
+			if(violations.isEmpty()){
+				try{
+					jugador.setId(id);
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+			}
+
+			else{
+				for(ConstraintViolation<User> v : violations){
+					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+				}
+								
+				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+			}
+		}
+	}
     
 }

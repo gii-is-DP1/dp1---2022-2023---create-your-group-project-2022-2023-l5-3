@@ -40,7 +40,7 @@ public class User{
 	private Set<Authorities> authorities;
 
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "user")
 	private Jugador jugador;
 }
 

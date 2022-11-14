@@ -14,8 +14,17 @@
         <div class="form-group has-feedback">
             <petclinic:inputField label="First Name" name="firstName"/>
             <petclinic:inputField label="Last Name" name="lastName"/>
-            <petclinic:inputField label="Username" name="user.username"/>
-            <c:if test="${jugador['new']}"><petclinic:inputField label="Password" name="user.password"/></c:if>
+            <c:choose>
+                    <c:when test="${jugador['new']}">
+                        <petclinic:inputField label="Username" name="user.username"/>
+                        <petclinic:inputField label="Password" name="user.password"/>
+                    </c:when>
+                    <c:otherwise>
+                        <input type="hidden" name="user.username" value="${username}">
+                        <input type="hidden" name="user.password" value="${pass}">
+                    </c:otherwise>
+                </c:choose>
+            
             
         </div>
         <div class="form-group">
