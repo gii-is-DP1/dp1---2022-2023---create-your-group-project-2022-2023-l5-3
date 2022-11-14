@@ -32,22 +32,30 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Integration test of the Service and the Repository layer.
  * <p>
- * ClinicServiceSpringDataJpaTests subclasses benefit from the following services provided
+ * ClinicServiceSpringDataJpaTests subclasses benefit from the following
+ * services provided
  * by the Spring TestContext Framework:
  * </p>
  * <ul>
- * <li><strong>Spring IoC container caching</strong> which spares us unnecessary set up
+ * <li><strong>Spring IoC container caching</strong> which spares us unnecessary
+ * set up
  * time between test execution.</li>
- * <li><strong>Dependency Injection</strong> of test fixture instances, meaning that we
+ * <li><strong>Dependency Injection</strong> of test fixture instances, meaning
+ * that we
  * don't need to perform application context lookups. See the use of
  * {@link Autowired @Autowired} on the <code>{@link
- * JugadorServiceTests#clinicService clinicService}</code> instance variable, which uses
+ * JugadorServiceTests#clinicService clinicService}</code> instance variable,
+ * which uses
  * autowiring <em>by type</em>.
- * <li><strong>Transaction management</strong>, meaning each test method is executed in
- * its own transaction, which is automatically rolled back by default. Thus, even if tests
- * insert or otherwise change database state, there is no need for a teardown or cleanup
+ * <li><strong>Transaction management</strong>, meaning each test method is
+ * executed in
+ * its own transaction, which is automatically rolled back by default. Thus,
+ * even if tests
+ * insert or otherwise change database state, there is no need for a teardown or
+ * cleanup
  * script.
- * <li>An {@link org.springframework.context.ApplicationContext ApplicationContext} is
+ * <li>An {@link org.springframework.context.ApplicationContext
+ * ApplicationContext} is
  * also inherited and can be used for explicit bean lookup if necessary.</li>
  * </ul>
  *
@@ -60,10 +68,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-class JugadorServiceTests {                
-        @Autowired
+class JugadorServiceTests {
+	@Autowired
 	protected JugadorService jugadorService;
-
 
 	@BeforeEach
 	void setup() {
@@ -77,32 +84,33 @@ class JugadorServiceTests {
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Davis");
-		
 
 	}
-/* 
 
-	@Test
-	void shouldFindJugadoresByLastName() {
-
-		Collection<Jugador> jugadores = this.jugadorService.findJugadorByLastName("Davis");
-		
-		
-		assertThat(jugadores.size()).isNotEqualTo(0);
-
-		jugadores = this.jugadorService.findJugadorByLastName("Daaaviss");
-		assertThat(jugadores.size()).isEqualTo(0);
-	}
-
-	@Test
-	void shouldFindSingleOwnerWithPet() {
-		Owner owner = this.ownerService.findOwnerById(1);
-		assertThat(owner.getLastName()).startsWith("Franklin");
-		assertThat(owner.getPets().size()).isEqualTo(1);
-		assertThat(owner.getPets().get(0).getType()).isNotNull();
-		assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
-	}
-*/
+	/*
+	 * 
+	 * @Test
+	 * void shouldFindJugadoresByLastName() {
+	 * 
+	 * Collection<Jugador> jugadores =
+	 * this.jugadorService.findJugadorByLastName("Davis");
+	 * 
+	 * 
+	 * assertThat(jugadores.size()).isNotEqualTo(0);
+	 * 
+	 * jugadores = this.jugadorService.findJugadorByLastName("Daaaviss");
+	 * assertThat(jugadores.size()).isEqualTo(0);
+	 * }
+	 * 
+	 * @Test
+	 * void shouldFindSingleOwnerWithPet() {
+	 * Owner owner = this.ownerService.findOwnerById(1);
+	 * assertThat(owner.getLastName()).startsWith("Franklin");
+	 * assertThat(owner.getPets().size()).isEqualTo(1);
+	 * assertThat(owner.getPets().get(0).getType()).isNotNull();
+	 * assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+	 * }
+	 */
 	@Test
 	@Transactional
 	public void shouldInsertOwner() {
@@ -126,21 +134,22 @@ class JugadorServiceTests {
 		jugadores = this.jugadorService.findJugadoresByLastName("Davis");
 		assertThat(jugadores.size()).isEqualTo(found + 1);
 	}
-/* 
-	@Test
-	@Transactional
-	void shouldUpdateOwner() {
-		Owner owner = this.ownerService.findOwnerById(1);
-		String oldLastName = owner.getLastName();
-		String newLastName = oldLastName + "X";
-
-		owner.setLastName(newLastName);
-		this.ownerService.saveOwner(owner);
-
-		// retrieving new name from database
-		owner = this.ownerService.findOwnerById(1);
-		assertThat(owner.getLastName()).isEqualTo(newLastName);
-	}
-
-*/
+	/*
+	 * @Test
+	 * 
+	 * @Transactional
+	 * void shouldUpdateOwner() {
+	 * Owner owner = this.ownerService.findOwnerById(1);
+	 * String oldLastName = owner.getLastName();
+	 * String newLastName = oldLastName + "X";
+	 * 
+	 * owner.setLastName(newLastName);
+	 * this.ownerService.saveOwner(owner);
+	 * 
+	 * // retrieving new name from database
+	 * owner = this.ownerService.findOwnerById(1);
+	 * assertThat(owner.getLastName()).isEqualTo(newLastName);
+	 * }
+	 * 
+	 */
 }
