@@ -7,24 +7,31 @@
 <petclinic:layout pageName="partidas">
     
     <jsp:body>
-        <h2>
+   		<div class="container" style="background-color:#51C967;">
+   		<br>
+   		<br>
+        <div class="row" align="center" >
+        <h2 style="font-size: 4rem" >
             Nueva Partida
         </h2>
         <form:form modelAttribute="partida"
                    class="form-horizontal">
-            <form:hidden  path="id" />
-            <form:hidden  path="momentoInicio" />
-            <form:hidden  path="numMovimientos" />
-            <form:hidden  path="victoria" />
+        <form:hidden  path="id" />
+        <form:hidden  path="momentoInicio" />
+        <form:hidden  path="numMovimientos" />
+        <form:hidden  path="victoria" />
           
+        <br>
+        
+        <div class="form-group">
             
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    
-					<button class="btn btn-default" type="submit">Crear Partida</button>                        
-                </div>
-            </div>
+                
+		<button class="btn btn-default" style="font-size: 4rem"type="submit">Crear Partida</button>                        
+            
+        </div>
         </form:form>
-          
+        <br>
+        </div>  
+        </div> 
     </jsp:body>
 </petclinic:layout>
