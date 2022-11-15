@@ -11,7 +11,11 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.dao.DataIntegrityViolationException;
+
+import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
+
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,8 +23,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -56,6 +62,7 @@ public class JugadorController {
 			Validator validator = factory.getValidator();
 			Set<ConstraintViolation<User>> violations = validator.validate(user);
 			
+
 			if(violations.isEmpty()){
 				try{
 
@@ -73,6 +80,7 @@ public class JugadorController {
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
 			}
+
 			else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
@@ -80,10 +88,54 @@ public class JugadorController {
 								
 				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
-			
 		}
 	}
 
+	//Editar jugador
+	@GetMapping(value = "/jugador/{id}/edit")
+	public String initEditForm(ModelMap model, @PathVariable("id") int id) {
+		Jugador jugador = jugadorService.findJugadorById(id);
+		String username = jugador.getUser().getUsername();
+		String pass = jugador.getUser().getPassword();
+		model.put("username", username);
+		model.put("pass", pass);
+		model.addAttribute("jugador", jugador);
+		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+	}
 
+	@PostMapping(value = "/jugador/{id}/edit")
+	public String processEditForm(ModelMap model, @Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
+		if(result.hasErrors()){
+			model.addAttribute("jugador", jugador);
+			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+		}
+		else {
+			
+			User user = jugador.getUser();
+			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+			Validator validator = factory.getValidator();
+			Set<ConstraintViolation<User>> violations = validator.validate(user);
+			
+
+			if(violations.isEmpty()){
+				try{
+					jugador.setId(id);
+					this.jugadorService.saveJugador(jugador);
+					return "redirect:/";
+				}catch (DataIntegrityViolationException ex){
+					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+			}
+
+			else{
+				for(ConstraintViolation<User> v : violations){
+					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
+				}
+								
+				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+			}
+		}
+	}
     
 }

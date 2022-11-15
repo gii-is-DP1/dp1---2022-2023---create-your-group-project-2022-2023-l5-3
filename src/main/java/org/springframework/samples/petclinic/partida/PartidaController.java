@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/partidas")
+
 public class PartidaController {
 
 	@Autowired
@@ -25,6 +25,9 @@ public class PartidaController {
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
 	private static final String VIEW_LIST = "partidas/partidaList";
+	private static final String TABLERO = "tableros/tablero";
+
+	
 
     
 	
@@ -39,7 +42,7 @@ public class PartidaController {
 		return "partidas/partidaList";
 	}
 	
-	@GetMapping(path="/create")
+	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){
 		Partida partida = new Partida();
 		
@@ -49,26 +52,20 @@ public class PartidaController {
 		
 	}
 	
-	@PostMapping(path="/create")
+	@PostMapping(path="/partidas/create")
 	public String processCreationForm(@Valid Partida p, BindingResult result, Map<String, Object> model) {
 		
 		if (result.hasErrors()) {
-			List<ObjectError> errores = result.getAllErrors();
-			String errores2 = "";
 			
-			for(ObjectError i:errores) {
-				String error = i.toString();
-				errores2+=error;
-				}
-			model.put("message", errores2);
+			model.put("message", result.getAllErrors());
 			return VIEW_CREATE_PARTIDA;
 		}
 		else {
 			
 			this.partidaService.save(p);
-			model.put("message", "Partida OK");
+			model.put("message", "Partida empezada");
 			
-			return "welcome";
+			return TABLERO;
 		}
 	
 		
