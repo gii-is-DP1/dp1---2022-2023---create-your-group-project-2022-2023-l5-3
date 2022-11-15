@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = JugadorController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class JugadorControllerTests {
 
-	private static final String TEST_Jugador_ID = "test";
+	private static final int TEST_Jugador_ID = 1;
 
 	@Autowired
 	private JugadorController jugadorController;
@@ -66,11 +66,11 @@ class JugadorControllerTests {
 		Authorities rol = new Authorities();
 		rol.setAuthority("jugador");
 		user.setEnabled(true);
-		user.setUsername(TEST_Jugador_ID);
+		user.setUsername("test");
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Franklin");
-		given(this.jugadorService.findJugadorByUsername(TEST_Jugador_ID)).willReturn(george);
+		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
 
 	}
 
@@ -108,6 +108,39 @@ class JugadorControllerTests {
 		)
 		.andExpect(status().isOk()).andExpect(model().attributeHasErrors("jugador"))	
 		.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
+	}
+
+	//Test Actualizar datos juagdor
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitUpdateJugadorForm() throws Exception {
+		mockMvc.perform(get("/jugador/{id}/edit", TEST_Jugador_ID)).andExpect(status().isOk())
+				.andExpect(model().attributeExists("jugador"))
+				.andExpect(model().attribute("jugador", hasProperty("lastName", is("Franklin"))))
+				.andExpect(model().attribute("jugador", hasProperty("firstName", is("George"))))
+				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testProcessUpdateJugadorFormSuccess() throws Exception {
+		mockMvc.perform(post("/jugador/new")
+		.param("firstName", "Holaa")
+		.param("lastName", "Testt")
+		.with(csrf())
+				).andExpect(status().is2xxSuccessful());
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testProcessUpdateJugadorFormHasErrors() throws Exception {
+		mockMvc.perform(post("/jugador/{id}/edit", TEST_Jugador_ID).with(csrf()).param("firstName", "")
+				.param("lastName", "")).andExpect(status().isOk())
+				.andExpect(model().attributeHasErrors("jugador"))
+				.andExpect(model().attributeHasFieldErrors("jugador", "firstName"))
+				.andExpect(model().attributeHasFieldErrors("jugador", "lastName"))
+				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
 	}
 /*
 	@WithMockUser(value = "spring")
