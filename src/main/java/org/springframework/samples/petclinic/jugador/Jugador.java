@@ -1,13 +1,20 @@
 package org.springframework.samples.petclinic.jugador;
 
+
 import java.time.LocalTime;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
+
+import javax.validation.constraints.NotNull;
+
 
 
 import org.springframework.samples.petclinic.model.Person;
@@ -38,6 +45,7 @@ public class Jugador extends Person{
 
     private LocalTime maxTiempoPartidaGanada;
 
+
     private LocalTime minTiempoPartidaGanada;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -50,4 +58,5 @@ public class Jugador extends Person{
 
     @OneToMany
     Set<Partida> partidasJugadas;
+
 }

@@ -25,6 +25,7 @@ import lombok.Setter;
 public class User{
 	@Id
 	@Column(unique = true)
+
 	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String username;
@@ -39,7 +40,7 @@ public class User{
 	private Set<Authorities> authorities;
 
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "user")
 	private Jugador jugador;
 }
 

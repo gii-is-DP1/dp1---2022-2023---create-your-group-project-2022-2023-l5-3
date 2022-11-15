@@ -28,6 +28,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -41,10 +42,12 @@ public class UserController {
 	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
+	private final AuthoritiesService authoritiesservice;
 
 	@Autowired
-	public UserController(JugadorService gameService) {
+	public UserController(JugadorService gameService,AuthoritiesService authoritiesservice) {
 		this.jugadorService = gameService;
+		this.authoritiesservice = authoritiesservice;
 	}
 
 	@InitBinder
@@ -70,5 +73,12 @@ public class UserController {
 			return "redirect:/";
 		}
 	}
+	@GetMapping("/users/all")
+    public ModelAndView showUsersList(){
+        ModelAndView result=new ModelAndView("users/UsersList");
+        result.addObject("users", authoritiesservice.findAllUsers());
+        return result;
+    }
+	
 
 }
