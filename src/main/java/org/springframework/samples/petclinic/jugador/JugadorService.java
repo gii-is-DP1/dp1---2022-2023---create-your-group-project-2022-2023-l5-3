@@ -28,18 +28,17 @@ public class JugadorService {
     }
 
     @Transactional
-	public Jugador findOwnerById(int id) throws DataAccessException {
+	public Jugador findJugadorById(int id) throws DataAccessException {
 		return jugadorRepository.findById(id);
 	}
     
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
-		//creating owner
+		
 		jugadorRepository.save(jugador);		
-		//creating user
+		
 		
 		userService.saveUser(jugador.getUser());
-		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
 	}	
 
