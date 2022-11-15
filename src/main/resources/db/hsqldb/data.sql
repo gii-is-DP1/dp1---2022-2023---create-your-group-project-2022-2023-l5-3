@@ -12,7 +12,9 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'marsannar2','owner');
 INSERT INTO users(username,password,enabled) VALUES ('jugador1','jugador',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'jugador1','jugador');
 
-
+INSERT INTO users (username,password,enabled) VALUES ('aaa','aaa',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'aaa','jugador');
+INSERT INTO jugador VALUES(1,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53',null,'aaa');
 
 -- One owner jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
@@ -102,5 +104,3 @@ INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (1,'2013-01-01 17:02:00' , '2013-01-01 17:05:33', False, 0);
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (2,'2013-01-01 17:56:45' , '2013-01-01 18:03:00', True, 2 );
-
-INSERT INTO jugador(id,first_name, last_name, username) VALUES (1,'jorge','sillero', 'jorge');

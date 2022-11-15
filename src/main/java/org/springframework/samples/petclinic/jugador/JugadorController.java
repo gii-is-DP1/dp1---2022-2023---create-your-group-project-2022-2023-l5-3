@@ -27,6 +27,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class JugadorController {
@@ -96,10 +97,6 @@ public class JugadorController {
 					Jugador player = jugadorService.findJugadorByUsername(usuario);
 					if(player.getId()==id){
 						Jugador jugador = jugadorService.findJugadorById(id);
-						String username = jugador.getUser().getUsername();
-						String pass = jugador.getUser().getPassword();
-						model.addAttribute("pass", pass);
-						model.addAttribute("username", username);
 						model.addAttribute(jugador);
 						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 					}else{
@@ -116,7 +113,8 @@ public class JugadorController {
 		return "welome";
 	
 	}
-
+	
+	
 	@PostMapping(value = "/jugador/{id}/edit")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
 		if(result.hasErrors()){
@@ -151,4 +149,10 @@ public class JugadorController {
 		}
 	}
     
+	@GetMapping(value = "/jugador/{id}/estadisticas")
+	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
+		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
+		mav.addObject(this.jugadorService.findJugadorById(id));
+		return mav;
+	}
 }
