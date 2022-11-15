@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +13,11 @@ import javax.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.user.User;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +59,14 @@ public class JugadorController {
 			if(violations.isEmpty()){
 				try{
 
+
+					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
+					
+					SecurityContextHolder.getContext().setAuthentication(authReq);
+						
+					
 					this.jugadorService.saveJugador(jugador);
+					
 					return "redirect:/";
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
