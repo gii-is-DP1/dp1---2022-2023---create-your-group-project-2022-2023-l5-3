@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.mazoInicial;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "mazosiniciales")
+@Table(name = "mazo_inicial")
 @Getter
 @Setter
 
@@ -28,7 +29,8 @@ public class MazoInicial extends BaseEntity{
     @NotNull
     private Integer cantidad = 24;
     //la baraja inicial contiene 24 cartas al inicio del juego
-    @OneToMany
-    private Collection<CartasPartida> cartasPartida;
+
+    @OneToMany(mappedBy = "mazoInicial")
+	private Set<CartasPartida> cartasPartida;
 
 }

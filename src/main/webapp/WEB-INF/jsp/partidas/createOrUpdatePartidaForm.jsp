@@ -20,7 +20,7 @@
         <form:hidden  path="momentoInicio" />
         <form:hidden  path="numMovimientos" />
         <form:hidden  path="victoria" />
-          
+        
         <br>
         
         <div class="form-group">
