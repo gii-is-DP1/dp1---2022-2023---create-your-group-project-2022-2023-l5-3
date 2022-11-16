@@ -14,6 +14,7 @@
     <table id="partidasTable" class="table table-striped">
         <thead>
         <tr>
+            <th>Jugador</th>
             <th>Momento Inicio</th>
             <th>Momento Fin</th>
             <th>Victoria</th>
@@ -25,6 +26,9 @@
         <tbody>
         <c:forEach items="${partidas}" var="partida">
             <tr>
+                <td>
+                    <c:out value="${partida.jugador.user.username}"/>
+                </td>
                 <td>
                     <c:out value="${partida.momentoInicioString()}"/>
                 </td>
