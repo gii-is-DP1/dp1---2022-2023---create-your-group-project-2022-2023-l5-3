@@ -34,6 +34,10 @@ public class JugadorService {
 		return jugadorRepository.findByUsername(username);
 	}
     
+   
+    
+   
+    
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
 		//creating owner
