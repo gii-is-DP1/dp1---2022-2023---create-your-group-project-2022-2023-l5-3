@@ -167,7 +167,25 @@ public class JugadorController {
 
 	//Vista perfil jugador
 	@GetMapping(value = "/jugador/perfil")
-	public String showJugador(Model model) {
+	public String verPerfilJugador(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+				model.addAttribute("id", jugador.getId());
+				model.addAttribute(jugador);
+				return "jugador/showJugador";
+			}return "welcome";
+		}
+		return "welome";
+	
+	}
+
+	//Vista perfil jugador
+	@GetMapping(value = "/jugador/{id}")
+	public String showJugador(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
