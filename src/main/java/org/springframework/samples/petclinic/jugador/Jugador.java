@@ -1,19 +1,14 @@
 package org.springframework.samples.petclinic.jugador;
 
-
+import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-
-
-import javax.validation.constraints.NotNull;
 
 
 
@@ -30,14 +25,11 @@ import lombok.Setter;
 public class Jugador extends Person{
 
 
-  
-
-
     private Integer partidasGanadas;
 
     private Integer partidasNoGanadas;
 
-    private Integer totalTiempoJugado;
+    private LocalTime totalTiempoJugado;
     
     private Integer numTotalMovimientos;
 

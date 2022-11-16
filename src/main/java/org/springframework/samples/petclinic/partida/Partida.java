@@ -3,9 +3,11 @@ package org.springframework.samples.petclinic.partida;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -14,6 +16,15 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+
+import javax.persistence.OneToMany;
+//import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CascadeType;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
+
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
@@ -24,6 +35,9 @@ import lombok.Setter;
 @Setter
 @Table(name = "partidas")
 public class Partida extends BaseEntity {
+
+	@OneToMany(mappedBy = "partida")
+	private Set<CartasPartida> cartasPartida;
 	
 	
 	
@@ -38,13 +52,7 @@ public class Partida extends BaseEntity {
 	
 	@Column(name = "victoria")
 	private Boolean victoria;
-	
-//	public Partida () {
-//		numMovimientos = 0;
-//		momentoInicio = LocalDateTime.now();
-//		victoria = false;
-//		}
-//	
+		
 	@Column(name = "num_movimientos")
 	private long numMovimientos;
 	

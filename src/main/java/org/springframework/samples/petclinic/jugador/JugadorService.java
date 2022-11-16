@@ -33,6 +33,10 @@ public class JugadorService {
 	public Jugador findJugadorByUsername(String username) throws DataAccessException {
 		return jugadorRepository.findByUsername(username);
 	}
+	
+	public Jugador findJugadorById(int id) throws DataAccessException {
+		return jugadorRepository.findById(id);
+	}
     
    
     
@@ -40,19 +44,15 @@ public class JugadorService {
     
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
-		//creating owner
+		
 		jugadorRepository.save(jugador);		
-		//creating user
+		
 		
 		userService.saveUser(jugador.getUser());
-		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
 	}
 	
-	@Transactional 
-	public Jugador findJugadorById(int id){
-		return jugadorRepository.findJugadorById(id);
-	}
+	
 
 
 }
