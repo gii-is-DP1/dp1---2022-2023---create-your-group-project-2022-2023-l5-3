@@ -103,7 +103,7 @@ public class JugadorController {
 						return "welcome";
 					}
 				}catch (DataIntegrityViolationException ex){
-					String a = ex.getMessage();
+					//String a = ex.getMessage();
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
 				//Jugador player = jugadorService.findJugadorByUsername(usuario);
@@ -147,6 +147,37 @@ public class JugadorController {
 				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 			}
 		}
+	}
+
+	//Vista perfil jugador
+	@GetMapping(value = "/jugador/{id}")
+	public String showJugador(Model model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				try{
+					Jugador player = jugadorService.findJugadorByUsername(usuario);
+					if(player.getId()==id){
+						Jugador jugador = jugadorService.findJugadorById(id);
+						model.addAttribute("id", id);
+						model.addAttribute(jugador);
+						return "jugador/showJugador";
+					}else{
+						return "welcome";
+					}
+				}catch (DataIntegrityViolationException ex){
+					//String a = ex.getMessage();
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+				//Jugador player = jugadorService.findJugadorByUsername(usuario);
+				
+			}return "welcome";
+		}
+		return "welome";
+	
 	}
     
 	@GetMapping(value = "/jugador/{id}/estadisticas")
