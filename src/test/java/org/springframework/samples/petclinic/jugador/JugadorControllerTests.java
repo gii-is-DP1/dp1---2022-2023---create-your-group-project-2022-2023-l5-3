@@ -142,6 +142,17 @@ class JugadorControllerTests {
 				.andExpect(model().attributeHasFieldErrors("jugador", "lastName"))
 				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
 	}
+
+	//Ver perfil de jugador
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowJugador() throws Exception {
+		mockMvc.perform(get("/jugador/perfil", TEST_Jugador_ID)).andExpect(status().isOk())
+				.andExpect(model().attribute("Jugador", hasProperty("lastName", is("Franklin"))))
+				.andExpect(model().attribute("Jugador", hasProperty("firstName", is("George"))))
+				.andExpect(model().attribute("Jugador", hasProperty("username", is("George"))))
+				.andExpect(view().name("Jugadors/JugadorDetails"));
+	}
 /*
 	@WithMockUser(value = "spring")
 	@Test

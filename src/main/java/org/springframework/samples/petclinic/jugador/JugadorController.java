@@ -165,7 +165,7 @@ public class JugadorController {
 		}
 	}
 
-	//Vista perfil jugador
+	//Ver tu perfil siendo jugador
 	@GetMapping(value = "/jugador/perfil")
 	public String verPerfilJugador(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -183,8 +183,8 @@ public class JugadorController {
 	
 	}
 
-	//Vista perfil jugador
-	@GetMapping(value = "/jugador/{id}")
+	//Vista perfil jugador por id
+	/*@GetMapping(value = "/jugador/{id}")
 	public String showJugador(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
@@ -199,7 +199,7 @@ public class JugadorController {
 		}
 		return "welome";
 	
-	}
+	}*/
     
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
