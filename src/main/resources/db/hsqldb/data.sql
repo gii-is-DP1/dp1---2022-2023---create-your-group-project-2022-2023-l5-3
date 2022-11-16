@@ -33,13 +33,15 @@ INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','owner');
 INSERT INTO jugador VALUES(6,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','gallego');
 
+-- One owner alvnavriv, named alvaro with password alvaro
+INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'alvaro','owner');
+
+
+INSERT INTO jugador(id,first_name, last_name, username) VALUES (1,'jorge','sillero', 'jorge');
 
 
 INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
 INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
-
-
-
-
 
 
