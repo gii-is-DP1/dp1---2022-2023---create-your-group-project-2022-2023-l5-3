@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.jugador;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
@@ -69,6 +71,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class JugadorServiceTests {
+	
 	@Autowired
 	protected JugadorService jugadorService;
 
@@ -87,30 +90,7 @@ class JugadorServiceTests {
 
 	}
 
-	/*
-	 * 
-	 * @Test
-	 * void shouldFindJugadoresByLastName() {
-	 * 
-	 * Collection<Jugador> jugadores =
-	 * this.jugadorService.findJugadorByLastName("Davis");
-	 * 
-	 * 
-	 * assertThat(jugadores.size()).isNotEqualTo(0);
-	 * 
-	 * jugadores = this.jugadorService.findJugadorByLastName("Daaaviss");
-	 * assertThat(jugadores.size()).isEqualTo(0);
-	 * }
-	 * 
-	 * @Test
-	 * void shouldFindSingleOwnerWithPet() {
-	 * Owner owner = this.ownerService.findOwnerById(1);
-	 * assertThat(owner.getLastName()).startsWith("Franklin");
-	 * assertThat(owner.getPets().size()).isEqualTo(1);
-	 * assertThat(owner.getPets().get(0).getType()).isNotNull();
-	 * assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
-	 * }
-	 */
+	
 	@Test
 	@Transactional
 	public void shouldInsertOwner() {
@@ -134,6 +114,34 @@ class JugadorServiceTests {
 		jugadores = this.jugadorService.findJugadoresByLastName("Davis");
 		assertThat(jugadores.size()).isEqualTo(found + 1);
 	}
+
+	@Test
+	public void shoulFindJugadorByUsername(){
+		Jugador jugador = this.jugadorService.findJugadorByUsername("jorge");
+		assertThat(jugador.getUser().getUsername().equals("jorge"));
+		Jugador jugador1 = this.jugadorService.findJugadorByUsername("jor");
+		assertThat(jugador1).isNull();
+	}
+
+	@Test
+	public void shoulFindJugadorById(){
+		Jugador jugador = this.jugadorService.findJugadorById(1);
+		assertThat(jugador.getUser().getUsername().equals("jorge"));
+		Jugador jugador1 = this.jugadorService.findJugadorById(154);
+		assertThat(jugador1).isNull();
+	}
+
+	@Test
+	public void shoulFindJugadoresByLastName(){
+		Collection <Jugador> jugadores = this.jugadorService.findJugadoresByLastName("sillero");
+		assertThat(jugadores.size()).isNotEqualTo(0);
+		Collection <Jugador> jugadores1 = this.jugadorService.findJugadoresByLastName("silleto");
+		assertThat(jugadores1.size()).isEqualTo(0);
+	}
+	
+
+
+
 	/*
 	 * @Test
 	 * 

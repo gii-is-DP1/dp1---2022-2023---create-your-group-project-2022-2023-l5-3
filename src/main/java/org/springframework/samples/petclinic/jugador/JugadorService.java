@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.jugador;
 
 
 import java.util.Collection;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -39,6 +38,11 @@ public class JugadorService {
 		return jugadorRepository.findByLastName(lastName);
 	}
     
+	@Transactional 
+	public Jugador findJugadorById(int id){
+		return jugadorRepository.findJugadorById(id);
+	}
+	
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
 		//creating owner
@@ -48,7 +52,8 @@ public class JugadorService {
 		userService.saveUser(jugador.getUser());
 		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
-	}	
+	}
+	
 
 
 }
