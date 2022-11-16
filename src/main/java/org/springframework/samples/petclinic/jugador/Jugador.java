@@ -24,6 +24,7 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
+
     private Integer partidasGanadas;
 
     private Integer partidasNoGanadas;
@@ -45,12 +46,10 @@ public class Jugador extends Person{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	  private User user;
+	private User user;
     
-    @OneToOne
-    @JoinColumn(name="partida_id")
-    Partida partida;
-
+    
+    
     @OneToMany
     Set<Partida> partidasJugadas;
 

@@ -38,6 +38,10 @@ public class JugadorService {
 		return jugadorRepository.findById(id);
 	}
     
+   
+    
+   
+    
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
 		
