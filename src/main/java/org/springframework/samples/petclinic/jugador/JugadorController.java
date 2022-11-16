@@ -90,20 +90,23 @@ public class JugadorController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
-				
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
 				try{
 					Jugador player = jugadorService.findJugadorByUsername(usuario);
 					if(player.getId()==id){
 						Jugador jugador = jugadorService.findJugadorById(id);
+						String username = jugador.getUser().getUsername();
+						String pass = jugador.getUser().getPassword();
+						model.addAttribute("pass", pass);
+						model.addAttribute("username", username);
 						model.addAttribute(jugador);
 						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 					}else{
 						return "welcome";
 					}
 				}catch (DataIntegrityViolationException ex){
-					//String a = ex.getMessage();
+					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
 				//Jugador player = jugadorService.findJugadorByUsername(usuario);
@@ -113,8 +116,7 @@ public class JugadorController {
 		return "welome";
 	
 	}
-	
-	
+
 	@PostMapping(value = "/jugador/{id}/edit")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
 		if(result.hasErrors()){
@@ -150,30 +152,17 @@ public class JugadorController {
 	}
 
 	//Vista perfil jugador
-	@GetMapping(value = "/jugador/{id}")
-	public String showJugador(Model model, @PathVariable("id") int id) {
+	@GetMapping(value = "/jugador/perfil")
+	public String showJugador(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
-				
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 				String usuario = currentUser.getUsername();
-				try{
-					Jugador player = jugadorService.findJugadorByUsername(usuario);
-					if(player.getId()==id){
-						Jugador jugador = jugadorService.findJugadorById(id);
-						model.addAttribute("id", id);
-						model.addAttribute(jugador);
-						return "jugador/showJugador";
-					}else{
-						return "welcome";
-					}
-				}catch (DataIntegrityViolationException ex){
-					//String a = ex.getMessage();
-					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-				}
-				//Jugador player = jugadorService.findJugadorByUsername(usuario);
-				
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+				model.addAttribute("id", jugador.getId());
+				model.addAttribute(jugador);
+				return "jugador/showJugador";
 			}return "welcome";
 		}
 		return "welome";

@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="jugador">
 
@@ -11,8 +12,12 @@
 
     <table class="table table-striped">
         <tr>
-            <th>Name</th>
-            <td><b><c:out value="${jugador.firstName} ${jugador.lastName}"/></b></td>
+            <th>Firs Name</th>
+            <td><b><c:out value="${jugador.firstName}"/></b></td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td><b><c:out value="${jugador.lastName}"/></b></td>
         </tr>
         <tr>
             <th>Usuario</th>
@@ -20,12 +25,19 @@
         </tr>
     </table>
 
-    <spring:url value="{id}/edit" var="editUrl">
-        <spring:param name="id" value="${id}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a>
-
-
+        <tr>
+            <spring:url value="{id}/edit" var="editUrl">
+                <spring:param name="id" value="${id}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Editar Jugador</a>
+        </tr>
+   
+        <tr>
+            <spring:url value="{id}/estadisticas" var="statsUrl">
+                <spring:param name="id" value="${id}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(statsUrl)}" class="btn btn-default">Estadísticas</a>
+        </tr>
     </table>
 
 </petclinic:layout>

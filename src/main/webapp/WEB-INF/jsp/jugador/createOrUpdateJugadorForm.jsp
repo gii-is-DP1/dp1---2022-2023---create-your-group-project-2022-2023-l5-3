@@ -15,13 +15,13 @@
         <div class="form-group has-feedback">
             <petclinic:inputField label="Nombre" name="firstName"/>
             <petclinic:inputField label="Apellido" name="lastName"/>
+            <petclinic:inputField  label="Nombre de usuario" name="user.username"/>
             <c:choose>
                     <c:when test="${jugador['new']}">
-                        <petclinic:inputField label="Nombre de usuario" name="user.username"/></strong>
-                        <petclinic:inputField label="Contraseña" name="user.password"/>
+                        <petclinic:inputField label="Password" name="user.password"/>
                     </c:when>
                     <c:otherwise>
-                        <petclinic:inputField  label="Nombre de usuario" name="user.username"/>
+                        <input type="hidden" name="user.password" value="${pass}">
                     </c:otherwise>
                 </c:choose>
             
