@@ -13,8 +13,8 @@ INSERT INTO users(username,password,enabled) VALUES ('jugador1','jugador',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'jugador1','jugador');
 
 INSERT INTO users (username,password,enabled) VALUES ('aaa','aaa',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (10,'aaa','jugador');
-INSERT INTO jugador VALUES(1,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53',null,'aaa');
+INSERT INTO authorities(id,username,authority) VALUES (64,'aaa','jugador');
+INSERT INTO jugador VALUES(2,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53',null,'aaa');
 
 -- One owner jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
@@ -31,6 +31,13 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'fran','owner');
 -- One owner albgalhue, named gallego with password gallego
 INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','owner');
+
+-- One owner alvnavriv, named alvaro with password alvaro
+INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (10,'alvaro','owner');
+
+
+INSERT INTO jugador(id,first_name, last_name, username) VALUES (1,'jorge','sillero', 'jorge');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
@@ -76,6 +83,7 @@ INSERT INTO owners VALUES (11, 'Fran', 'Caro', '2335 Independence La Palma', 'Hu
 INSERT INTO owners VALUES (12, 'FJ', 'Barba', '2335 Santa Aurelia', 'Texas', '6085443487', 'barba');
 
 
+
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (3, 'Rosy', '2011-04-17', 2, 3);
@@ -104,3 +112,4 @@ INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (1,'2013-01-01 17:02:00' , '2013-01-01 17:05:33', False, 0);
 INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (2,'2013-01-01 17:56:45' , '2013-01-01 18:03:00', True, 2 );
+
