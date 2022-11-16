@@ -10,6 +10,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,17 +18,23 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
 
 import org.springframework.samples.petclinic.user.User;
+
+import org.springframework.security.core.Authentication;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class JugadorController {
@@ -93,20 +100,40 @@ public class JugadorController {
 
 	//Editar jugador
 	@GetMapping(value = "/jugador/{id}/edit")
-	public String initEditForm(ModelMap model, @PathVariable("id") int id) {
-		Jugador jugador = jugadorService.findJugadorById(id);
-		String username = jugador.getUser().getUsername();
-		String pass = jugador.getUser().getPassword();
-		model.put("username", username);
-		model.put("pass", pass);
-		model.addAttribute("jugador", jugador);
-		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+	public String initEditForm(Model model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				try{
+					Jugador player = jugadorService.findJugadorByUsername(usuario);
+					if(player.getId()==id){
+						Jugador jugador = jugadorService.findJugadorById(id);
+						String username = jugador.getUser().getUsername();
+						String pass = jugador.getUser().getPassword();
+						model.addAttribute("pass", pass);
+						model.addAttribute("username", username);
+						model.addAttribute(jugador);
+						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+					}else{
+						return "welcome";
+					}
+				}catch (DataIntegrityViolationException ex){
+					
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+				//Jugador player = jugadorService.findJugadorByUsername(usuario);
+				
+			}return "welcome";
+		}
+		return "welome";
+	
 	}
 
 	@PostMapping(value = "/jugador/{id}/edit")
-	public String processEditForm(ModelMap model, @Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
 		if(result.hasErrors()){
-			model.addAttribute("jugador", jugador);
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
 		else {
@@ -121,7 +148,7 @@ public class JugadorController {
 				try{
 					jugador.setId(id);
 					this.jugadorService.saveJugador(jugador);
-					return "redirect:/";
+					return "welcome";
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -137,5 +164,29 @@ public class JugadorController {
 			}
 		}
 	}
+
+	//Vista perfil jugador
+	@GetMapping(value = "/jugador/perfil")
+	public String showJugador(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				String usuario = currentUser.getUsername();
+				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
+				model.addAttribute("id", jugador.getId());
+				model.addAttribute(jugador);
+				return "jugador/showJugador";
+			}return "welcome";
+		}
+		return "welome";
+	
+	}
     
+	@GetMapping(value = "/jugador/{id}/estadisticas")
+	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
+		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
+		mav.addObject(this.jugadorService.findJugadorById(id));
+		return mav;
+	}
 }
