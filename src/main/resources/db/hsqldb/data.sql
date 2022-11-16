@@ -38,8 +38,7 @@ INSERT INTO jugador VALUES(6,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:0
 INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
 INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 
-INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (1,'2013-01-01 17:02:00' , '2013-01-01 17:05:33', False, 0);
-INSERT INTO partidas(id, momento_inicio, momento_fin, victoria, num_movimientos) VALUES (2,'2013-01-01 17:56:45' , '2013-01-01 18:03:00', True, 2 );
+
 
 
 

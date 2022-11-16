@@ -94,6 +94,7 @@ public class Partida extends BaseEntity {
 	
 	@OneToOne
     @JoinColumn(name="jugadorId")
+	@NotNull
     Jugador jugador;
 
 
