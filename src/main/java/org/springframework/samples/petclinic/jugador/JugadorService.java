@@ -33,27 +33,29 @@ public class JugadorService {
 		return jugadorRepository.findByUsername(username);
 	}
 
+
 	@Transactional
 	public Collection<Jugador> findJugadoresByLastName(String lastName) throws DataAccessException{
 		return jugadorRepository.findByLastName(lastName);
 	}
-    
-	@Transactional 
-	public Jugador findJugadorById(int id){
-		return jugadorRepository.findJugadorById(id);
+
+	@Transactional
+	public Jugador findJugadorById(int id) throws DataAccessException {
+		return jugadorRepository.findById(id);
 	}
+    
 	
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
-		//creating owner
+		
 		jugadorRepository.save(jugador);		
-		//creating user
+		
 		
 		userService.saveUser(jugador.getUser());
-		//creating authorities
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
 	}
 	
+
 
 
 }

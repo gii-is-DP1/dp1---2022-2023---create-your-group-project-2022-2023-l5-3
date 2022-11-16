@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.mazoFinal;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "mazosfinales")
+@Table(name = "mazo_final")
 @Getter
 @Setter
 
@@ -30,7 +31,7 @@ public class MazoFinal extends BaseEntity{
     @Max(52)
     private Integer cantidad;
 
-    @OneToMany
-    private Collection<CartasPartida> cartasPartida;
+    @OneToMany(mappedBy = "mazoFinal")
+	private Set<CartasPartida> cartasPartida;
 
 }

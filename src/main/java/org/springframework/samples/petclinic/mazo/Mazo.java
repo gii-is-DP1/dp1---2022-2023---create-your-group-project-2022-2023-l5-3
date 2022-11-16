@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.mazo;
 
 import java.util.Collection;
-
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -29,6 +29,6 @@ public class Mazo extends BaseEntity{
     @NotNull
     private Integer cantidad;
 
-    @OneToMany
-    private Collection<CartasPartida> cartasPartidas;
+    @OneToMany(mappedBy = "mazo")
+	private Set<CartasPartida> cartasPartida;
 }

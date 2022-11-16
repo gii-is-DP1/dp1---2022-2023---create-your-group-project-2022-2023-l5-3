@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.partida;
 
 import java.util.Collection;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class PartidaService {
 	@Transactional
 	public void save(Partida partida) {
 		partidaRepository.save(partida);
+	}
+	
+	@Transactional
+	public Partida findPartidaByUsername(String username) {
+		
+		return partidaRepository.findByUsername(username);
 	}
 
 }
