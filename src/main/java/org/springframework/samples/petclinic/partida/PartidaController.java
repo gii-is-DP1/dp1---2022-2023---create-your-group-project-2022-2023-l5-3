@@ -62,6 +62,11 @@ public class PartidaController {
 		partida.setNumMovimientos(0);
 		partida.setMomentoInicio(LocalDateTime.now());
 		partida.setVictoria(false);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			String usuario = currentUser.getUsername();
+			Jugador player = jugadorService.findJugadorByUsername(usuario);
+			partida.setJugador(player);
 		model.put("partida", partida);
 		return VIEW_CREATE_PARTIDA;
 		
@@ -82,6 +87,9 @@ public class PartidaController {
 			String usuario = currentUser.getUsername();
 			Jugador player = jugadorService.findJugadorByUsername(usuario);
 			p.setJugador(player);
+			p.setNumMovimientos(0);
+			p.setMomentoInicio(LocalDateTime.now());
+			p.setVictoria(false);
 			this.partidaService.save(p);
 			model.put("message", "Partida empezada");
 			

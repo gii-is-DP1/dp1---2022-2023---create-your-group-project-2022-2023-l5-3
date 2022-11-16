@@ -148,7 +148,7 @@ public class JugadorController {
 				try{
 					jugador.setId(id);
 					this.jugadorService.saveJugador(jugador);
-					return "welcome";
+					return "jugador/showJugador";
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;

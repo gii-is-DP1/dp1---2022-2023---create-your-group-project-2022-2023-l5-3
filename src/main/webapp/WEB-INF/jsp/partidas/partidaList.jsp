@@ -3,6 +3,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="partidas">
     <h2>Partidas</h2>
@@ -15,9 +17,9 @@
             <th>Momento Inicio</th>
             <th>Momento Fin</th>
             <th>Victoria</th>
-            <th>N�mero de Movimientos</th>
+            <th>Número de Movimientos</th>
             <th>Puntos</th>
-            <th>Duraci�n</th>
+            <th>Duración</th>
         </tr>
         </thead>
         <tbody>

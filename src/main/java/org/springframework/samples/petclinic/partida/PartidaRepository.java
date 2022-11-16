@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface PartidaRepository  extends CrudRepository<Partida, Integer> {
 	Collection<Partida> findAll() throws DataAccessException;
 
-	@Query("SELECT p FROM partida p WHERE p.jugador.user.username =?1")
+	@Query("SELECT p FROM Partida p WHERE p.jugador.user.username =?1")
 	public Partida findByUsername(String username);
 	
 }

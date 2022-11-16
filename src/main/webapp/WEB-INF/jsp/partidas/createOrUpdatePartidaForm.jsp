@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="partidas">
     
@@ -16,10 +18,12 @@
         </h2>
         <form:form modelAttribute="partida"
                    class="form-horizontal">
+        
         <form:hidden  path="id" />
         <form:hidden  path="momentoInicio" />
         <form:hidden  path="numMovimientos" />
         <form:hidden  path="victoria" />
+        <form:hidden  path="jugador" />
         
         <br>
         

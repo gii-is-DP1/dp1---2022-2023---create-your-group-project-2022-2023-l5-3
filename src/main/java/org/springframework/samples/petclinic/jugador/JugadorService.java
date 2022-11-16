@@ -41,7 +41,7 @@ public class JugadorService {
 
 	@Transactional
 	public Jugador findJugadorById(int id) throws DataAccessException {
-		return jugadorRepository.findById(id);
+		return jugadorRepository.findJugadorById(id);
 	}
     
 	
