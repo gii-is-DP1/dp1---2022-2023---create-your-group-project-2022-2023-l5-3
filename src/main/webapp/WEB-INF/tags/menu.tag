@@ -28,10 +28,10 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
-					title="find owners">
+				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas"
+					title="ver partidas">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find owners</span>
+					<span>Ver partidas</span>
 				</petclinic:menuItem>
 				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas/create"
 					title="Nueva partida">
@@ -39,11 +39,8 @@
 					<span>Nueva partida</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem>
+				
+				
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
