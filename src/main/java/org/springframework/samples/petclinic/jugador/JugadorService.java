@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.jugador;
 
 
 import java.util.Collection;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -11,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class JugadorService {
@@ -44,13 +47,14 @@ public class JugadorService {
 		return jugadorRepository.findJugadorById(id);
 	}
     
+	@Transactional
+	public Collection<Jugador> rankingPuntos(){
+		return jugadorRepository.rankingPuntos();
+	}
 	
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
-		
 		jugadorRepository.save(jugador);		
-		
-		
 		userService.saveUser(jugador.getUser());
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
 	}

@@ -9,7 +9,7 @@
 <html>
 <petclinic:htmlHeader/>
 
-<body style="background-color:#51C967;">
+<body style="background-color:#5fa134;">
 <petclinic:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">

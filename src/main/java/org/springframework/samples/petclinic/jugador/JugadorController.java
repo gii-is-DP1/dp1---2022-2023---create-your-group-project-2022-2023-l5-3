@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -14,7 +16,7 @@ import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataIntegrityViolationException;
-
+import org.springframework.data.util.Pair;
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
 
 import org.springframework.samples.petclinic.user.User;
@@ -35,6 +37,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 public class JugadorController {
@@ -179,7 +182,7 @@ public class JugadorController {
 				return "jugador/showJugador";
 			}return "welcome";
 		}
-		return "welome";
+		return "welcome";
 	
 	}
 
@@ -207,4 +210,20 @@ public class JugadorController {
 		mav.addObject(this.jugadorService.findJugadorById(id));
 		return mav;
 	}
+
+	@GetMapping(value = "/ranking")
+	public String ranking(Model modelMap) {
+
+		String vista = "ranking";
+		Collection<Jugador> rankingWinRate = jugadorService.rankingPuntos();
+		
+		List<Jugador> pointsRank= rankingWinRate.stream()
+			.limit(5).collect(Collectors.toList());
+		
+		modelMap.addAttribute("pointsRank", pointsRank);
+		return "welcome";
+	}
+
+
+
 }

@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,8 +20,7 @@ public interface JugadorRepository extends CrudRepository<Jugador, Integer> {
     @Query("SELECT j FROM Jugador j WHERE j.id =?1")
 	public Jugador findJugadorById(Integer id);
 
-
-  
-    
+    @Query("select j from Jugador j")
+	public Collection<Jugador> rankingPuntos();  
 
 }

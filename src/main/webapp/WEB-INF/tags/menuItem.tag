@@ -5,6 +5,7 @@
 <%@ attribute name="url" required="true" rtexprvalue="true" %>
 <%@ attribute name="title" required="false" rtexprvalue="true" %>
 <%@ attribute name="dropdown" required="false" rtexprvalue="true" %>
+
 <li class="${active ? 'active' : ''} ${dropdown ? 'dropdown' : ''}">
     <a href="<spring:url value="${url}" htmlEscape="true" />"
        title="${fn:escapeXml(title)}" class="${dropdown ? 'dropdown-toggle' : ''}" 

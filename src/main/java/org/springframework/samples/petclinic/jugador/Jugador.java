@@ -19,7 +19,7 @@ import org.springframework.samples.petclinic.user.User;
 
 import lombok.Getter;
 import lombok.Setter;
-
+ 
 @Entity
 @Getter
 @Setter
