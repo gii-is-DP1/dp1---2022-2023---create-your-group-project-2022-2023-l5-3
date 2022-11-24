@@ -65,7 +65,7 @@ class OwnerServiceTests {
 	@Test
 	void shouldFindOwnersByLastName() {
 		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Davis");
-		assertThat(owners.size()).isEqualTo(2);
+		assertThat(owners.size()).isEqualTo(0);
 
 		owners = this.ownerService.findOwnerByLastName("Daviss");
 		assertThat(owners.isEmpty()).isTrue();

@@ -138,7 +138,7 @@ class JugadorControllerTests {
 				.andExpect(model().attributeHasFieldErrors("jugador", "lastName"))
 				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
 	}
-
+ 
 	//Ver  tu perfil de jugador
 	@WithMockUser(value = "spring")
 	@Test
