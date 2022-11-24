@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "partidas")
 public class Partida extends BaseEntity {
 
 	@OneToMany(mappedBy = "partida")

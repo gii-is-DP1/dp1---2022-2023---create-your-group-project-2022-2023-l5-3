@@ -39,7 +39,3 @@ INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','owner');
 
 
 
-INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
-INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
-
-
