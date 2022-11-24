@@ -7,6 +7,7 @@
 
 <petclinic:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
+    
     <div class="row">
         <div class="col-md-12">
             <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="logoUS"/>

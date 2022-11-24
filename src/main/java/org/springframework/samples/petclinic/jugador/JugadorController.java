@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -183,23 +185,34 @@ public class JugadorController {
 	
 	}
 
-	//Vista perfil jugador por id
-	/*@GetMapping(value = "/jugador/{id}")
-	public String showJugador(Model model, @PathVariable("id") int id) {
+	//Vista perfil jugador siendo admin
+	@GetMapping(value = "/jugador/{id}")
+	public String showJugadorAdmin(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				model.addAttribute("id", jugador.getId());
-				model.addAttribute(jugador);
-				return "jugador/showJugador";
-			}return "welcome";
+				List<String> authorities = currentUser.getAuthorities().stream().map(item->item.getAuthority())
+				.collect(Collectors.toList());
+			
+       
+				if (authorities.contains("admin")){
+					Jugador jugador = jugadorService.findJugadorById(id);
+					model.addAttribute(jugador);
+					return "jugador/showJugador";
+				}
+				model.addAttribute("message", "No puedes ver el perfil de un jugador que no sea el tuyo");
+				return "welcome";
+				
+			}
+			model.addAttribute("message", "Debes estar registrado");
+			return "welcome";
 		}
-		return "welome";
+		model.addAttribute("message", "No tienes acceso");
+		return "welcome";
+		
 	
-	}*/
+	}
     
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){

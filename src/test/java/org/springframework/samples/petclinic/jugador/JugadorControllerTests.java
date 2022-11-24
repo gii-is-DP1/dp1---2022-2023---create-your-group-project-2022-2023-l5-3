@@ -140,7 +140,7 @@ class JugadorControllerTests {
 	}
 
 	//Ver  tu perfil de jugador
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "spring", username = "test", password = "123")
 	@Test
 	void testShowJugador() throws Exception {
 		mockMvc.perform(get("/jugador/perfil")).andExpect(status().isOk())
