@@ -8,6 +8,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.carta.Carta;
+import org.springframework.samples.petclinic.carta.Palo;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.user.User;
@@ -91,13 +94,26 @@ public class PartidaController {
 			p.setMomentoInicio(LocalDateTime.now());
 			p.setVictoria(false);
 			this.partidaService.save(p);
+
+		
+
+
 			model.put("message", "Partida empezada");
 			
 			return TABLERO;
 		}
 	
 		
+
+
 	}
+
+
+
+
+
+
+
 	
 
 	

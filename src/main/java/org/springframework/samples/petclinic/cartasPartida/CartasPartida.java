@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.carta.Carta;
@@ -22,7 +23,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cartasPartida")
+@Table(name = "cartasPartida",
+uniqueConstraints = {@UniqueConstraint(columnNames = {"mazo","carta"}),
+@UniqueConstraint(columnNames = {"mazo_final,carta"}),
+@UniqueConstraint(columnNames = {"mazo_inicial,carta"})
+})
 public class CartasPartida extends BaseEntity {
     
     @NotNull
@@ -42,5 +47,7 @@ public class CartasPartida extends BaseEntity {
 
     @OneToOne
     private Carta carta;
+
+
     
 }
