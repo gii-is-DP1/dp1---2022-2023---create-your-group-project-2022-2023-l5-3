@@ -10,8 +10,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
-import org.springframework.samples.petclinic.user.User;
-import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,9 +28,7 @@ public class PartidaController {
 	
 	@Autowired
 	private JugadorService jugadorService;
-	
-	@Autowired
-	private UserService userService;
+
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
 	private static final String VIEW_LIST = "partidas/partidaList";
@@ -40,19 +36,19 @@ public class PartidaController {
 
 	
 
-    
-	
-
 	@GetMapping(value = { "/partidas" })
 	public String showPartidaList(Map<String, Object> model) {
-		
-		List<Partida> partidas = new ArrayList<>();
-        partidas = (List<Partida>) partidaService.findPartidas();
-        
-      
-
-		model.put("partidas", partidas);
-		return VIEW_LIST;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.getAuthorities() != ){
+				List<Partida> partidas = new ArrayList<>();
+        		partidas = (List<Partida>) partidaService.findPartidas();
+				model.put("partidas", partidas);
+				return VIEW_LIST;
+			}
+			return "login";
+		}
+		return "login";
 	}
 	
 	@GetMapping(path="/partidas/create")
@@ -63,10 +59,10 @@ public class PartidaController {
 		partida.setMomentoInicio(LocalDateTime.now());
 		partida.setVictoria(false);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-			String usuario = currentUser.getUsername();
-			Jugador player = jugadorService.findJugadorByUsername(usuario);
-			partida.setJugador(player);
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		String usuario = currentUser.getUsername();
+		Jugador player = jugadorService.findJugadorByUsername(usuario);
+		partida.setJugador(player);
 		model.put("partida", partida);
 		return VIEW_CREATE_PARTIDA;
 		

@@ -177,7 +177,8 @@ public class JugadorController {
 				model.addAttribute("id", jugador.getId());
 				model.addAttribute(jugador);
 				return "jugador/showJugador";
-			}return "welcome";
+			}
+			return "welcome";
 		}
 		return "welome";
 	
