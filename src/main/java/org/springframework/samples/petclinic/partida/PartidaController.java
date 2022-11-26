@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.partida;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,19 +40,32 @@ public class PartidaController {
 
 	@GetMapping(value = { "/partidas" })
 	public String showPartidaList(Map<String, Object> model) {
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.getAuthorities() != ){
-				List<Partida> partidas = new ArrayList<>();
-        		partidas = (List<Partida>) partidaService.findPartidas();
-				model.put("partidas", partidas);
-				return VIEW_LIST;
+		
+		if (auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					List<Partida> partidas = new ArrayList<>();
+					partidas = (List<Partida>) partidaService.findPartidas();
+					model.put("partidas", partidas);
+					return VIEW_LIST;
+				} else {
+					return "welcome";
+				}
+			
 			}
-			return "login";
+		} else {
+			return "welcome";
 		}
-		return "login";
+
+		return "welcome";
 	}
-	
+
+
 	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){
 		Partida partida = new Partida();

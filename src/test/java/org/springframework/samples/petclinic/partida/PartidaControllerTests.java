@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.partida;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
@@ -95,15 +94,13 @@ public class PartidaControllerTests {
 				.andExpect(view().name("partidas/partidaList"));
 	}
 
-	@WithMockUser(value = "spring", username = "barba", authorities = "jugador")
+	@WithMockUser(value = "spring")
 	@Test
 	void testShowPartidasListNegative() throws Exception {
 		mockMvc.perform(get("/partidas"))
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists("partidas"))
-				.andExpect(view().name("login"));
+				.andExpect(model().attributeDoesNotExist("partidas"))
+				.andExpect(view().name("welcome"));
 	}
-
-
 
 }
