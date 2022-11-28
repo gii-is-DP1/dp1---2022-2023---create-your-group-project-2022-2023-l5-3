@@ -6,8 +6,8 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<petclinic:layout pageName="partidas">
-    <h2>Partidas</h2>
+<petclinic:layout pageName="partidasFin">
+    <h2>Partidas finalizadas</h2>
     <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
     <br></br>
 
@@ -33,8 +33,7 @@
                     <c:out value="${partida.momentoInicioString()}"/>
                 </td>
                 <td>
-                	<c:if test="${partida.momentoFin == null}"><c:out value="Partida en curso"/></c:if>
-                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
+                	<c:out value="${partida.momentoFinString()}"/>
                     
                 </td>
                 <td>

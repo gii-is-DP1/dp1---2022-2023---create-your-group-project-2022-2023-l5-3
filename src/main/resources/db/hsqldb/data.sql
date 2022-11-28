@@ -37,8 +37,6 @@ INSERT INTO jugador VALUES(6,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:0
 INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','owner');
 
-
-
 INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
 INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 

@@ -33,12 +33,13 @@ public class PartidaController {
 
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
-	private static final String VIEW_LIST = "partidas/partidaList";
+	private static final String VIEW_LIST = "partidas/partidaListEnCurso";
+	private static final String VIEW_LIST2 = "partidas/partidaListFinalizadas";
 	private static final String TABLERO = "tableros/tablero";
 
 	
 
-	@GetMapping(value = { "/partidas" })
+	@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,7 +51,7 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
 					List<Partida> partidas = new ArrayList<>();
-					partidas = (List<Partida>) partidaService.findPartidas();
+					partidas = (List<Partida>) partidaService.findPartidasEnCurso();
 					model.put("partidas", partidas);
 					return VIEW_LIST;
 				} else {
@@ -65,6 +66,34 @@ public class PartidaController {
 		return "welcome";
 	}
 
+
+
+	@GetMapping(value = { "/partidas/finalizadas" })
+	public String showPartidaListFin(Map<String, Object> model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					List<Partida> partidas = new ArrayList<>();
+					partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
+					model.put("partidas", partidas);
+					return VIEW_LIST2;
+				} else {
+					return "welcome";
+				}
+			
+			}
+		} else {
+			return "welcome";
+		}
+
+		return "welcome";
+	}
 
 	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){

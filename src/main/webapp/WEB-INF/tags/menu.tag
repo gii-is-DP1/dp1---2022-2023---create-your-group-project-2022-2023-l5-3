@@ -28,24 +28,22 @@
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas"
-					title="ver partidas">
+				<petclinic:menuItem active="${name eq 'partidasCurso'}" url="/partidas/enCurso"
+					title="ver partidas en curso">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Ver partidas</span>
+					<span>Partidas en curso</span>
 				</petclinic:menuItem>
-				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas/create"
+				
+				<petclinic:menuItem active="${name eq 'partidasFin'}" url="/partidas/finalizadas"
+					title="ver partidas finalizadas">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Partidas finalizadas</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'partidasNueva'}" url="/partidas/create"
 					title="Nueva partida">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Nueva partida</span>
-				</petclinic:menuItem>
-
-				
-				
-
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
 				</petclinic:menuItem>
 
 			</ul>

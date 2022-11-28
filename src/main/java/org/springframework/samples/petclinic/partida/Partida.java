@@ -39,8 +39,6 @@ public class Partida extends BaseEntity {
 	@OneToMany(mappedBy = "partida")
 	private Set<CartasPartida> cartasPartida;
 	
-	
-	
 	@NotNull
 	@Column(name = "momento_inicio")
 	private LocalDateTime momentoInicio;
