@@ -87,20 +87,39 @@ public class PartidaControllerTests {
 
 	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
 	@Test
-	void testShowPartidasListPositive() throws Exception {
-		mockMvc.perform(get("/partidas"))
+	void testShowPartidasListEnCursoPositive() throws Exception {
+		mockMvc.perform(get("/partidas/enCurso"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("partidas"))
-				.andExpect(view().name("partidas/partidaList"));
+				.andExpect(view().name("partidas/partidaListEnCurso"));
 	}
 
 	@WithMockUser(value = "spring")
 	@Test
-	void testShowPartidasListNegative() throws Exception {
-		mockMvc.perform(get("/partidas"))
+	void testShowPartidasListEnCursoNegative() throws Exception {
+		mockMvc.perform(get("/partidas/enCurso"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeDoesNotExist("partidas"))
 				.andExpect(view().name("welcome"));
 	}
+
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testShowPartidasListFinalizadasPositive() throws Exception {
+		mockMvc.perform(get("/partidas/finalizadas"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("partidas"))
+				.andExpect(view().name("partidas/partidaListFinalizadas"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowPartidasListFinalizadasNegative() throws Exception {
+		mockMvc.perform(get("/partidas/finalizadas"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeDoesNotExist("partidas"))
+				.andExpect(view().name("welcome"));
+	}
+
 
 }

@@ -41,9 +41,7 @@ public class PartidaController {
 
 	@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
-		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
 		if (auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();

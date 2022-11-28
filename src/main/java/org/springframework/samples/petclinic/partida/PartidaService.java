@@ -21,12 +21,12 @@ public class PartidaService {
 	//NO DETECTA EL NULL
 	@Transactional
 	public Collection<Partida> findPartidasEnCurso(){
-		return partidaRepository.findAllEnCurso(null);
+		return partidaRepository.findBymomentoFinIsNull();
 	}
 	
 	@Transactional
 	public Collection<Partida> findPartidasFinalizadas(){
-		return partidaRepository.findAllFinalizadas();
+		return partidaRepository.findBymomentoFinIsNotNull();
 	
 	}
 

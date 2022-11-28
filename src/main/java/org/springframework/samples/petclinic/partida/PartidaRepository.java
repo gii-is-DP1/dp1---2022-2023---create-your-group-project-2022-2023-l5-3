@@ -1,20 +1,20 @@
 package org.springframework.samples.petclinic.partida;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PartidaRepository  extends CrudRepository<Partida, Integer>{//NO FUNCIONA PORQUE NO DETECTA EL NULL
+public interface PartidaRepository  extends CrudRepository<Partida, Integer>{
 	
-	@Query("SELECT p FROM Partida p")
-	public Collection<Partida> findAllEnCurso(LocalDateTime fecha);
+	//NO FUNCIONA PORQUE NO DETECTA EL NULL
+	
+	List<Partida> findBymomentoFinIsNotNull();
 
-	@Query("SELECT p FROM Partida p")
-	public Collection<Partida> findAllFinalizadas();
+	List<Partida> findBymomentoFinIsNull();
 
 	@Query("SELECT p FROM Partida p WHERE p.jugador.user.username =?1")
 	public Partida findByUsername(String username);
