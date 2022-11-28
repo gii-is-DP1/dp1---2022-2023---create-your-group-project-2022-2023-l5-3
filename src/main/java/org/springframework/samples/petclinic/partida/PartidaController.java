@@ -134,12 +134,13 @@ public class PartidaController {
 			model.put("message", "Partida empezada");
 			
 			return TABLERO;
+		
+		
 		}
 	
-		
 	}
-	
 
+	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
 	
 	
 	

@@ -21,6 +21,7 @@
             <th>Número de Movimientos</th>
             <th>Puntos</th>
             <th>Duración</th>
+            <th>¿Finalizar?</th>
         </tr>
         </thead>
         <tbody>
@@ -33,11 +34,12 @@
                     <c:out value="${partida.momentoInicioString()}"/>
                 </td>
                 <td>
-                	<c:out value="Partida en curso"/>
-                    
+                	<c:if test="${partida.momentoFin == null}"><c:out value="Partida en curso"/></c:if>
+                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
                 </td>
                 <td>
-                    <c:out value="${partida.victoria}"/>
+                    <c:if test="${partida.momentoFin == null}"><c:out value="En curso"/></c:if>
+                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.victoria}"/></c:if>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>
@@ -45,10 +47,14 @@
                 <td>
                     <c:out value="${partida.puntos()}"/>
                 </td>
-                
                 <td>
                     <c:out value="${partida.duracion()}"/>
                 </td>
+                <td>
+                    <button class="btn btn-default" style="font-size: 1rem" type="submit">Finalizar partida</button>  
+                </td>
+                
+                
             </tr>
         </c:forEach>
         </tbody>

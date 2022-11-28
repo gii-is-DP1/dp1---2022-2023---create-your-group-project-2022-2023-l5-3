@@ -34,10 +34,9 @@
                 </td>
                 <td>
                 	<c:out value="${partida.momentoFinString()}"/>
-                    
                 </td>
                 <td>
-                    <c:out value="${partida.victoria}"/>
+                	<c:out value="${partida.victoria}"/>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>

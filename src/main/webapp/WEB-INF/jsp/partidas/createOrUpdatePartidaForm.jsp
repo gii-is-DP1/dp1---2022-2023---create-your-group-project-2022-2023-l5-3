@@ -21,6 +21,7 @@
         
         <form:hidden  path="id" />
         <form:hidden  path="momentoInicio" />
+        <form:hidden  path="momentoFin" />
         <form:hidden  path="numMovimientos" />
         <form:hidden  path="victoria" />
         <form:hidden  path="jugador" />

@@ -3,19 +3,14 @@ package org.springframework.samples.petclinic.partida;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PartidaRepository  extends CrudRepository<Partida, Integer> {
+public interface PartidaRepository  extends CrudRepository<Partida, Integer>{//NO FUNCIONA PORQUE NO DETECTA EL NULL
 	
-	Collection<Partida> findAll() throws DataAccessException;
-
-
-	//NO FUNCIONA PORQUE NO DETECTA EL NULL
-	@Query("SELECT p FROM Partida p WHERE p.momento_fin =?1")
+	@Query("SELECT p FROM Partida p")
 	public Collection<Partida> findAllEnCurso(LocalDateTime fecha);
 
 	@Query("SELECT p FROM Partida p")
