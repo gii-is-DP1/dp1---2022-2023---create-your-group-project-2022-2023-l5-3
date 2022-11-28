@@ -19,6 +19,15 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasProperty;
+
 
 @WebMvcTest(controllers = PartidaController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
@@ -32,6 +41,9 @@ public class PartidaControllerTests {
 	
 	@MockBean
 	private PartidaService partidaService;
+	
+	@Autowired
+	private MockMvc mockMvc;
 	
 	
 	@BeforeEach
@@ -81,5 +93,17 @@ public class PartidaControllerTests {
 		
 		
 	}
+	@WithMockUser(value = "spring")
+	@Test
+	void testFindPartidasPositive() throws Exception {
+		mockMvc.perform(get("/partidas")).andExpect(status().isOk()).andExpect(model().attributeExists("partidas"))
+				.andExpect(view().name("partidas/partidaList"));
+	}
+	
+	@Test
+	void testFindPartidasNegative() throws Exception {
+		mockMvc.perform(get("/partidas")).andExpect(status().is4xxClientError());
+	}
+
 
 }
