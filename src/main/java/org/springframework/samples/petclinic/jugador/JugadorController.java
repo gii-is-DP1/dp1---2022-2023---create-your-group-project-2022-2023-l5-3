@@ -40,6 +40,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class JugadorController {
 
     private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugador/createOrUpdateJugadorForm";
+	private static final String VIEW_SHOWJUGADOR = "jugador/perfil";
+
 
     private final JugadorService jugadorService;
 
@@ -148,7 +150,7 @@ public class JugadorController {
 				try{
 					jugador.setId(id);
 					this.jugadorService.saveJugador(jugador);
-					return "jugador/showJugador";
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -184,23 +186,6 @@ public class JugadorController {
 	
 	}
 
-	//Vista perfil jugador por id
-	/*@GetMapping(value = "/jugador/{id}")
-	public String showJugador(Model model, @PathVariable("id") int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				model.addAttribute("id", jugador.getId());
-				model.addAttribute(jugador);
-				return "jugador/showJugador";
-			}return "welcome";
-		}
-		return "welome";
-	
-	}*/
     
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
