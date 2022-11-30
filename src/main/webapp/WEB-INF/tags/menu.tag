@@ -37,10 +37,13 @@
 					<span>Nueva partida</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'users'}" url="/users/all"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Lista de usuarios</span>
+				</petclinic:menuItem>
+
 			</ul>
-
-
-
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
