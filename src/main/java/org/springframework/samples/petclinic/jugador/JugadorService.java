@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,10 @@ public class JugadorService {
 		jugadorRepository.delete(jugador);
 	}
 
+
+	@Transactional
+	public Collection<Partida> findPartidasByUserId(int id ) throws DataAccessException{
+		return jugadorRepository.findPartidasByJugador(id);
+	}
 
 }

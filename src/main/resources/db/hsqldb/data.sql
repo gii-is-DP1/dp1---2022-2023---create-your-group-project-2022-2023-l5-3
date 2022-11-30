@@ -41,3 +41,4 @@ INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
 INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
 
 INSERT INTO partidas(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',0,true,7);
+INSERT INTO partidas(id,momento_inicio,num_movimientos,victoria,jugador_id) VALUES (2,'2022-11-28 19:36:30',0,true,6);
