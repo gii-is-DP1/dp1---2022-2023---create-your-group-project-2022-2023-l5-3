@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
 import org.springframework.samples.petclinic.partida.Partida;
+import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 
@@ -49,11 +50,13 @@ public class JugadorController {
 
     private final JugadorService jugadorService;
 	private final AuthoritiesService authoritiesService;
-
-    @Autowired
-    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService){
+	private final PartidaService partidaService;
+    
+	@Autowired
+    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService){
         this.jugadorService= jugadorService;
 		this.authoritiesService=authoritiesService;
+		this.partidaService=partidaService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -225,7 +228,7 @@ public class JugadorController {
 			return result;
 		} else {
 			for (Partida partida : partidas){
-				//Eliminar cada partida
+				partidaService.deletePartida(partida); //Eliminamos cada partida
 			}
 			jugadorService.deleteJugador(jugador);
 			ModelAndView result = new ModelAndView("users/UsersList");

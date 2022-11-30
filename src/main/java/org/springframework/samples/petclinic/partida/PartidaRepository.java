@@ -18,4 +18,7 @@ public interface PartidaRepository  extends CrudRepository<Partida, Integer>{
 	@Query("SELECT p FROM Partida p WHERE p.jugador.user.username =?1")
 	public Partida findByUsername(String username);
 	
+	@Query("SELECT p FROM Partida p WHERE p.id =?1")
+	public Partida findPartidayId(Integer id);
+
 }

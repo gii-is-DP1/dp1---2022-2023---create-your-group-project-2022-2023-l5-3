@@ -21,6 +21,7 @@
             <th>Número de Movimientos</th>
             <th>Puntos</th>
             <th>Duración</th>
+            <th>Eliminar?</th>
         </tr>
         </thead>
         <tbody>
@@ -48,6 +49,10 @@
                 <td>
                     <c:out value="${partida.duracion()}"/>
                 </td>
+                <td>
+                    <a href="http://localhost:8080/partidas/delete/${partida.id}" class="btn btn-danger"> Eliminar</a>
+                </td>
+                
             </tr>
         </c:forEach>
         </tbody>

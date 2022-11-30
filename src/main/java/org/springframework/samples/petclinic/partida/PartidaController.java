@@ -15,9 +15,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 
 
@@ -139,7 +142,15 @@ public class PartidaController {
 	}
 
 	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
-	
+	@GetMapping(path = "/partidas/delete/{id}")
+	public ModelAndView deletePartida(@PathVariable("id") int id, ModelMap modelMap) {
+		Partida partida = partidaService.findById(id);
+		partidaService.deletePartida(partida);
+		ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+		result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+		return result;
+		
+	}
 	
 	
 }
