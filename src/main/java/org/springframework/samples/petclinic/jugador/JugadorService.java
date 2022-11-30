@@ -48,14 +48,15 @@ public class JugadorService {
     @Transactional
 	public void saveJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
 		
-		jugadorRepository.save(jugador);		
-		
-		
+		jugadorRepository.save(jugador);
 		userService.saveUser(jugador.getUser());
 		authoritiesService.saveAuthorities(jugador.getUser().getUsername(), "jugador");
 	}
 	
-
+	@Transactional
+	public void deleteJugador(@Valid Jugador jugador) throws DataAccessException, DataIntegrityViolationException {
+		jugadorRepository.delete(jugador);
+	}
 
 
 }

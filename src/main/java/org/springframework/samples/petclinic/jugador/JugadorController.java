@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -41,6 +42,7 @@ public class JugadorController {
 
     private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugador/createOrUpdateJugadorForm";
 	private static final String VIEW_SHOWJUGADOR = "jugador/perfil";
+	private static final String VIEW_JUGADORES = "users/UsersList";
 
 
     private final JugadorService jugadorService;
@@ -186,11 +188,20 @@ public class JugadorController {
 	
 	}
 
-    
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
 		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
 		mav.addObject(this.jugadorService.findJugadorById(id));
 		return mav;
 	}
+
+	@GetMapping(path = "/jugador/delete/{id}")
+	public String deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
+		Jugador jugador = jugadorService.findJugadorById(id);
+		jugadorService.deleteJugador(jugador);
+		modelMap.addAttribute("message", "Jugador borrado correctamente!");
+		return VIEW_JUGADORES;
+	}
+
+
 }
