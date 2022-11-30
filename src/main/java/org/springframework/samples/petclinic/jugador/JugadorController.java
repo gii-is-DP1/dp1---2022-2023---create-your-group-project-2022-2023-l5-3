@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
-
+import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 
 import org.springframework.security.core.Authentication;
@@ -32,7 +32,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,15 +43,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class JugadorController {
 
     private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugador/createOrUpdateJugadorForm";
-	private static final String VIEW_SHOWJUGADOR = "jugador/perfil";
 	private static final String VIEW_JUGADORES = "users/UsersList";
 
 
     private final JugadorService jugadorService;
+	private final AuthoritiesService authoritiesService;
 
     @Autowired
-    public JugadorController(JugadorService jugadorService){
+    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService){
         this.jugadorService= jugadorService;
+		this.authoritiesService=authoritiesService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -194,13 +197,26 @@ public class JugadorController {
 		mav.addObject(this.jugadorService.findJugadorById(id));
 		return mav;
 	}
+	
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+	/*@GetMapping("/users/all")
+    public ModelAndView showUsersList(){
+        ModelAndView result=new ModelAndView("users/UsersList");
+        result.addObject("users", authoritiesService.findAllUsers());
+        return result;
+    }*/
+
 
 	@GetMapping(path = "/jugador/delete/{id}")
-	public String deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
+	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
 		Jugador jugador = jugadorService.findJugadorById(id);
 		jugadorService.deleteJugador(jugador);
-		modelMap.addAttribute("message", "Jugador borrado correctamente!");
-		return VIEW_JUGADORES;
+		ModelAndView result = new ModelAndView("users/UsersList");
+        result.addObject("users", authoritiesService.findAllUsers());
+        return result;
 	}
 
 

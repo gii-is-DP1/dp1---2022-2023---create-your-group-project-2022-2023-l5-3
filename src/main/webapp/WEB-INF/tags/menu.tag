@@ -16,7 +16,7 @@
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'partidasCurso'}" url="/partidas/enCurso"
@@ -63,11 +63,11 @@
 										<div class="col-6 h5">
 											<p class="text-center">
 												<a href="<c:url value="/jugador/perfil" />"
-													class="btn btn-info btn-sm">Ver perfil</a>
+													class="btn btn-info btn-sm"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
 											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-danger btn-sm">Logout</a>
+													class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
 											</p>
 										</div>
 									</div>

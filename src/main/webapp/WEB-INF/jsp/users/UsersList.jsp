@@ -15,6 +15,7 @@
             <th style="width: 150px;">Jugador Id</th>
             <th style="width: 200px;">Username</th>
             <th style="width: 200px;">Rol</th>
+            <th style="width: 200px;">Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +32,11 @@
                 </td>
                 <td>
                     <c:out value="${user.user.getAuthorities()}"/>
+                </td>
+                <td>
+                    <a href="http://localhost:8080/jugador/delete/${user.user.jugador.id}" class="btn btn-danger"> Eliminar</a>
                 </td>  
+                
             </tr>
         </c:forEach>
         </tbody>
