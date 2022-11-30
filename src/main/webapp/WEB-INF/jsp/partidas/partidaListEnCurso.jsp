@@ -51,7 +51,7 @@
                     <c:out value="${partida.duracion()}"/>
                 </td>
                 <td>
-                    <button class="btn btn-default" style="font-size: 1rem" type="submit">Finalizar partida</button>  
+                    <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar</a>
                 </td>
                 
                 

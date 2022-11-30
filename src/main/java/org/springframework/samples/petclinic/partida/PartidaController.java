@@ -151,6 +151,19 @@ public class PartidaController {
 		return result;
 		
 	}
+
+	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
+	@GetMapping(path = "/partidas/finish/{id}")
+	public ModelAndView finishPartida(@PathVariable("id") int id, ModelMap modelMap) {
+		Partida partida = partidaService.findById(id);
+		Partida newPartida = partida;
+		newPartida.setMomentoFin(LocalDateTime.now());
+		newPartida.setVictoria(false);
+		newPartida.setNumMovimientos(100);
+		ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+		result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+		return result;
+	}
 	
 	
 }
