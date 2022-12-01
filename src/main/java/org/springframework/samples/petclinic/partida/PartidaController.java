@@ -94,8 +94,8 @@ public class PartidaController {
 			p.setNumMovimientos(0);
 			p.setMomentoInicio(LocalDateTime.now());
 			p.setVictoria(false);
-			pb.crearMazosIntermedios(p);
 			this.partidaService.save(p);
+			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
 			
 			return TABLERO;
