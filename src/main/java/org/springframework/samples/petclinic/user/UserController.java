@@ -20,14 +20,19 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.samples.petclinic.user.util.PageRender;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -74,10 +79,15 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping("/users/all")
-    public ModelAndView showUsersList(){
+	@GetMapping({"/users/all", ""})
+    public ModelAndView showUsersList(@RequestParam(name = "page", defaultValue = "0") int page){
         ModelAndView result=new ModelAndView("users/UsersList");
-        result.addObject("users", authoritiesservice.findAllUsers());
+		Pageable pageRequest = PageRequest.of(page, 5);
+		Page<Authorities> users  = authoritiesservice.findAllUsersPage(pageRequest);
+		PageRender<Authorities> pageRender = new PageRender<>("/lista", users);
+
+        result.addObject("users", users);
+		result.addObject("page", pageRender);
         return result;
     }
 	

@@ -21,6 +21,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,12 +36,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthoritiesService {
 
 	private AuthoritiesRepository authoritiesRepository;
+	private PageUserRepository prepo;
 	private UserService userService;
 
 	@Autowired
-	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService) {
+	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService, PageUserRepository prepo) {
 		this.authoritiesRepository = authoritiesRepository;
 		this.userService = userService;
+		this.prepo = prepo;
 	}
 
 	@Transactional
@@ -63,5 +67,12 @@ public class AuthoritiesService {
 	public List<Authorities> findAllUsers(){
 		return authoritiesRepository.findAll();
 	}
+
+	@Transactional
+	public Page<Authorities> findAllUsersPage(Pageable pageable){
+		return prepo.findAll(pageable);
+	}
+
+	
 
 }
