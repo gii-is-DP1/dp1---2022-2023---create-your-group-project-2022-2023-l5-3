@@ -38,4 +38,7 @@ INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','owner');
 
 
+INSERT INTO partidas(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',0,true,7);
+INSERT INTO partidas(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (3,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,4);
+INSERT INTO partidas(id,momento_inicio,num_movimientos,victoria,jugador_id) VALUES (2,'2022-11-28 19:36:30',0,true,6);
 

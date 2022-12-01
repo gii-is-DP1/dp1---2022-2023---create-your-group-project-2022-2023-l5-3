@@ -40,7 +40,21 @@ public class User{
 	private Set<Authorities> authorities;
 
 
-	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "user")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Jugador jugador;
+
+	public String getAuthorities() {
+		String res = "";
+		for (Authorities authority : authorities){
+			if (authority.getAuthority().equals("admin")){
+				res = "admin";
+			} else if (authority.getAuthority().equals("owner")){
+				res = "owner" ;
+			} else {
+				res = "jugador";
+			}
+		}
+		return res;
+	}	
 }
 

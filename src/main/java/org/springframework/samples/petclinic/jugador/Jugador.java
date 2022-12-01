@@ -47,11 +47,9 @@ public class Jugador extends Person{
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
-	private User user;
+	private User user;  
     
-    
-    
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "jugador")
     Set<Partida> partidasJugadas;
 
 }

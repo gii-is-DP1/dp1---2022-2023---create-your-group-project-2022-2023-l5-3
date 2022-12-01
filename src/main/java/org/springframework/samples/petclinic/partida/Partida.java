@@ -14,16 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
-import org.springframework.samples.petclinic.jugador.JugadorService;
+
 
 import javax.persistence.OneToMany;
-//import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CascadeType;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -38,8 +33,6 @@ public class Partida extends BaseEntity {
 
 	@OneToMany(mappedBy = "partida")
 	private Set<CartasPartida> cartasPartida;
-	
-	
 	
 	@NotNull
 	@Column(name = "momento_inicio")
@@ -94,7 +87,7 @@ public class Partida extends BaseEntity {
 	
 	@OneToOne
     @JoinColumn(name="jugadorId")
-	@NotNull
+		
     Jugador jugador;
 
 
