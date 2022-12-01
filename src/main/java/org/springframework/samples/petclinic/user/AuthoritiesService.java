@@ -60,6 +60,7 @@ public class AuthoritiesService {
 			throw new DataAccessException("User '"+username+"' not found!") {};
 	}
 	@Transactional
+	
 	public List<Authorities> findAllUsers(){
 		return authoritiesRepository.findAll();
 	}

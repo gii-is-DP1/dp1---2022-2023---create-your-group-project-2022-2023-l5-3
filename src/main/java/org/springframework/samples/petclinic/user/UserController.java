@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.petclinic.user;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -22,6 +24,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -74,11 +79,29 @@ public class UserController {
 		}
 	}
 	@GetMapping("/users/all")
-    public ModelAndView showUsersList(){
-        ModelAndView result=new ModelAndView("users/UsersList");
-        result.addObject("users", authoritiesservice.findAllUsers());
-        return result;
-    }
+    public String showUsersList(Map<String, Object> model){
+        
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					List<Authorities> usuarios = authoritiesservice.findAllUsers();
+					model.put("users", usuarios);
+					return "users/UsersList";
+				} else {
+					return "welcome";
+				}
+			
+			}
+		} else {
+			return "welcome";
+		}
+
+		return "welcome";
+	}
 	
 
 }
