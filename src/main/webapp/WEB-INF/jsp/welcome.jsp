@@ -6,15 +6,13 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <h2><fmt:message key="welcome"/></h2>
     <div class="row">
-        <div class="col-md-12">
+        <div class="row-md-12">
             <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="logoUS"/>
             <img class="img-responsive" src="${logoUS}"/>
-
         </div>
-        <div class="row">
-            <h2>Project ${title}</h2>
+        <div class="row-md-12">    
+            <h2>${title}</h2>
             <p><h2>Group ${group}</h2></p>
             <p>
                 <ul>   
@@ -23,7 +21,10 @@
                     </c:forEach>
                 </ul>
             </p>
-
+        </div>
+    </div>
+        <div class="row">
+            <h2 class = "justify-content-center">BIENVENIDO</h2>
         </div>
     </div>
 </petclinic:layout>

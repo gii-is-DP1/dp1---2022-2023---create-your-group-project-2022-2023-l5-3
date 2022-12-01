@@ -42,7 +42,7 @@ public class WelcomeController {
 
 
 		model.put("persons", persons);
-		model.put("title","Petclinic Application L5-3");
+		model.put("title","SOLITARIO L5-3");
 		model.put("group","L5-3");
 
 	    return "welcome";
