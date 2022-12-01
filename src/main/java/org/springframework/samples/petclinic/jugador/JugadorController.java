@@ -219,22 +219,10 @@ public class JugadorController {
 	@GetMapping(path = "/jugador/delete/{id}")
 	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
 		Jugador jugador = jugadorService.findJugadorById(id);
-		Collection<Partida> partidas = jugadorService.findPartidasByUserId(jugador.getId());
-		
-		if(partidas.size() == 0){
-			jugadorService.deleteJugador(jugador);
-			ModelAndView result = new ModelAndView("users/UsersList");
-			result.addObject("users", authoritiesService.findAllUsers());
-			return result;
-		} else {
-			for (Partida partida : partidas){
-				partidaService.deletePartida(partida); //Eliminamos cada partida
-			}
-			jugadorService.deleteJugador(jugador);
-			ModelAndView result = new ModelAndView("users/UsersList");
-			result.addObject("users", authoritiesService.findAllUsers());
-			return result;
-		}
+		jugadorService.deleteJugador(jugador);
+		ModelAndView result = new ModelAndView("users/UsersList");
+		result.addObject("users", authoritiesService.findAllUsers());
+		return result;
 		
 	}
 
