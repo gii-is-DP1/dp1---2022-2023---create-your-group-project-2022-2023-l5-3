@@ -87,7 +87,6 @@ public class PartidaBuilder {
 			Mazo m = new Mazo();
 			m.setPosicion(i);
 			m.setCantidad(0);
-			//m.setCartasPartida(cp);
 			res.add(m);
 
 		}
@@ -139,6 +138,7 @@ public class PartidaBuilder {
 
 		List<CartasPartida> auxCP = new ArrayList<>();
 		// Obtengo uno de los mazos de la lista
+		
 		for (int j = 0; j < 7; j++) {
 			Mazo mact = mazos.get(j);
 
@@ -147,10 +147,10 @@ public class PartidaBuilder {
 			 * a cada una de las posibles posiciones una carta
 			 */
 			Set<CartasPartida> setAux = new HashSet<>();
-			for (int k = 0; k < mact.getPosicion() + 1; k++) {
+			for (int k = 1; k <= mact.getPosicion(); k++) {
 
 				// Obterno un indice aleatorio entre 0 y 51
-				int random = (int) Math.random() * (cartasP.size() - 1);
+				int random = (int) (Math.random() * (cartasP.size() - 1));
 
 				// Obtengo la cartaPartida con el indice aleatorio anterior
 				CartasPartida cp = cartasP.get(random);
@@ -158,7 +158,7 @@ public class PartidaBuilder {
 				// Asigno la posición actual al mazo
 				cp.setPosCartaMazo(k);
 				// Indico la cantidad de cartas que hay ahora en el mazo
-				mact.setCantidad(k + 1);
+				mact.setCantidad(k);
 
 				mazoRepository.save(mact);
 				// Asigno el mazo a la CartaPartida
@@ -176,14 +176,23 @@ public class PartidaBuilder {
 			//mact.setCartasPartida(setAux);
 			
 		}
-
-		Set<CartasPartida> auxI = new HashSet<>();
-		cartasP.forEach(c->auxI.add(c));
-		mI.setCartasPartida(auxI);
-		mazos.forEach(m->mazoRepository.save(m));
-		auxCP.forEach(cp->cartasPartidaRepository.save(cp));
-		mazoInicialRepository.save(mI);
 		
+		Set<CartasPartida> aux = new HashSet<>(); 
+		for (CartasPartida carta : cartasP){
+			aux.add(carta);
+			mI.setCartasPartida(aux);
+			mazoInicialRepository.save(mI);
+		}
+		for (int k = 1; k <= aux.size(); k++){
+			
+			int random = (int) (Math.random() * (cartasP.size() - 1));
+			CartasPartida cp = cartasP.get(random);
+			cp.setMazoInicial(mI);
+			cp.setPosCartaMazo(k);
+			cartasPartidaRepository.save(cp);
+			cartasP.remove(cp);
+		}
+			
 	}
 
 }

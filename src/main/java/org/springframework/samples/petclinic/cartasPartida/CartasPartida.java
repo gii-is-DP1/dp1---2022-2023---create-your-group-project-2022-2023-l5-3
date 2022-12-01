@@ -32,6 +32,7 @@ import lombok.Setter;
 
 public class CartasPartida extends BaseEntity {
     
+    //1 si se puede coger , n si no se puede coger
     @NotNull
     private Integer posCartaMazo;
 
@@ -39,15 +40,18 @@ public class CartasPartida extends BaseEntity {
     private Partida partida;
 
     @JoinColumn(name="mazoId")
-    @ManyToOne(optional=false)
+    @ManyToOne
+    //(optional=false)
     private Mazo mazo;
 
     @JoinColumn(name="mazoInicialId")
-    @ManyToOne(optional=false)
+    @ManyToOne
+        //optional=false)
     private MazoInicial mazoInicial;
 
     @JoinColumn(name="mazoFinalId")
-    @ManyToOne(optional=false)
+    @ManyToOne
+    //(optional=false)
     private MazoFinal mazoFinal;
 
     @OneToOne

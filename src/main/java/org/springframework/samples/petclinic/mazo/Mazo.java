@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Mazo extends BaseEntity{
     
     @NotNull
-    @Range(min = 0, max = 6)
+    @Range(min = 1, max = 7)
     private Integer posicion;
 
     @NotNull
