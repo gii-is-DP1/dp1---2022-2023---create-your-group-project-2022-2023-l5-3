@@ -4,9 +4,11 @@ package org.springframework.samples.petclinic.cartasPartida;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.carta.Carta;
@@ -22,25 +24,38 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cartasPartida")
+
+@Table(name = "cartasPartida",uniqueConstraints = {@UniqueConstraint(name="UniqueMazoCarta",columnNames = {"cartaId","mazoId"}),
+@UniqueConstraint(name="UniqueMazoCarta",columnNames = {"cartaId","mazoInicialId"}),
+@UniqueConstraint(name="UniqueMazoCarta",columnNames = {"cartaId","mazoFinalId"})
+})
+
 public class CartasPartida extends BaseEntity {
     
+    //1 si se puede coger , n si no se puede coger
     @NotNull
     private Integer posCartaMazo;
 
     @ManyToOne(optional=false)
     private Partida partida;
 
-    @ManyToOne(optional=false)
+    @JoinColumn(name="mazoId")
+    @ManyToOne
+    //(optional=false)
     private Mazo mazo;
 
-    @ManyToOne(optional=false)
+    @JoinColumn(name="mazoInicialId")
+    @ManyToOne
+        //optional=false)
     private MazoInicial mazoInicial;
 
-    @ManyToOne(optional=false)
+    @JoinColumn(name="mazoFinalId")
+    @ManyToOne
+    //(optional=false)
     private MazoFinal mazoFinal;
 
     @OneToOne
+    @JoinColumn(name="cartaId")
     private Carta carta;
     
 }

@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 public class MazoFinalService {
-    private mazoFinalRepository mazofinalRepository;
+    private MazoFinalRepository mazofinalRepository;
 
     @Autowired
-    public MazoFinalService(mazoFinalRepository mazofinalRepository){
+    public MazoFinalService(MazoFinalRepository mazofinalRepository){
         this.mazofinalRepository = mazofinalRepository;
     }
 

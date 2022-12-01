@@ -11,6 +11,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+
+import org.springframework.samples.petclinic.partida.PartidaBuilder;
+import org.springframework.samples.petclinic.user.User;
+import org.springframework.samples.petclinic.user.UserService;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +38,14 @@ public class PartidaController {
 	
 	@Autowired
 	private JugadorService jugadorService;
+	
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private PartidaBuilder pb;
+
+
 
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
@@ -132,6 +145,7 @@ public class PartidaController {
 			p.setMomentoInicio(LocalDateTime.now());
 			p.setVictoria(false);
 			this.partidaService.save(p);
+			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
 			
 			return TABLERO;
