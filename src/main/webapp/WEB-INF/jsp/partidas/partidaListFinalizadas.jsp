@@ -6,8 +6,8 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<petclinic:layout pageName="partidas">
-    <h2>Partidas</h2>
+<petclinic:layout pageName="partidasFin">
+    <h2>Partidas finalizadas</h2>
     <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
     <br></br>
 
@@ -21,6 +21,7 @@
             <th>Número de Movimientos</th>
             <th>Puntos</th>
             <th>Duración</th>
+            <th>Eliminar?</th>
         </tr>
         </thead>
         <tbody>
@@ -33,12 +34,10 @@
                     <c:out value="${partida.momentoInicioString()}"/>
                 </td>
                 <td>
-                	<c:if test="${partida.momentoFin == null}"><c:out value="Partida en curso"/></c:if>
-                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
-                    
+                	<c:out value="${partida.momentoFinString()}"/>
                 </td>
                 <td>
-                    <c:out value="${partida.victoria}"/>
+                	<c:out value="${partida.victoria}"/>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>
@@ -50,6 +49,10 @@
                 <td>
                     <c:out value="${partida.duracion()}"/>
                 </td>
+                <td>
+                    <a href="http://localhost:8080/partidas/delete/${partida.id}" class="btn btn-danger"> Eliminar</a>
+                </td>
+                
             </tr>
         </c:forEach>
         </tbody>

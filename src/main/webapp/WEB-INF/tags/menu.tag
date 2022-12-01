@@ -9,49 +9,41 @@
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#main-navbar">
-				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-		</div>
+		
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas"
-					title="ver partidas">
+				<petclinic:menuItem active="${name eq 'partidasCurso'}" url="/partidas/enCurso"
+					title="ver partidas en curso">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Ver partidas</span>
+					<span>Partidas en curso</span>
 				</petclinic:menuItem>
-				<petclinic:menuItem active="${name eq 'partidas'}" url="/partidas/create"
+				
+				<petclinic:menuItem active="${name eq 'partidasFin'}" url="/partidas/finalizadas"
+					title="ver partidas finalizadas">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Partidas finalizadas</span>
+				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'partidasNueva'}" url="/partidas/create"
 					title="Nueva partida">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Nueva partida</span>
 				</petclinic:menuItem>
 
-				
-				
-
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
+				<petclinic:menuItem active="${name eq 'users'}" url="/users/all"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Lista de usuarios</span>
 				</petclinic:menuItem>
 
 			</ul>
-
-
-
 
 			<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
@@ -59,31 +51,23 @@
 					<li><a href="<c:url value="/jugador/new" />">Register</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>�
-							<strong><sec:authentication property="name" /></strong> <span
-							class="glyphicon glyphicon-chevron-down"></span>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"data-toggle="dropdown"> 
+					<span class="glyphicon glyphicon-user"></span>
+							<strong><sec:authentication property="name" /></strong> 
+							<span class="glyphicon glyphicon-chevron-down"></span>
 					</a>
 						<ul class="dropdown-menu">
 							<li>
 								<div class="navbar-login">
 									<div class="row">
-										<div class="col-lg-4">
+										<div class="col-6 h5">
 											<p class="text-center">
-												<span class="glyphicon glyphicon-user icon-size"></span>
-											</p>
-										</div>
-										<div class="col-lg-8">
-											<p class="text-left">
-												<strong><sec:authentication property="name" /></strong>
-											</p>
-											<p class="text-left">
 												<a href="<c:url value="/jugador/perfil" />"
-													class="btn btn-primary btn-block btn-sm">Ver perfil</a>
+													class="btn btn-info btn-sm"><span class="glyphicon glyphicon-share-alt"></span> Ver perfil</a>
 											</p>
-											<p class="text-left">
+											<p class="col-6 h5 text-center">
 												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
+													class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a>
 											</p>
 										</div>
 									</div>
@@ -96,7 +80,7 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="#" class="btn btn-primary btn-block">My Profile</a>
+												<a href="#" class="btn btn-info btn-block">My Profile</a>
 												<a href="#" class="btn btn-danger btn-block">Change
 													Password</a>
 											</p>

@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.partida;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
@@ -19,6 +18,12 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(controllers = PartidaController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 
@@ -32,6 +37,9 @@ public class PartidaControllerTests {
 	
 	@MockBean
 	private PartidaService partidaService;
+
+	@Autowired
+	private MockMvc mockMvc;
 	
 	
 	@BeforeEach
@@ -50,11 +58,8 @@ public class PartidaControllerTests {
 
 	}
 	
-	
-
-	
 	@Test
-	public void testPositive() {
+	public void testCreatePartidaPositive() {
 		Partida p = new Partida();
 		p.setJugador(jugadorService.findJugadorByUsername("test"));
 		p.setMomentoInicio(LocalDateTime.now());
@@ -65,7 +70,7 @@ public class PartidaControllerTests {
 		
 	}
 	@Test
-	public void testNegative(){
+	public void testCreatePartidaNegative(){
 		Partida p1 = new Partida();
 		p1.setJugador(jugadorService.findJugadorByUsername("test"));
 		p1.setMomentoInicio(LocalDateTime.now());
@@ -78,8 +83,43 @@ public class PartidaControllerTests {
 		p2.setVictoria(false);
 		p2.setNumMovimientos(0);
 		given(this.partidaService.findPartidaByUsername("test")).willReturn(null);
-		
-		
 	}
+
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testShowPartidasListEnCursoPositive() throws Exception {
+		mockMvc.perform(get("/partidas/enCurso"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("partidas"))
+				.andExpect(view().name("partidas/partidaListEnCurso"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowPartidasListEnCursoNegative() throws Exception {
+		mockMvc.perform(get("/partidas/enCurso"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeDoesNotExist("partidas"))
+				.andExpect(view().name("welcome"));
+	}
+
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testShowPartidasListFinalizadasPositive() throws Exception {
+		mockMvc.perform(get("/partidas/finalizadas"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("partidas"))
+				.andExpect(view().name("partidas/partidaListFinalizadas"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testShowPartidasListFinalizadasNegative() throws Exception {
+		mockMvc.perform(get("/partidas/finalizadas"))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeDoesNotExist("partidas"))
+				.andExpect(view().name("welcome"));
+	}
+
 
 }

@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -16,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
-
+import org.springframework.samples.petclinic.partida.Partida;
+import org.springframework.samples.petclinic.partida.PartidaService;
+import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 
 import org.springframework.security.core.Authentication;
@@ -31,7 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,12 +45,18 @@ import org.springframework.web.servlet.ModelAndView;
 public class JugadorController {
 
     private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugador/createOrUpdateJugadorForm";
+	private static final String VIEW_JUGADORES = "users/UsersList";
+
 
     private final JugadorService jugadorService;
-
-    @Autowired
-    public JugadorController(JugadorService jugadorService){
+	private final AuthoritiesService authoritiesService;
+	private final PartidaService partidaService;
+    
+	@Autowired
+    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService){
         this.jugadorService= jugadorService;
+		this.authoritiesService=authoritiesService;
+		this.partidaService=partidaService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -148,7 +159,7 @@ public class JugadorController {
 				try{
 					jugador.setId(id);
 					this.jugadorService.saveJugador(jugador);
-					return "jugador/showJugador";
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -177,34 +188,55 @@ public class JugadorController {
 				model.addAttribute("id", jugador.getId());
 				model.addAttribute(jugador);
 				return "jugador/showJugador";
-			}return "welcome";
+			}
+			return "welcome";
 		}
 		return "welome";
 	
 	}
 
-	//Vista perfil jugador por id
-	/*@GetMapping(value = "/jugador/{id}")
-	public String showJugador(Model model, @PathVariable("id") int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			if(auth.isAuthenticated()){
-				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
-				Jugador jugador = jugadorService.findJugadorByUsername(usuario);
-				model.addAttribute("id", jugador.getId());
-				model.addAttribute(jugador);
-				return "jugador/showJugador";
-			}return "welcome";
-		}
-		return "welome";
-	
-	}*/
-    
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
 		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
 		mav.addObject(this.jugadorService.findJugadorById(id));
 		return mav;
 	}
+	
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+	/*@GetMapping("/users/all")
+    public ModelAndView showUsersList(){
+        ModelAndView result=new ModelAndView("users/UsersList");
+        result.addObject("users", authoritiesService.findAllUsers());
+        return result;
+    }*/
+
+	
+
+	//HAY QUE CONTROLAR SI TIENE ESE USUARIO UNA PARTIDA JUGADA, PODER ELIMINARLO TAMBIÉN
+	@GetMapping(path = "/jugador/delete/{id}")
+	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
+		Jugador jugador = jugadorService.findJugadorById(id);
+		Collection<Partida> partidas = jugadorService.findPartidasByUserId(jugador.getId());
+		
+		if(partidas.size() == 0){
+			jugadorService.deleteJugador(jugador);
+			ModelAndView result = new ModelAndView("users/UsersList");
+			result.addObject("users", authoritiesService.findAllUsers());
+			return result;
+		} else {
+			for (Partida partida : partidas){
+				partidaService.deletePartida(partida); //Eliminamos cada partida
+			}
+			jugadorService.deleteJugador(jugador);
+			ModelAndView result = new ModelAndView("users/UsersList");
+			result.addObject("users", authoritiesService.findAllUsers());
+			return result;
+		}
+		
+	}
+
+
 }

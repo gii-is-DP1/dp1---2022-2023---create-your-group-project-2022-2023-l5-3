@@ -8,23 +8,22 @@
 
 <petclinic:layout pageName="jugador">
 
-    <h2>Owner Information</h2>
+        <div class="m-0 row justify-content-center"> 
+        
+            <div class="row mx-auto justify-content-center">
+                    <h1 class="text-center"><h2>Owner Information</h2></h1>
+            </div>
 
 
-    <table class="table table-striped">
-        <tr>
-            <th>Firs Name</th>
-            <td><b><c:out value="${jugador.firstName}"/></b></td>
-        </tr>
-        <tr>
-            <th>Last Name</th>
-            <td><b><c:out value="${jugador.lastName}"/></b></td>
-        </tr>
-        <tr>
-            <th>Usuario</th>
-            <td><c:out value="${jugador.user.username}"/></td>
-        </tr>
-    </table>
+    <div class="col-auto p-5 text-center"> 
+        
+        <img class="rounded d-block" src="https://i.ibb.co/DVxmpCC/logo.png" width="200" height="200"> 
+</br>
+</br>
+        <h4><b>@<c:out value="${jugador.user.username}"/></b></h4>
+        <h4>Nombre: <b><c:out value="${jugador.firstName}"/></b></h4>
+        <h4>Apellidos: <b><c:out value="${jugador.lastName}"/></b></h4></br>
+
 
         <tr>
             <spring:url value="/jugador/{id}/edit" var="editUrl">
