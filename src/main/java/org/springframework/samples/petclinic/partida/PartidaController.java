@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.partida;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -182,9 +183,8 @@ public class PartidaController {
 			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
-				if (credencial.equals("admin")) {
-					System.out.println("ENTRA1"); //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
-					establecerFinPartida(id);
+				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+					establecerFinPartidaManual(id);
 					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 					return result;
@@ -192,7 +192,7 @@ public class PartidaController {
 				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
-						establecerFinPartida(id);
+						establecerFinPartidaManual(id);
 						ModelAndView result = new ModelAndView("welcome");
 						result.addObject("message", "Partida acabada");
 						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
@@ -213,11 +213,23 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
-	public void establecerFinPartida (Integer id){
+	//PARA ESTADÍSTICAS
+	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALORES
+	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 
+	
+	public void establecerFinPartidaManual (Integer id){
 		Partida partida = partidaService.findById(id);
 		partida.setMomentoFin(LocalDateTime.now());
 		partida.setVictoria(false);
 		partida.setNumMovimientos(100);
+		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
+		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
+		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
+		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
+		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
+		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
+		//player.setMinTiempoPartidaGanada(null);
+		//player.setMaxTiempoPartidaGanada(null);
 	}
 }
 	

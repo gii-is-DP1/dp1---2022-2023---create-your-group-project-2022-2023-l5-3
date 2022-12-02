@@ -42,8 +42,9 @@ public class Jugador extends Person{
 
     private LocalTime maxTiempoPartidaGanada;
 
-
     private LocalTime minTiempoPartidaGanada;
+
+    
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "username", referencedColumnName = "username")
@@ -51,5 +52,11 @@ public class Jugador extends Person{
     
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = false,mappedBy = "jugador")
     Set<Partida> partidasJugadas;
+
+    public Integer getPartidasJugadas(){
+        return partidasJugadas.size();
+    }
+
+    
 
 }
