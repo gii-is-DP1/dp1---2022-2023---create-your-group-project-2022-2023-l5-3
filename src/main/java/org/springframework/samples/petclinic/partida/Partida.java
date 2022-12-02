@@ -86,7 +86,6 @@ public class Partida extends BaseEntity {
 	
 	@OneToOne
     @JoinColumn(name="jugadorId")
-		
     Jugador jugador;
 
 

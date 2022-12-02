@@ -38,9 +38,6 @@ public class PartidaController {
 	
 	@Autowired
 	private JugadorService jugadorService;
-	
-	@Autowired
-	private UserService userService;
 
 	@Autowired
 	private PartidaBuilder pb;
@@ -179,15 +176,51 @@ public class PartidaController {
 	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
 	@GetMapping(path = "/partidas/finish/{id}")
 	public ModelAndView finishPartida(@PathVariable("id") int id, ModelMap modelMap) {
-		Partida partida = partidaService.findById(id);
-		Partida newPartida = partida;
-		newPartida.setMomentoFin(LocalDateTime.now());
-		newPartida.setVictoria(false);
-		newPartida.setNumMovimientos(100);
-		ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-		result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
-		return result;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					System.out.println("ENTRA1"); //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+					establecerFinPartida(id);
+					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					return result;
+					
+				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
+					Partida partida = partidaService.findById(id);
+					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
+						establecerFinPartida(id);
+						ModelAndView result = new ModelAndView("welcome");
+						result.addObject("message", "Partida acabada");
+						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return result;
+					} else {
+						ModelAndView result = new ModelAndView("welcome");
+						result.addObject("message", "No puedes finalizar esta partida");
+						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return result;
+					}
+					
+				}
+			}
+			
+		} else {
+			System.out.println("ENTRA3");
+			return new ModelAndView("exception");
+		}
+		System.out.println("ENTRA4");
+		return new ModelAndView("exception");
 	}
-	
-	
+
+	public void establecerFinPartida (Integer id){
+		Partida partida = partidaService.findById(id);
+		partida.setMomentoFin(LocalDateTime.now());
+		partida.setVictoria(false);
+		partida.setNumMovimientos(100);
+	}
 }
+	
+

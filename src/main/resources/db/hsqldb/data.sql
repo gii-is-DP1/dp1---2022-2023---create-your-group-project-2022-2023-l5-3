@@ -20,7 +20,7 @@ INSERT INTO jugador VALUES(3,'jorge','sillero','00:05:00','00:05:00',2,3,6,7,5,7
 
 -- One owner barbaat, named barba with password barba
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'barba','owner');
+INSERT INTO authorities(id,username,authority) VALUES (5,'barba','jugador');
 INSERT INTO jugador VALUES(4,'barba','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','barba');
 
 -- One owner fracaralb, named fran with passwor fran
