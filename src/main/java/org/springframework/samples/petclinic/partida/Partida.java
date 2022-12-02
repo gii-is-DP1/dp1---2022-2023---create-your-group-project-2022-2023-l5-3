@@ -5,13 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.jugador.Jugador;
@@ -31,7 +30,7 @@ import lombok.Setter;
 @Setter
 public class Partida extends BaseEntity {
 
-	@OneToMany(mappedBy = "partida")
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = false,mappedBy = "partida")
 	private Set<CartasPartida> cartasPartida;
 	
 	@NotNull
