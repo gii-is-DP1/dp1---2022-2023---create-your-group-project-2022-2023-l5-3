@@ -158,12 +158,22 @@ public class PartidaController {
 	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
 	@GetMapping(path = "/partidas/delete/{id}")
 	public ModelAndView deletePartida(@PathVariable("id") int id, ModelMap modelMap) {
-		Partida partida = partidaService.findById(id);
-		partidaService.deletePartida(partida);
-		ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-		result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
-		return result;
-		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					Partida partida = partidaService.findById(id);
+					partidaService.deletePartida(partida);
+					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					return result;
+				}
+			}
+		}
+		return new ModelAndView("exception");
 	}
 
 	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
