@@ -1,9 +1,11 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -11,23 +13,20 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
-import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
-
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
 
-import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Controller;
@@ -51,12 +50,14 @@ public class JugadorController {
     private final JugadorService jugadorService;
 	private final AuthoritiesService authoritiesService;
 	private final PartidaService partidaService;
+	private final UserService userService;
     
 	@Autowired
-    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService){
+    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService,UserService userService){
         this.jugadorService= jugadorService;
 		this.authoritiesService=authoritiesService;
 		this.partidaService=partidaService;
+		this.userService=userService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -226,14 +227,20 @@ public class JugadorController {
 			String credencial = usuarioR.getAuthority();
 			if (credencial.equals("admin")) {
 				Jugador jugador = jugadorService.findJugadorById(id);
-				if(jugador.getUser().getUsername() == currentUser.getUsername()){
-					ModelAndView result = new ModelAndView("users/UsersList");
-					result.addObject("users", authoritiesService.findAllUsers());
+				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){
+					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
+					List<User> usuarios = userService.findAllUsers();
+					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
+					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
+					result.addObject("users", listaOrdenada);
 					return result;
 				} else {
 					jugadorService.deleteJugador(jugador);
-					ModelAndView result = new ModelAndView("users/UsersList");
-					result.addObject("users", authoritiesService.findAllUsers());
+					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
+					List<User> usuarios = userService.findAllUsers();
+					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
+					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
+					result.addObject("users", listaOrdenada);
 					return result;
 				}
 				

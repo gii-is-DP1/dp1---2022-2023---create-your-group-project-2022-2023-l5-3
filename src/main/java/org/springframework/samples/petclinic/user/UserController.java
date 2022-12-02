@@ -16,8 +16,12 @@
 package org.springframework.samples.petclinic.user;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -48,11 +52,13 @@ public class UserController {
 
 	private final JugadorService jugadorService;
 	private final AuthoritiesService authoritiesservice;
-
+	private final UserService userService;
+	
 	@Autowired
-	public UserController(JugadorService gameService,AuthoritiesService authoritiesservice) {
-		this.jugadorService = gameService;
+	public UserController(JugadorService jugadorService,AuthoritiesService authoritiesservice,UserService userService) {
+		this.jugadorService = jugadorService;
 		this.authoritiesservice = authoritiesservice;
+		this.userService = userService;
 	}
 
 	@InitBinder
@@ -89,8 +95,11 @@ public class UserController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					List<Authorities> usuarios = authoritiesservice.findAllUsers();
-					model.put("users", usuarios);
+					//List<Authorities> usuarios = authoritiesservice.findAllUsers();
+					List<User> usuarios = userService.findAllUsers();
+					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
+					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
+					model.put("users", listaOrdenada);
 					return "users/UsersList";
 				} else {
 					return "welcome";

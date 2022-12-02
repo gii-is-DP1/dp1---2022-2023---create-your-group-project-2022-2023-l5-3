@@ -208,10 +208,8 @@ public class PartidaController {
 			}
 			
 		} else {
-			System.out.println("ENTRA3");
 			return new ModelAndView("exception");
 		}
-		System.out.println("ENTRA4");
 		return new ModelAndView("exception");
 	}
 

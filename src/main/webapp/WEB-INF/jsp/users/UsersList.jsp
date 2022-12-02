@@ -11,7 +11,7 @@
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">User Id</th>
+            
             <th style="width: 150px;">Jugador Id</th>
             <th style="width: 200px;">Username</th>
             <th style="width: 200px;">Rol</th>
@@ -21,20 +21,18 @@
         <tbody>
         <c:forEach items="${users}" var="user">
             <tr>
+                
                 <td>
-                    <c:out value="${user.id}"/>
-                </td>
-                <td>
-                    <c:out value="${user.user.jugador.id}"/>
+                    <c:out value="${user.jugador.id}"/>
                 </td>  
                 <td>
-                    <c:out value="${user.user.username}"/>
+                    <c:out value="${user.username}"/>
                 </td>
                 <td>
-                    <c:out value="${user.user.getAuthorities()}"/>
+                    <c:out value="${user.getAuthorities()}"/>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/jugador/delete/${user.user.jugador.id}" class="btn btn-danger"> Eliminar</a>
+                    <a href="http://localhost:8080/jugador/delete/${user.jugador.id}" class="btn btn-danger"> Eliminar</a>
                 </td>  
                 
             </tr>

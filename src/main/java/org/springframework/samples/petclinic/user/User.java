@@ -56,5 +56,9 @@ public class User{
 		}
 		return res;
 	}	
+
+	public Integer getJugadorId (){
+		return jugador.getId();
+	}
 }
 

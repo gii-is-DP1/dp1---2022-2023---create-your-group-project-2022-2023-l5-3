@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.user;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,6 @@ public interface UserRepository extends  CrudRepository<User, String>{
     public User findUserByUsername(String username);
 
     public Optional<User>findByUsername(String username);
+
+    public List<User> findAll();
 }
