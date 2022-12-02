@@ -36,6 +36,7 @@ INSERT INTO jugador VALUES(6,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:0
 -- One owner alvnavriv, named alvaro with password alvaro
 INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','owner');
+INSERT INTO jugador VALUES(8,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','alvaro');
 
 
 INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',0,true,7);
