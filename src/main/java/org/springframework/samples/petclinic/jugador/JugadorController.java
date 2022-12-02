@@ -218,13 +218,25 @@ public class JugadorController {
 	//HAY QUE CONTROLAR SI TIENE ESE USUARIO UNA PARTIDA JUGADA, PODER ELIMINARLO TAMBIÉN
 	@GetMapping(path = "/jugador/delete/{id}")
 	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
-		Jugador jugador = jugadorService.findJugadorById(id);
-		jugadorService.deleteJugador(jugador);
-		ModelAndView result = new ModelAndView("users/UsersList");
-		result.addObject("users", authoritiesService.findAllUsers());
-		return result;
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	if(auth != null){
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+		for (GrantedAuthority usuarioR : usuario){
+			String credencial = usuarioR.getAuthority();
+			if (credencial.equals("admin")) {
+				Jugador jugador = jugadorService.findJugadorById(id);
+				jugadorService.deleteJugador(jugador);
+				ModelAndView result = new ModelAndView("users/UsersList");
+				result.addObject("users", authoritiesService.findAllUsers());
+				return result;
+			}
+		}
 		
+	}else{
+		return new ModelAndView("exception");
 	}
-
-
+	return new ModelAndView("exception");
+	}
+	
 }
