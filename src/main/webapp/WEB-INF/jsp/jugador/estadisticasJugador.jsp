@@ -17,7 +17,7 @@
     <div class="row border border-dark" style="font-size: 4.5rem;" align="center"><strong>Estadísticas</strong></div>
     <div class="container" style="font-size: 3rem;">
 
-        <div class="row" align="center">Partidas Jugadas:<c:out value="${jugador.partidasGanadas}"/></div>
+        <div class="row" align="center">Partidas Jugadas: <c:out value="${jugador.getPartidasJugadas()}"/></div>
 
         <div class="row" align="center">Partidas Ganadas: <c:out value="${jugador.partidasGanadas}"/></div>
         
