@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.jugador;
 
-import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -9,10 +8,11 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-
+import org.springframework.samples.petclinic.logros.Logros;
 import org.springframework.samples.petclinic.model.Person;
 import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.user.User;
@@ -36,13 +36,13 @@ public class Jugador extends Person{
 
     private Integer numTotalPuntos;
 
-    private Integer numMaxMovimientosPartidaGanada;
+    //private Integer numMaxMovimientosPartidaGanada;
 
-    private Integer numMinMovimientosPartidaGanada;
+    //private Integer numMinMovimientosPartidaGanada;
 
-    private LocalTime maxTiempoPartidaGanada;
+    //private LocalTime maxTiempoPartidaGanada;
 
-    private LocalTime minTiempoPartidaGanada;
+    //private LocalTime minTiempoPartidaGanada;
 
     
 
@@ -56,7 +56,10 @@ public class Jugador extends Person{
     public Integer getPartidasJugadas(){
         return partidasJugadas.size();
     }
-
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
+    Set<Logros> logros;
     
 
 }

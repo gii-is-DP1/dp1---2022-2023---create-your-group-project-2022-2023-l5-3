@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JugadorRepository extends CrudRepository<Jugador, Integer> {
 
-
     @Query("select j from Jugador j where j.user.username = ?1")
     public Jugador findByUsername(String username);
 

@@ -198,24 +198,16 @@ public class JugadorController {
 
 	@GetMapping(value = "/jugador/{id}/estadisticas")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
-		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
-		mav.addObject(this.jugadorService.findJugadorById(id));
-		return mav;
+		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+		Jugador jugador = jugadorService.findJugadorById(id);
+		result.addObject(jugador);
+		return result;
 	}
-	
+
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
-	/*@GetMapping("/users/all")
-    public ModelAndView showUsersList(){
-        ModelAndView result=new ModelAndView("users/UsersList");
-        result.addObject("users", authoritiesService.findAllUsers());
-        return result;
-    }*/
-
-	
-
 	
 	@GetMapping(path = "/jugador/delete/{id}")
 	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {

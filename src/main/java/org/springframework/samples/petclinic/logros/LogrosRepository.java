@@ -10,6 +10,4 @@ public interface LogrosRepository extends CrudRepository<Logros, Integer>{
 	
 	@Query("SELECT logro FROM Logros logro WHERE logro.jugador.id = ?1")
 	public List<Logros> findLogrosByIdJugador(Integer id);
-	
-
 }

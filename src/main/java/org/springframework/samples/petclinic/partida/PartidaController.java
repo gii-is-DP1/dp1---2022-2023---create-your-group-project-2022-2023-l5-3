@@ -12,7 +12,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
-
+import org.springframework.samples.petclinic.logros.Logros;
+import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.samples.petclinic.partida.PartidaBuilder;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
@@ -39,6 +40,9 @@ public class PartidaController {
 	
 	@Autowired
 	private JugadorService jugadorService;
+
+	@Autowired
+	private LogrosService logrosService;
 
 	@Autowired
 	private PartidaBuilder pb;
@@ -164,6 +168,23 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
 					Partida partida = partidaService.findById(id);
+					Jugador jugador = partida.getJugador();
+					long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
+					if(partida.getVictoria() == true){
+						jugador.setPartidasGanadas(jugador.getPartidasGanadas()-1);
+						jugador.setNumTotalMovimientos(jugador.getNumTotalMovimientos()- (int) partida.getNumMovimientos());
+						jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().minusSeconds(diffInSeconds));
+					}
+					if(partida.getVictoria() == false){
+						jugador.setPartidasNoGanadas(jugador.getPartidasNoGanadas()-1);
+						jugador.setNumTotalMovimientos(jugador.getNumTotalMovimientos()- (int) partida.getNumMovimientos());
+						jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().minusSeconds(diffInSeconds));
+					}
+					/*List<Logros> logrosLista = logrosService.findById(jugador.getId());
+					System.out.println(logrosLista);
+					for(Logros logro : logrosLista){
+						logrosService.delete(logro);
+					}*/
 					partidaService.deletePartida(partida);
 					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
