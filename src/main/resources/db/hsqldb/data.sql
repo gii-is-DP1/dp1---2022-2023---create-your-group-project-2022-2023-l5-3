@@ -39,6 +39,13 @@ INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','jugador');
 INSERT INTO jugador VALUES(8,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','alvaro');
 
 
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (1, 'Máquina de jugar','Has jugado 5 partidas' ,'hola', false, '', 1);
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (2, 'No se te da nada mal','Has alcanzado los 100 puntos' ,'hola', false, '', 1);
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (3, '¡Estás on fire!','Has jugado más de 1 hora en total' ,'hola', true, '', 1);
+
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (4, 'Máquina de jugar','Has jugado 5 partidas' ,'hola', false, '', 4);
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (5, 'No se te da nada mal','Has alcanzado los 100 puntos' ,'hola', false, '', 4);
+INSERT INTO logros(id, name, description,condition_unlocked,is_unlocked, image, jugador_id) VALUES (6, '¡Estás on fire!','Has jugado más de 1 hora en total' ,'hola', true, '', 4);
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',0,true,7);
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (3,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,4);
 --INSERT INTO partida(id,momento_inicio,num_movimientos,victoria,jugador_id) VALUES (2,'2022-11-28 19:36:30',0,true,6);

@@ -38,6 +38,13 @@
             </spring:url>
             <a href="${fn:escapeXml(statsUrl)}" class="btn btn-default">Estadísticas</a>
         </tr>
+
+        <tr>
+            <spring:url value="/jugador/logros/{id}" var="logrosUrl">
+                <spring:param name="id" value="${id}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(logrosUrl)}" class="btn btn-default">Logros</a>
+        </tr>
     </table>
 
 </petclinic:layout>

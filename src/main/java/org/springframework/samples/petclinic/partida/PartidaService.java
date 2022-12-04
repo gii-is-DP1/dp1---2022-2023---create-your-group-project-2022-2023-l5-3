@@ -21,7 +21,7 @@ public class PartidaService {
 		this.partidaRepository = partidaRepository;
 	}
 	
-	//NO DETECTA EL NULL
+	
 	@Transactional
 	public Collection<Partida> findPartidasEnCurso(){
 		return partidaRepository.findBymomentoFinIsNull();
