@@ -31,10 +31,6 @@ public class Logros extends BaseEntity{
 	private String description;
 	
 	@NotEmpty
-	@Column(name="condition_unlocked")
-	private String condition_unlocked;
-	
-	@NotEmpty
 	@Column(name="is_unlocked")
 	private Boolean is_unlocked;
 	
