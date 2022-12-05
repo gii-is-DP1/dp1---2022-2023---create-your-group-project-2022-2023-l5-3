@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
-
+    
     private Integer partidasGanadas;
 
     private Integer partidasNoGanadas;
@@ -35,6 +35,24 @@ public class Jugador extends Person{
     private Integer numTotalMovimientos;
 
     private Integer numTotalPuntos;
+
+    public void setPartidasGanadas() {
+		this.partidasGanadas = 0;
+	}
+    public void setPartidasNoGanadas() {
+		this.partidasNoGanadas = 0;
+	}
+    
+    /*public void setTotalTiempoJugado() {
+		this.totalTiempoJugado = "00:00:00";
+	}*/
+    
+    public void setNumTotalMovimientos() {
+		this.numTotalMovimientos = 0;
+	}
+    public void setNumTotalPuntos() {
+		this.numTotalPuntos = 0;
+	}
 
     //private Integer numMaxMovimientosPartidaGanada;
 

@@ -90,7 +90,10 @@ public class JugadorController {
 					
 					SecurityContextHolder.getContext().setAuthentication(authReq);
 						
-					
+					jugador.setNumTotalMovimientos();
+					jugador.setNumTotalPuntos();
+					jugador.setPartidasGanadas();
+					jugador.setPartidasNoGanadas();
 					this.jugadorService.saveJugador(jugador);
 					
 					return "redirect:/";
@@ -112,41 +115,45 @@ public class JugadorController {
 
 	//SI SE LE DA DOS VECES A ACTUALIZAR DATOS SEGUIDAS SIN DARLE A VOLVER, SALTA ERROR
 	//Editar jugador
-	@GetMapping(value = "/jugador/{id}/edit")
+	@GetMapping(value = "/jugador/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
+				String user = currentUser.getUsername();
 				try{
-					Jugador player = jugadorService.findJugadorByUsername(usuario);
-					if(player.getId()==id){
-						Jugador jugador = jugadorService.findJugadorById(id);
-						String username = jugador.getUser().getUsername();
-						String pass = jugador.getUser().getPassword();
-						//String image = jugador.getUser().getImage();
-						model.addAttribute("pass", pass);
-						model.addAttribute("username", username);
-						//model.addAttribute("image", image);
-						model.addAttribute(jugador);
-						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-					}else{
-						return "welcome";
+					Jugador player = jugadorService.findJugadorByUsername(user);
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(player.getId()==id || credencial.equals("admin")){
+							Jugador jugador = jugadorService.findJugadorById(id);
+							String username = jugador.getUser().getUsername();
+							String pass = jugador.getUser().getPassword();
+							
+							model.addAttribute("pass", pass);
+							model.addAttribute("username", username);
+							
+							model.addAttribute(jugador);
+							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
 					}
 				} catch (DataIntegrityViolationException ex){
 					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
-				//Jugador player = jugadorService.findJugadorByUsername(usuario);
+				
 				
 			}return "welcome";
 		}
 		return "welcome";
 	
 	}
-
-	@PostMapping(value = "/jugador/{id}/edit")
+	
+	@PostMapping(value = "/jugador/edit/{id}")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
 		if(result.hasErrors()){
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -195,11 +202,35 @@ public class JugadorController {
 			}
 			return "welcome";
 		}
-		return "welome";
+		return "welcome";
 	
 	}
 
-	@GetMapping(value = "/jugador/{id}/estadisticas")
+	@GetMapping(value = "/jugador/perfil/{id}")
+	public String verPerfilJugadorADMIN(@PathVariable("id") int id,Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					Jugador jugador = jugadorService.findJugadorById(id);
+					model.addAttribute("id", jugador.getId());
+					model.addAttribute(jugador);
+					return "jugador/showJugadorByIdADMIN";
+				} else {
+					return "welcome";
+				}
+			}	
+		} else {
+		return "welcome";
+		}
+	return "exception";
+	}
+	
+	
+	@GetMapping(value = "/jugador/estadisticas/{id}")
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		Jugador jugador = jugadorService.findJugadorById(id);

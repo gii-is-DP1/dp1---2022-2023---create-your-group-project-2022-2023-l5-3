@@ -24,28 +24,11 @@
         <h4><b>@<c:out value="${jugador.user.username}"/></b></h4>
         <h4>Nombre: <b><c:out value="${jugador.firstName}"/></b></h4>
         <h4>Apellidos: <b><c:out value="${jugador.lastName}"/></b></h4></br>
-
-
         <tr>
-            <spring:url value="/jugador/edit/{id}" var="editUrl">
-                <spring:param name="id" value="${id}"/>
-            </spring:url>
-            <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
-        </tr>
-   
-        <tr>
-            <spring:url value="/jugador/estadisticas/{id}" var="statsUrl">
-                <spring:param name="id" value="${id}"/>
-            </spring:url>
-            <a href="${fn:escapeXml(statsUrl)}" class="btn btn-default">Estadísticas</a>
-        </tr>
-
-        <tr>
-            <spring:url value="/jugador/logros" var="logrosUrl">
-                <!-- <spring:param name="id" value="${id}"/> -->
-            </spring:url>
-            <a href="${logrosUrl}" class="btn btn-default">Logros</a>
-        </tr>
-    </table>
+                <spring:url value="/jugador/edit/{id}" var="editUrl">
+                    <spring:param name="id" value="${id}"/>
+                </spring:url>
+                <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
+            </tr>
 
 </petclinic:layout>

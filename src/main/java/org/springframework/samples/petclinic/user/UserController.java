@@ -112,21 +112,5 @@ public class UserController {
 
 		return "welcome";
 	}
-	
-	/*@PostMapping(path = "/users/delete/{userId}")
-	public String deleteGame(@PathVariable("userId") Integer userId, ModelMap modelMap) {
-		Optional<User> user = userService.findUserById(userId);
-		if (user.isPresent()) {
-			System.out.println(user.get());
-			userService.delete(user.get());
-			modelMap.addAttribute("message", "User succesfully deleted!");
-			return VIEW_USERS_LIST;
-
-		} else {
-			modelMap.addAttribute("message", "User not found!");
-			return VIEW_USERS_LIST;
-		}
-	}*/
-
 
 }
