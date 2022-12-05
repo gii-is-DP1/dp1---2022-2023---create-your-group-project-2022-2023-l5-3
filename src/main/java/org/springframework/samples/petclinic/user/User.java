@@ -33,7 +33,7 @@ public class User{
 	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String password;
-	
+
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

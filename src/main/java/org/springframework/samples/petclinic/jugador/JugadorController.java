@@ -110,6 +110,7 @@ public class JugadorController {
 		}
 	}
 
+	//SI SE LE DA DOS VECES A ACTUALIZAR DATOS SEGUIDAS SIN DARLE A VOLVER, SALTA ERROR
 	//Editar jugador
 	@GetMapping(value = "/jugador/{id}/edit")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
@@ -124,14 +125,16 @@ public class JugadorController {
 						Jugador jugador = jugadorService.findJugadorById(id);
 						String username = jugador.getUser().getUsername();
 						String pass = jugador.getUser().getPassword();
+						//String image = jugador.getUser().getImage();
 						model.addAttribute("pass", pass);
 						model.addAttribute("username", username);
+						//model.addAttribute("image", image);
 						model.addAttribute(jugador);
 						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 					}else{
 						return "welcome";
 					}
-				}catch (DataIntegrityViolationException ex){
+				} catch (DataIntegrityViolationException ex){
 					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
@@ -139,7 +142,7 @@ public class JugadorController {
 				
 			}return "welcome";
 		}
-		return "welome";
+		return "welcome";
 	
 	}
 

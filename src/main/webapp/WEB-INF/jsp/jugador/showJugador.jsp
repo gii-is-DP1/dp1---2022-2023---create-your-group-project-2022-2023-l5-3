@@ -16,8 +16,9 @@
 
 
     <div class="col-auto p-5 text-center"> 
+        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="https://i.ibb.co/DVxmpCC/logo.png" width="200" height="200"></c:if>
+        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="200" height="200"></c:if>
         
-        <img class="rounded d-block" src="https://i.ibb.co/DVxmpCC/logo.png" width="200" height="200"> 
 </br>
 </br>
         <h4><b>@<c:out value="${jugador.user.username}"/></b></h4>
