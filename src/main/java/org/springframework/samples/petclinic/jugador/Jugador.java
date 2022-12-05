@@ -43,9 +43,9 @@ public class Jugador extends Person{
 		this.partidasNoGanadas = 0;
 	}
     
-    /*public void setTotalTiempoJugado() {
-		this.totalTiempoJugado = "00:00:00";
-	}*/
+    public void setTotalTiempoJugado() {
+		this.totalTiempoJugado = LocalTime.of(0, 0, 0);
+	}
     
     public void setNumTotalMovimientos() {
 		this.numTotalMovimientos = 0;

@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,8 @@ import javax.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataIntegrityViolationException;
-
+import org.springframework.samples.petclinic.logros.Logros;
+import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
@@ -51,13 +53,15 @@ public class JugadorController {
 	private final AuthoritiesService authoritiesService;
 	private final PartidaService partidaService;
 	private final UserService userService;
+	private final LogrosService logrosService;
     
 	@Autowired
-    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService,UserService userService){
+    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService,UserService userService, LogrosService logrosService){
         this.jugadorService= jugadorService;
 		this.authoritiesService=authoritiesService;
 		this.partidaService=partidaService;
 		this.userService=userService;
+		this.logrosService=logrosService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -65,6 +69,39 @@ public class JugadorController {
 		Jugador jugador = new Jugador();
 		model.put("jugador", jugador);
 		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+	}
+
+	@GetMapping(value = "/jugador/new/ad")
+	public String initCreationFormADMIN(Map<String, Object> model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				try{
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(credencial.equals("admin")){
+							Jugador jugador = new Jugador();
+							model.put("jugador", jugador); 
+							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
+					}
+				} catch (DataIntegrityViolationException ex){
+					
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+				
+				
+			}
+			
+			return "welcome";
+		} else {
+			return "welcome";
+		}
+	
 	}
 
 
@@ -84,16 +121,24 @@ public class JugadorController {
 
 			if(violations.isEmpty()){
 				try{
-
-
 					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 					
 					SecurityContextHolder.getContext().setAuthentication(authReq);
-						
+						//
 					jugador.setNumTotalMovimientos();
 					jugador.setNumTotalPuntos();
 					jugador.setPartidasGanadas();
 					jugador.setPartidasNoGanadas();
+					jugador.setTotalTiempoJugado();
+					/*Logros logro1 = new Logros("Máquina de jugar","Has jugado 5 partidas", false, "", jugador); 
+					Logros logro2 = new Logros("No se te da nada mal","Has alcanzado los 100 puntos", false, "", jugador); 
+					Logros logro3 = new Logros("¡Estás on fire!","Has alcanzado los 200 movimientos", false, "", jugador); 
+					Set<Logros> set = new HashSet<>();
+					set.add(logro1);
+					set.add(logro2);
+					set.add(logro3);
+					jugador.setLogros(set);*/
+					//HAY QUE AÑADIR LOS LOGROS A LOS USUARIOS REGISTRADOS NUEVOS POR LA WEB
 					this.jugadorService.saveJugador(jugador);
 					
 					return "redirect:/";

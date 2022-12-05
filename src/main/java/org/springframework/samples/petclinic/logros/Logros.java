@@ -22,6 +22,14 @@ import lombok.Setter;
 @Table(name = "logros")
 public class Logros extends BaseEntity{
 	
+	/*public Logros(String name, String deString, Boolean unlock, String image, Jugador jugador){
+		this.name=name;
+		this.description=deString;
+		this.is_unlocked=unlock;
+		this.image=image;
+		this.jugador=jugador;
+	}*/
+	
 	@NotEmpty
 	@Column(name="name")
 	private String name;

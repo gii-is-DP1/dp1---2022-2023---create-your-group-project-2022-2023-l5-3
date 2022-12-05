@@ -10,8 +10,8 @@
 
         <div class="m-0 row justify-content-center"> 
         
-            <div class="row mx-auto justify-content-center">
-                    <h1 class="text-center"><h2>Owner Information</h2></h1>
+            <div class="row mx-auto justify-content-center text-center">
+                    <h1 class="text-center"><h2>Information of <c:out value="${jugador.user.username}"/></h2></h1>
             </div>
 
 
