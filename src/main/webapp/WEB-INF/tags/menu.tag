@@ -13,35 +13,70 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
+				
+
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Inicio</span>
 				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'partidasCurso'}" url="/partidas/enCurso"
-					title="ver partidas en curso">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Partidas en curso</span>
-				</petclinic:menuItem>
 				
-				<petclinic:menuItem active="${name eq 'partidasFin'}" url="/partidas/finalizadas"
-					title="ver partidas finalizadas">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Partidas finalizadas</span>
-				</petclinic:menuItem>
-				
+				<sec:authorize access="isAuthenticated()">
 				<petclinic:menuItem active="${name eq 'partidasNueva'}" url="/partidas/create"
 					title="Nueva partida">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Nueva partida</span>
 				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('admin')">
+					<petclinic:menuItem active="${name eq 'partidasCurso'}" url="/partidas/enCurso"
+						title="ver partidas en curso">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						<span>Partidas en curso</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'partidasFin'}" url="/partidas/finalizadas"
+					title="ver partidas finalizadas">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Partidas finalizadas</span>
+				</petclinic:menuItem>
+				</sec:authorize>
 
+				<sec:authorize access="hasAuthority('admin')">
 				<petclinic:menuItem active="${name eq 'users'}" url="/users/all"
 					title="Lista de usuarios">
 					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 					<span>Lista de usuarios</span>
 				</petclinic:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('jugador')">
+				<petclinic:menuItem active="${name eq 'users'}" url="/jugador/logros/"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Mis logros</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('jugador')">
+				<petclinic:menuItem active="${name eq 'users'}" url="/jugador/estadisticas/"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Mis estadisticas</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+
+				<sec:authorize access="hasAuthority('jugador')">
+				<petclinic:menuItem active="${name eq 'users'}" url="/partidas/jugador/"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Mis partidas</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+
 
 			</ul>
 

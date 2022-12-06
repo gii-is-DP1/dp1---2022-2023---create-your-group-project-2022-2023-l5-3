@@ -6,6 +6,7 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
+
     <div class="row">
         <div class="row-md-12">
             <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="logoUS"/>
@@ -27,4 +28,5 @@
             <h2 class = "justify-content-center">BIENVENIDO</h2>
         </div>
     </div>
+
 </petclinic:layout>

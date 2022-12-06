@@ -158,6 +158,40 @@ public class PartidaController {
 		return "welcome";
 	}
 
+	@GetMapping(value = { "/partidas/jugador" })
+	public String showPartidaListViewJugador(Map<String, Object> model) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+					Jugador player = jugadorService.findJugadorByUsername(username);
+					if(currentUser.getUsername().equals(player.getUser().getUsername()) || credencial.equals("admin")){
+						List<Partida> partidas = new ArrayList<>();
+						partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
+						List<Partida> res = new ArrayList<>(); 
+						for(Partida partida : partidas){
+							if(partida.getJugador().getUser().getUsername().equals(username)){
+								res.add(partida);
+							}
+						}
+						model.put("partidas", res);
+						return "partidas/partidaListUser";
+					
+					} else {
+						return "welcome";
+					}
+			}
+			return "welcome";	
+		} else {
+			return "welcome";
+		}
+	}
+
+
 	@GetMapping(value = { "/partidas/jugador/{id}" })
 	public String showPartidaListViewJugador(@PathVariable("id") int id,Map<String, Object> model) {
 		
