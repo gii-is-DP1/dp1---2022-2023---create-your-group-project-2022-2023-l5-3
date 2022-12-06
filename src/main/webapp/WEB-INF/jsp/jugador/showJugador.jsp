@@ -46,6 +46,12 @@
             </spring:url>
             <a href="${logrosUrl}" class="btn btn-default">Logros</a>
         </tr>
+        <tr>
+            <spring:url value="/partidas/jugador/{id}" var="partidasURL">
+                <!-- <spring:param name="id" value="${id}"/> -->
+            </spring:url>
+            <a href="${partidasURL}" class="btn btn-default">Mis partidas</a>
+        </tr>
     </table>
 
 </petclinic:layout>

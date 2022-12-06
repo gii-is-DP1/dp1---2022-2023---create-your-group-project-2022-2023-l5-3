@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.partida;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -31,6 +33,16 @@ public class PartidaService {
 	public Collection<Partida> findPartidasFinalizadas(){
 		return partidaRepository.findBymomentoFinIsNotNull();
 	}
+
+	/*@Transactional
+	public List<Partida> findPartidasFinalizadasUsuario(){
+		Collection<Partida> lista = partidaRepository.findBymomentoFinIsNotNull();
+		List<Partida> res= new ArrayList<>();
+		for (Partida partida:lista){
+			if(partida.)
+		}
+	}*/
+	
 
 	@Transactional
 	public void save(Partida partida) {
