@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -104,7 +105,7 @@ public class JugadorController {
 	
 	}
 
-
+	
 
     @PostMapping(value = "/jugador/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
@@ -130,15 +131,35 @@ public class JugadorController {
 					jugador.setPartidasGanadas();
 					jugador.setPartidasNoGanadas();
 					jugador.setTotalTiempoJugado();
-					/*Logros logro1 = new Logros("Máquina de jugar","Has jugado 5 partidas", false, "", jugador); 
-					Logros logro2 = new Logros("No se te da nada mal","Has alcanzado los 100 puntos", false, "", jugador); 
-					Logros logro3 = new Logros("¡Estás on fire!","Has alcanzado los 200 movimientos", false, "", jugador); 
-					Set<Logros> set = new HashSet<>();
-					set.add(logro1);
-					set.add(logro2);
-					set.add(logro3);
-					jugador.setLogros(set);*/
-					//HAY QUE AÑADIR LOS LOGROS A LOS USUARIOS REGISTRADOS NUEVOS POR LA WEB
+					Logros logro1 = new Logros();
+					Logros logro2 = new Logros();
+					Logros logro3 = new Logros();
+					List<Logros> lista = new ArrayList<>();
+					lista.add(logro1);
+					lista.add(logro2);
+					lista.add(logro3);
+					for(Logros logro:lista){
+						if(lista.get(0).equals(logro)){
+							logro.setName("Máquina de jugar");
+							logro.setDescription("Has jugado 5 partidas");
+						} else if(lista.get(1).equals(logro)){
+							logro.setName("No se te da nada mal");
+							logro.setDescription("Has alcanzado los 100 puntos");
+							//'No se te da nada mal','Has alcanzado los 100 puntos'
+						} else {
+							logro.setName("¡Estás on fire!");
+							logro.setDescription("Has alcanzado los 200 movimientos");
+							//'¡Estás on fire!','Has alcanzado los 200 movimientos',	
+						}
+						
+						logro.setName("Máquina de jugar");
+						logro.setIs_unlocked(false);
+						logro.setImage("");
+						logro.setJugador(jugador);	
+					}
+					logrosService.save(lista.get(0));
+					logrosService.save(lista.get(1));
+					logrosService.save(lista.get(2));
 					this.jugadorService.saveJugador(jugador);
 					
 					return "redirect:/";

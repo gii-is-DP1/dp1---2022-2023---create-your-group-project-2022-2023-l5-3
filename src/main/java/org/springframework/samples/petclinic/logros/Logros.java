@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -30,19 +31,17 @@ public class Logros extends BaseEntity{
 		this.jugador=jugador;
 	}*/
 	
-	@NotEmpty
+	
 	@Column(name="name")
 	private String name;
 	
-	@NotEmpty
+	
 	@Column(name="description")
 	private String description;
 	
-	@NotEmpty
 	@Column(name="is_unlocked")
 	private Boolean is_unlocked;
 	
-	@NotEmpty
 	@Column(name="image")
 	private String image;
 	

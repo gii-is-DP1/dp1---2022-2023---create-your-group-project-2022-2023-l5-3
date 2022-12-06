@@ -26,7 +26,14 @@ public class LogrosService {
 	}
 
 	@Transactional
+	public void save(Logros logro) {
+		repo.save(logro);
+	}
+
+	@Transactional
 	public void delete(@Valid Logros logro) throws DataAccessException, DataIntegrityViolationException {
 		repo.delete(logro);
 	}
+
+	
 }
