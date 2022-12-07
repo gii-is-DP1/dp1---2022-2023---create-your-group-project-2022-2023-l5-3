@@ -6,23 +6,26 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="ranking">
-    <h2>Ranking partidasGanadas</h2>
+    <h2>Ranking partidas</h2>
 
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
             
-            <th style="width: 150px;">Jugador Id</th>
+            <th style="width: 150px;">Clasificacion</th>
             <th style="width: 200px;">Username</th>
             <th style="width: 200px;">Partidas ganadas</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${jugadoresWIN}" var="jugador">
+        <c:forEach items="${jugadoresWIN}" var="jugador" varStatus="status">
             <tr>
                 
                 <td>
-                    <c:out value="${jugador.id}"/>
+                    <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
+                    <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
+                    <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</></c:if>
+                    <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
                 </td>  
                 <td>
                     <c:out value="${jugador.user.username}"/>
@@ -43,18 +46,21 @@
         <thead>
         <tr>
             
-            <th style="width: 150px;">Jugador Id</th>
+            <th style="width: 150px;">Clasificacion</th>
             <th style="width: 200px;">Username</th>
             <th style="width: 200px;">Puntos ganados</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${jugadoresPTN}" var="jugador2">
+        <c:forEach items="${jugadoresPTN}" var="jugador2"  varStatus="status">
             <tr>
                 
                 <td>
-                    <c:out value="${jugador2.id}"/>
-                </td>  
+                    <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
+                    <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
+                    <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</></c:if>
+                    <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
+                </td>   
                 <td>
                     <c:out value="${jugador2.user.username}"/>
                 </td>
@@ -74,17 +80,20 @@
         <thead>
         <tr>
             
-            <th style="width: 150px;">Jugador Id</th>
+            <th style="width: 150px;">Clasificacion</th>
             <th style="width: 200px;">Username</th>
-            <th style="width: 200px;">Rol</th>
+            <th style="width: 200px;">Movimientos realizados</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${jugadoresMOV}" var="jugador3">
+        <c:forEach items="${jugadoresMOV}" var="jugador3" varStatus="status">
             <tr>
                 
                 <td>
-                    <c:out value="${jugador3.id}"/>
+                    <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
+                    <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
+                    <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</></c:if>
+                    <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
                 </td>  
                 <td>
                     <c:out value="${jugador3.user.username}"/>

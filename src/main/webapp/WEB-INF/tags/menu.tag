@@ -49,7 +49,7 @@
 				<petclinic:menuItem active="${name eq 'users'}" url="/users/all"
 					title="Lista de usuarios">
 					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-					<span>Lista de usuarios</span>
+					<span>Usuarios</span>
 				</petclinic:menuItem>
 				</sec:authorize>
 
@@ -64,7 +64,7 @@
 				<sec:authorize access="hasAuthority('jugador')">
 				<petclinic:menuItem active="${name eq 'users'}" url="/jugador/estadisticas/"
 					title="Lista de usuarios">
-					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
 					<span>Mis estadisticas</span>
 				</petclinic:menuItem>
 				</sec:authorize>
@@ -78,9 +78,9 @@
 				</sec:authorize>
 				
 				<sec:authorize access="isAuthenticated()">
-				<petclinic:menuItem active="${name eq 'users'}" url="/ranking"
+				<petclinic:menuItem active="${name eq 'ranking'}" url="/ranking"
 					title="Lista de usuarios">
-					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 					<span>Ranking</span>
 				</petclinic:menuItem>
 				</sec:authorize>

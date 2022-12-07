@@ -1,7 +1,7 @@
 -- One admin user, named admin1 with password 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
-INSERT INTO jugador VALUES(1,'admin','','admin',0,0,0,0,'00:00:00','admin1');
+INSERT INTO jugador VALUES(1,'admin','','admin',300,400,6,0,'00:00:00','admin1');
 --maxnummov , minnummov, numtotalmov, numtotalpuntos, ganadas, perdidas
 
 -- One jugador user, named mario with passwor mario
@@ -66,6 +66,6 @@ INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES
 
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',300,true,1);
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (2,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,4);
-INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (3,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,3);
+--INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (3,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,3);
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (4,'2022-11-28 19:36:30','2022-11-28 19:40:00',400,true,1);
 --INSERT INTO partida(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (5,'2022-11-28 19:36:30','2022-11-28 19:40:00',400,true,1);
