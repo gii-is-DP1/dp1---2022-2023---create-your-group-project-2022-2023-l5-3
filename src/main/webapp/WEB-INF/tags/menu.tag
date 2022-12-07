@@ -76,6 +76,14 @@
 					<span>Mis partidas</span>
 				</petclinic:menuItem>
 				</sec:authorize>
+				
+				<sec:authorize access="isAuthenticated()">
+				<petclinic:menuItem active="${name eq 'users'}" url="/ranking"
+					title="Lista de usuarios">
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+					<span>Ranking</span>
+				</petclinic:menuItem>
+				</sec:authorize>
 
 
 			</ul>

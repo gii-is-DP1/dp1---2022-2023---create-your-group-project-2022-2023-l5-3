@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.jugador;
 
 
 import java.util.Collection;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -63,6 +65,10 @@ public class JugadorService {
 	@Transactional
 	public Collection<Partida> findPartidasByUserId(int id ) throws DataAccessException{
 		return jugadorRepository.findPartidasByJugador(id);
+	}
+
+	public List<Jugador> findAllPlayer() {
+		return jugadorRepository.findAll();
 	}
 
 }

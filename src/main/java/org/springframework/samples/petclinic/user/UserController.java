@@ -113,4 +113,20 @@ public class UserController {
 		return "welcome";
 	}
 
+	@GetMapping("/ranking")
+    public String showRanking(Map<String, Object> model){
+        
+			List<Jugador> jugadores = jugadorService.findAllPlayer();
+			Comparator<Jugador> comparador= Comparator.comparing(Jugador::getPartidasGanadas);
+			Comparator<Jugador> comparador2= Comparator.comparing(Jugador::getNumTotalPuntos);
+			Comparator<Jugador> comparador3= Comparator.comparing(Jugador::getNumTotalMovimientos);
+			List<Jugador> listaOrdenada = jugadores.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+			List<Jugador> listaOrdenada2 = jugadores.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
+			List<Jugador> listaOrdenada3 = jugadores.stream().sorted(comparador3.reversed()).collect(Collectors.toList());
+
+			model.put("jugadoresWIN", listaOrdenada);
+			model.put("jugadoresPTN", listaOrdenada2);
+			model.put("jugadoresMOV", listaOrdenada3);
+			return "ranking/rankingGeneral";
+	}
 }
