@@ -7,7 +7,7 @@ INSERT INTO jugador VALUES(1,'admin','','admin',300,400,6,0,'00:00:00','admin1')
 -- One jugador user, named mario with passwor mario
 INSERT INTO users(username,password,enabled) VALUES ('marsannar2','mario',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (8,'marsannar2','jugador');
-INSERT INTO jugador VALUES(7,'mario','sanchez','',6,7,5,7,'23:00:53','marsannar2');
+INSERT INTO jugador VALUES(7,'mario','','sanchez',6,7,5,7,'23:00:53','marsannar2');
 
 -- One jugador jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);

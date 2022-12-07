@@ -23,6 +23,7 @@ public interface JugadorRepository extends CrudRepository<Jugador, Integer> {
     @Query("SELECT j FROM Partida j WHERE j.jugador.id =?1")
 	public Collection<Partida> findPartidasByJugador(Integer userId);
     
+    
     public List<Jugador> findAll();
 
 }

@@ -125,12 +125,12 @@ public class JugadorController {
 					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 					
 					SecurityContextHolder.getContext().setAuthentication(authReq);
-						//
 					jugador.setNumTotalMovimientos();
 					jugador.setNumTotalPuntos();
 					jugador.setPartidasGanadas();
 					jugador.setPartidasNoGanadas();
 					jugador.setTotalTiempoJugado();
+
 					Logros logro1 = new Logros();
 					Logros logro2 = new Logros();
 					Logros logro3 = new Logros();
@@ -219,6 +219,7 @@ public class JugadorController {
 	
 	}
 	
+	
 	@PostMapping(value = "/jugador/edit/{id}")
 	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
 		if(result.hasErrors()){
@@ -235,15 +236,25 @@ public class JugadorController {
 			if(violations.isEmpty()){
 				try{
 					jugador.setId(id);
+					jugador.setNumTotalMovimientos();
+					jugador.setNumTotalPuntos();
+					jugador.setPartidasGanadas();
+					jugador.setPartidasNoGanadas();
+					jugador.setTotalTiempoJugado();
 					this.jugadorService.saveJugador(jugador);
+					List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+					System.out.println("HOLAAAA");
+					System.out.println(conjunto);
+					for (Logros logro:conjunto){
+						logro.setJugador(jugador);
+					}
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
-			}
-
-			else{
+			}else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
 				}

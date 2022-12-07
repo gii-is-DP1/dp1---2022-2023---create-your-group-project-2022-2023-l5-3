@@ -35,5 +35,9 @@ public class LogrosService {
 		repo.delete(logro);
 	}
 
+	@Transactional
+	public List<Logros> findLogrosJugadorNull(){
+		return repo.findByjugadorIsNull();
+	}
 	
 }

@@ -32,9 +32,13 @@ public class LogrosController {
 	@GetMapping(value = "/jugador/logros")
 	public String logrosUsuarioLogeado(Map<String, Object> model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		Jugador player = jugadorService.findJugadorByUsername(username);
-		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(player.getId());
-		getLogrosDeCadaJugador(player.getId());
+		Jugador jugador = jugadorService.findJugadorByUsername(username);
+		List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+		for (Logros logro:conjunto){
+			logro.setJugador(jugador);
+		}
+		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
+		getLogrosDeCadaJugador(jugador.getId());
 		model.put("logros",logrosDelUsuarioLogeado);
 		return VIEWS_LOGROS;
 	}
@@ -48,6 +52,12 @@ public class LogrosController {
 			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
+				Jugador jugador = jugadorService.findJugadorById(id);
+				List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+					
+					for (Logros logro:conjunto){
+						logro.setJugador(jugador);
+					}
 				if (credencial.equals("admin")) { 
 					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
 					getLogrosDeCadaJugador(id);
