@@ -304,6 +304,15 @@ public class JugadorController {
 		return result;
 	}
 
+	@GetMapping(value = "/jugador/estadisticas")
+	public ModelAndView mostrarEstadisticasMenu(){
+		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Jugador jugador = jugadorService.findJugadorByUsername(username);
+		result.addObject(jugador);
+		return result;
+	}
+
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");

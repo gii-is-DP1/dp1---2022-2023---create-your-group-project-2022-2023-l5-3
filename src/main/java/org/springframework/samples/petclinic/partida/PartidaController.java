@@ -57,6 +57,53 @@ public class PartidaController {
 
 	
 
+	
+	@GetMapping(path="/partidas/create")
+	public String initCreationForm(Map<String,Object> model){
+		Partida partida = new Partida();
+	
+		partida.setNumMovimientos(0);
+		partida.setMomentoInicio(LocalDateTime.now());
+		partida.setVictoria(false);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		String usuario = currentUser.getUsername();
+		Jugador player = jugadorService.findJugadorByUsername(usuario);
+		partida.setJugador(player);
+		model.put("partida", partida);
+		return VIEW_CREATE_PARTIDA;
+		
+	}
+	
+	@PostMapping(path="/partidas/create")
+	public String processCreationForm(@Valid Partida p, BindingResult result, Map<String, Object> model) {
+		
+		if (result.hasErrors()) {
+			
+			model.put("message", result.getAllErrors());
+			return VIEW_CREATE_PARTIDA;
+		}
+		else {
+			//Para asociar la partida nueva a un jugador:
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			String usuario = currentUser.getUsername();
+			Jugador player = jugadorService.findJugadorByUsername(usuario);
+			p.setJugador(player);
+			p.setNumMovimientos(0);
+			p.setMomentoInicio(LocalDateTime.now());
+			p.setVictoria(false);
+			this.partidaService.save(p);
+			pb.crearMazosIntermedios(p);
+			model.put("message", "Partida empezada");
+			
+			return TABLERO;
+		
+		
+		}
+	
+	}
+
 	@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -111,51 +158,73 @@ public class PartidaController {
 		return "welcome";
 	}
 
-	@GetMapping(path="/partidas/create")
-	public String initCreationForm(Map<String,Object> model){
-		Partida partida = new Partida();
-	
-		partida.setNumMovimientos(0);
-		partida.setMomentoInicio(LocalDateTime.now());
-		partida.setVictoria(false);
+	@GetMapping(value = { "/partidas/jugador" })
+	public String showPartidaListViewJugador(Map<String, Object> model) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-		String usuario = currentUser.getUsername();
-		Jugador player = jugadorService.findJugadorByUsername(usuario);
-		partida.setJugador(player);
-		model.put("partida", partida);
-		return VIEW_CREATE_PARTIDA;
 		
-	}
-	
-	@PostMapping(path="/partidas/create")
-	public String processCreationForm(@Valid Partida p, BindingResult result, Map<String, Object> model) {
-		
-		if (result.hasErrors()) {
-			
-			model.put("message", result.getAllErrors());
-			return VIEW_CREATE_PARTIDA;
-		}
-		else {
-			//Para asociar la partida nueva a un jugador:
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-			String usuario = currentUser.getUsername();
-			Jugador player = jugadorService.findJugadorByUsername(usuario);
-			p.setJugador(player);
-			p.setNumMovimientos(0);
-			p.setMomentoInicio(LocalDateTime.now());
-			p.setVictoria(false);
-			this.partidaService.save(p);
-			pb.crearMazosIntermedios(p);
-			model.put("message", "Partida empezada");
-			
-			return TABLERO;
-		
-		
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+					Jugador player = jugadorService.findJugadorByUsername(username);
+					if(currentUser.getUsername().equals(player.getUser().getUsername()) || credencial.equals("admin")){
+						List<Partida> partidas = new ArrayList<>();
+						partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
+						List<Partida> res = new ArrayList<>(); 
+						for(Partida partida : partidas){
+							if(partida.getJugador().getUser().getUsername().equals(username)){
+								res.add(partida);
+							}
+						}
+						model.put("partidas", res);
+						return "partidas/partidaListUser";
+					
+					} else {
+						return "welcome";
+					}
+			}
+			return "welcome";	
+		} else {
+			return "welcome";
 		}
-	
 	}
+
+
+	@GetMapping(value = { "/partidas/jugador/{id}" })
+	public String showPartidaListViewJugador(@PathVariable("id") int id,Map<String, Object> model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if (auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+					Jugador player = jugadorService.findJugadorById(id);
+					if(currentUser.getUsername().equals(player.getUser().getUsername()) || credencial.equals("admin")){
+						List<Partida> partidas = new ArrayList<>();
+						partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
+						List<Partida> res = new ArrayList<>(); 
+						for(Partida partida : partidas){
+							if(partida.getJugador().getId().equals(id)){
+								res.add(partida);
+							}
+						}
+						model.put("partidas", res);
+						return "partidas/partidaListUser";
+					
+					} else {
+						return "welcome";
+					}
+			}
+			return "welcome";	
+		} else {
+			return "welcome";
+		}
+	}
+
 
 	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
 	@GetMapping(path = "/partidas/delete/{id}")
