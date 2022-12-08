@@ -14,6 +14,8 @@
             
             <th style="width: 150px;">Jugador Id</th>
             <th style="width: 200px;">Username</th>
+            <th style="width: 200px;">Name</th>
+            <th style="width: 200px;">Lastname</th>
             <th style="width: 200px;">Rol</th>
             <th style="width: 200px;">Eliminar</th>
         </tr>
@@ -26,8 +28,14 @@
                     <c:out value="${user.jugador.id}"/>
                 </td>  
                 <td>
-                    <c:out value="${user.username}"/>
+                    <a href="http://localhost:8080/jugador/perfil/${user.jugador.id}">${user.username}</a>
                 </td>
+                <td>
+                    <c:out value="${user.jugador.firstName}"/>
+                </td>
+                <td>
+                    <c:out value="${user.jugador.lastName}"/>
+                </td>   
                 <td>
                     <c:out value="${user.getAuthorities()}"/>
                 </td>
