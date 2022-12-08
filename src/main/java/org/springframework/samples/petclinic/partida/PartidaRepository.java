@@ -15,6 +15,8 @@ public interface PartidaRepository  extends CrudRepository<Partida, Integer>{
 
 	List<Partida> findBymomentoFinIsNull();
 
+	List<Partida> findAll();
+
 	@Query("SELECT p FROM Partida p WHERE p.jugador.user.username =?1")
 	public Partida findByUsername(String username);
 	

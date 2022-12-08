@@ -24,7 +24,11 @@ public class PartidaService {
 		this.partidaRepository = partidaRepository;
 	}
 	
-	
+	@Transactional
+	public List<Partida> findAllPartidas(){
+		return partidaRepository.findAll();
+	}
+
 	@Transactional
 	public Collection<Partida> findPartidasEnCurso(){
 		return partidaRepository.findBymomentoFinIsNull();

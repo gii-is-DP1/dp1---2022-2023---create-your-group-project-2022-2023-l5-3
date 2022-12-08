@@ -31,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.concurrent.ListenableFutureAdapter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -289,21 +290,38 @@ public class JugadorController {
 	
 	
 	@GetMapping(value = "/jugador/estadisticas/{id}")
-	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
-		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
-		Jugador jugador = jugadorService.findJugadorById(id);
-		setEstadisticasJugador(jugador);
-		result.addObject(jugador);
-		return result;
+	public ModelAndView mostrarEstadisticasAdmin(@PathVariable("id") int id){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+					Jugador jugador = jugadorService.findJugadorById(id);
+					setEstadisticasJugador(jugador);
+					setEstadisticasGenerales(result,jugador);
+					return result;
+				} else {
+					ModelAndView result = new ModelAndView("welcome");
+					return result;
+				}
+			}
+		} else {
+			ModelAndView result = new ModelAndView("welcome");
+			return result;
+		}
+		return new ModelAndView("exception");
 	}
 
 	@GetMapping(value = "/jugador/estadisticas")
-	public ModelAndView mostrarEstadisticasMenu(){
+	public ModelAndView mostrarEstadisticasUsuario(){
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
 		setEstadisticasJugador(jugador);
-		result.addObject(jugador);
+		setEstadisticasGenerales(result,jugador);
 		return result;
 	}
 
@@ -313,7 +331,7 @@ public class JugadorController {
 	}
 	
 	@GetMapping(path = "/jugador/delete/{id}")
-	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
+	public ModelAndView deleteJugador(@PathVariable("id") int id, ModelMap modelMap) {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	if(auth != null){
 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -322,7 +340,7 @@ public class JugadorController {
 			String credencial = usuarioR.getAuthority();
 			if (credencial.equals("admin")) {
 				Jugador jugador = jugadorService.findJugadorById(id);
-				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){
+				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){ //para que el admin no pueda eliminarse a sí mismo
 					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
 					List<User> usuarios = userService.findAllUsers();
 					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
@@ -330,6 +348,10 @@ public class JugadorController {
 					result.addObject("users", listaOrdenada);
 					return result;
 				} else {
+					List<Logros> listaLogros = logrosService.findById(jugador.getId());
+					for(Logros logro : listaLogros){
+						logrosService.delete(logro);
+					}
 					jugadorService.deleteJugador(jugador);
 					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
 					List<User> usuarios = userService.findAllUsers();
@@ -375,4 +397,30 @@ public class JugadorController {
 			}
 		}
 	}
+
+	public void setEstadisticasGenerales(ModelAndView result,Jugador jugador){
+		List<Partida> listPartidas = partidaService.findAllPartidas();
+		Integer ganadas = (int) listPartidas.stream().filter(x -> x.getVictoria()==true).count();
+		Integer puntos = (int) listPartidas.stream().mapToLong(x -> x.puntos()).sum();
+		Integer movimientos = (int) listPartidas.stream().mapToLong(x -> x.getNumMovimientos()).sum();
+		
+		if(listPartidas.size()==0){
+			result.addObject("partidasTotalesJugadas", 0);
+			result.addObject("partidasGanadasTotales", 0);
+			result.addObject("partidasPerdidasTotales", 0);
+			result.addObject("puntosPromedio", 0);
+			result.addObject("movimientosPromedio", 0);
+			result.addObject(jugador);
+		}else {
+			Integer puntosPromedio = puntos/listPartidas.size();
+			Integer movPromedio = movimientos/listPartidas.size();
+			result.addObject("partidasTotalesJugadas", listPartidas.size());
+			result.addObject("partidasGanadasTotales", ganadas);
+			result.addObject("partidasPerdidasTotales", listPartidas.size()-ganadas);
+			result.addObject("puntosPromedio", puntosPromedio);
+			result.addObject("movimientosPromedio",movPromedio);
+			result.addObject(jugador);
+		}
+	}
+
 }
