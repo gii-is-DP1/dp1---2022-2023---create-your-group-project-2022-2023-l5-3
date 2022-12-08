@@ -17,7 +17,8 @@ import javax.validation.ValidatorFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.logros.Logros;
 import org.springframework.samples.petclinic.logros.LogrosService;
-
+import org.springframework.samples.petclinic.partida.Partida;
+import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 public class JugadorController {
 
@@ -48,12 +50,14 @@ public class JugadorController {
     private final JugadorService jugadorService;
 	private final UserService userService;
 	private final LogrosService logrosService;
+	private final PartidaService partidaService;
     
 	
-    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService){
+    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService, PartidaService partidaService){
         this.jugadorService= jugadorService;
 		this.userService=userService;
 		this.logrosService=logrosService;
+		this.partidaService=partidaService;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -116,12 +120,7 @@ public class JugadorController {
 					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 					
 					SecurityContextHolder.getContext().setAuthentication(authReq);
-					jugador.setNumTotalMovimientos();
-					jugador.setNumTotalPuntos();
-					jugador.setPartidasGanadas();
-					jugador.setPartidasNoGanadas();
-					jugador.setTotalTiempoJugado();
-
+					jugador.setAllStats0();
 					Logros logro1 = new Logros();
 					Logros logro2 = new Logros();
 					Logros logro3 = new Logros();
@@ -136,14 +135,10 @@ public class JugadorController {
 						} else if(lista.get(1).equals(logro)){
 							logro.setName("No se te da nada mal");
 							logro.setDescription("Has alcanzado los 100 puntos");
-							//'No se te da nada mal','Has alcanzado los 100 puntos'
 						} else {
 							logro.setName("¡Estás on fire!");
 							logro.setDescription("Has alcanzado los 200 movimientos");
-							//'¡Estás on fire!','Has alcanzado los 200 movimientos',	
 						}
-						
-						logro.setName("Máquina de jugar");
 						logro.setIs_unlocked(false);
 						logro.setImage("");
 						logro.setJugador(jugador);	
@@ -227,11 +222,7 @@ public class JugadorController {
 			if(violations.isEmpty()){
 				try{
 					jugador.setId(id);
-					jugador.setNumTotalMovimientos();
-					jugador.setNumTotalPuntos();
-					jugador.setPartidasGanadas();
-					jugador.setPartidasNoGanadas();
-					jugador.setTotalTiempoJugado();
+					jugador.setAllStats0();
 					this.jugadorService.saveJugador(jugador);
 					List<Logros> conjunto = logrosService.findLogrosJugadorNull();
 					System.out.println("HOLAAAA");
@@ -302,6 +293,19 @@ public class JugadorController {
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		Jugador jugador = jugadorService.findJugadorById(id);
+		Collection<Partida> lista = partidaService.findPartidasFinalizadasPorJugador(jugador);
+		List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
+		Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
+		Comparator<Partida> comparador2= Comparator.comparing(Partida::getDuracionMaxMin);	
+		List<Partida> numMovLista = partidasGanadas.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+		List<Partida> timeLista = partidasGanadas.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
+		Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
+		jugador.setNumTotalPuntos(sumaPuntos);
+		jugador.setMaxTiempoPartidaGanada(timeLista.get(0).duracion());
+		jugador.setMinTiempoPartidaGanada(timeLista.get(timeLista.size()-1).duracion());
+		jugador.setNumMaxMovimientosPartidaGanada(numMovLista.get(0).getNumMovimientos());
+		jugador.setNumMinMovimientosPartidaGanada(numMovLista.get(numMovLista.size()-1).getNumMovimientos());
+		
 		result.addObject(jugador);
 		return result;
 	}
@@ -311,6 +315,20 @@ public class JugadorController {
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
+		Collection<Partida> lista = partidaService.findPartidasFinalizadasPorJugador(jugador);
+		List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
+		Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
+		Comparator<Partida> comparador2= Comparator.comparing(Partida::getDuracionMaxMin);	
+		List<Partida> numMovLista = partidasGanadas.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+		List<Partida> timeLista = partidasGanadas.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
+		Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
+		//Integer sumaGanadas = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
+		//Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
+		jugador.setNumTotalPuntos(sumaPuntos);
+		jugador.setMaxTiempoPartidaGanada(timeLista.get(0).duracion());
+		jugador.setMinTiempoPartidaGanada(timeLista.get(timeLista.size()-1).duracion());
+		jugador.setNumMaxMovimientosPartidaGanada(numMovLista.get(0).getNumMovimientos());
+		jugador.setNumMinMovimientosPartidaGanada(numMovLista.get(numMovLista.size()-1).getNumMovimientos());
 		result.addObject(jugador);
 		return result;
 	}
