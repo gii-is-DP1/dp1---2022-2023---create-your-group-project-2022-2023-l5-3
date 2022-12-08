@@ -221,12 +221,11 @@ public class JugadorController {
 
 			if(violations.isEmpty()){
 				try{
+					//SI SE EDITA UN JUGADOR, SE PIERDEN LAS STATS Y LOS LOGROS : REGLA DE NEGOCIO
 					jugador.setId(id);
 					jugador.setAllStats0();
 					this.jugadorService.saveJugador(jugador);
 					List<Logros> conjunto = logrosService.findLogrosJugadorNull();
-					System.out.println("HOLAAAA");
-					System.out.println(conjunto);
 					for (Logros logro:conjunto){
 						logro.setJugador(jugador);
 					}
@@ -293,19 +292,7 @@ public class JugadorController {
 	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		Jugador jugador = jugadorService.findJugadorById(id);
-		Collection<Partida> lista = partidaService.findPartidasFinalizadasPorJugador(jugador);
-		List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
-		Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
-		Comparator<Partida> comparador2= Comparator.comparing(Partida::getDuracionMaxMin);	
-		List<Partida> numMovLista = partidasGanadas.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-		List<Partida> timeLista = partidasGanadas.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
-		Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
-		jugador.setNumTotalPuntos(sumaPuntos);
-		jugador.setMaxTiempoPartidaGanada(timeLista.get(0).duracion());
-		jugador.setMinTiempoPartidaGanada(timeLista.get(timeLista.size()-1).duracion());
-		jugador.setNumMaxMovimientosPartidaGanada(numMovLista.get(0).getNumMovimientos());
-		jugador.setNumMinMovimientosPartidaGanada(numMovLista.get(numMovLista.size()-1).getNumMovimientos());
-		
+		setEstadisticasJugador(jugador);
 		result.addObject(jugador);
 		return result;
 	}
@@ -315,20 +302,7 @@ public class JugadorController {
 		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
-		Collection<Partida> lista = partidaService.findPartidasFinalizadasPorJugador(jugador);
-		List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
-		Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
-		Comparator<Partida> comparador2= Comparator.comparing(Partida::getDuracionMaxMin);	
-		List<Partida> numMovLista = partidasGanadas.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-		List<Partida> timeLista = partidasGanadas.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
-		Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
-		//Integer sumaGanadas = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
-		//Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
-		jugador.setNumTotalPuntos(sumaPuntos);
-		jugador.setMaxTiempoPartidaGanada(timeLista.get(0).duracion());
-		jugador.setMinTiempoPartidaGanada(timeLista.get(timeLista.size()-1).duracion());
-		jugador.setNumMaxMovimientosPartidaGanada(numMovLista.get(0).getNumMovimientos());
-		jugador.setNumMinMovimientosPartidaGanada(numMovLista.get(numMovLista.size()-1).getNumMovimientos());
+		setEstadisticasJugador(jugador);
 		result.addObject(jugador);
 		return result;
 	}
@@ -373,5 +347,32 @@ public class JugadorController {
 	}
 	return new ModelAndView("exception");
 	}
-	
+
+	public void setEstadisticasJugador(Jugador jugador){
+		Collection<Partida> lista = partidaService.findPartidasFinalizadasPorJugador(jugador);
+		if(lista.size()>0){
+			List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
+			Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
+			Comparator<Partida> comparador2= Comparator.comparing(Partida::getDuracionMaxMin);	
+			List<Partida> numMovLista = partidasGanadas.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+			List<Partida> timeLista = partidasGanadas.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
+			Integer sumaPuntos = lista.stream().mapToInt(x -> (int) x.puntos()).sum();
+			Integer sumaMovimientos = lista.stream().mapToInt(x -> (int) x.getNumMovimientos()).sum();
+			Integer sumaGanadas = (lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList())).size();
+			Integer sumaPerdidas = lista.size() - sumaGanadas;
+			long tiempoJugado = lista.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
+
+			jugador.setPartidasGanadas(sumaGanadas);
+			jugador.setPartidasNoGanadas(sumaPerdidas);
+			jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().plusSeconds(tiempoJugado));
+			jugador.setNumTotalMovimientos(sumaMovimientos);
+			jugador.setNumTotalPuntos(sumaPuntos);
+			if(partidasGanadas.size()>0){
+				jugador.setMaxTiempoPartidaGanada(timeLista.get(0).duracion());
+				jugador.setMinTiempoPartidaGanada(timeLista.get(timeLista.size()-1).duracion());
+				jugador.setNumMaxMovimientosPartidaGanada(numMovLista.get(0).getNumMovimientos());
+				jugador.setNumMinMovimientosPartidaGanada(numMovLista.get(numMovLista.size()-1).getNumMovimientos());
+			}
+		}
+	}
 }
