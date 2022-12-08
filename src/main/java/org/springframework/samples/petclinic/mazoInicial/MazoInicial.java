@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.mazoInicial;
 
-import java.util.Collection;
-import java.util.List;
+
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
-import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;

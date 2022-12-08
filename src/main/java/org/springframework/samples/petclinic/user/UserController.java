@@ -17,15 +17,12 @@ package org.springframework.samples.petclinic.user;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
@@ -37,7 +34,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -51,13 +47,11 @@ public class UserController {
 	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
-	private final AuthoritiesService authoritiesservice;
 	private final UserService userService;
 	
-	@Autowired
-	public UserController(JugadorService jugadorService,AuthoritiesService authoritiesservice,UserService userService) {
+	
+	public UserController(JugadorService jugadorService,UserService userService) {
 		this.jugadorService = jugadorService;
-		this.authoritiesservice = authoritiesservice;
 		this.userService = userService;
 	}
 

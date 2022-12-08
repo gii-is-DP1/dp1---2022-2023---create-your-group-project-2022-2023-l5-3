@@ -3,7 +3,6 @@ package org.springframework.samples.petclinic.jugador;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,14 +14,10 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.logros.Logros;
 import org.springframework.samples.petclinic.logros.LogrosService;
-import org.springframework.samples.petclinic.partida.PartidaService;
-import org.springframework.samples.petclinic.user.AuthoritiesService;
+
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.Authentication;
@@ -51,16 +46,12 @@ public class JugadorController {
 
 
     private final JugadorService jugadorService;
-	private final AuthoritiesService authoritiesService;
-	private final PartidaService partidaService;
 	private final UserService userService;
 	private final LogrosService logrosService;
     
-	@Autowired
-    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService,UserService userService, LogrosService logrosService){
+	
+    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService){
         this.jugadorService= jugadorService;
-		this.authoritiesService=authoritiesService;
-		this.partidaService=partidaService;
 		this.userService=userService;
 		this.logrosService=logrosService;
     }

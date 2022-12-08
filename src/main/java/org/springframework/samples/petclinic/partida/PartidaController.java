@@ -12,11 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
-import org.springframework.samples.petclinic.logros.Logros;
-import org.springframework.samples.petclinic.logros.LogrosService;
-import org.springframework.samples.petclinic.partida.PartidaBuilder;
-import org.springframework.samples.petclinic.user.User;
-import org.springframework.samples.petclinic.user.UserService;
+
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,12 +38,7 @@ public class PartidaController {
 	private JugadorService jugadorService;
 
 	@Autowired
-	private LogrosService logrosService;
-
-	@Autowired
 	private PartidaBuilder pb;
-
-
 
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
