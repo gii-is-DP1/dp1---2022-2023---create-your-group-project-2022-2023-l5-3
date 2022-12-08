@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,6 @@ public class LogrosController {
 	private final JugadorService jugadorService;
 
 	
-	@Autowired
 	public LogrosController(LogrosService logrosService, JugadorService jugadorService) {
 		this.logrosService = logrosService;
 		this.jugadorService = jugadorService;
@@ -32,9 +30,13 @@ public class LogrosController {
 	@GetMapping(value = "/jugador/logros")
 	public String logrosUsuarioLogeado(Map<String, Object> model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		Jugador player = jugadorService.findJugadorByUsername(username);
-		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(player.getId());
-		getLogrosDeCadaJugador(player.getId());
+		Jugador jugador = jugadorService.findJugadorByUsername(username);
+		List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+		for (Logros logro:conjunto){
+			logro.setJugador(jugador);
+		}
+		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
+		getLogrosDeCadaJugador(jugador.getId());
 		model.put("logros",logrosDelUsuarioLogeado);
 		return VIEWS_LOGROS;
 	}
@@ -48,6 +50,12 @@ public class LogrosController {
 			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
+				Jugador jugador = jugadorService.findJugadorById(id);
+				List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+					
+					for (Logros logro:conjunto){
+						logro.setJugador(jugador);
+					}
 				if (credencial.equals("admin")) { 
 					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
 					getLogrosDeCadaJugador(id);

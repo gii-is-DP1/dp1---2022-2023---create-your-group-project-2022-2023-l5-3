@@ -1,14 +1,15 @@
 package org.springframework.samples.petclinic.partida;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PartidaService {
 	private PartidaRepository partidaRepository;
 
-	@Autowired
+	
 	public PartidaService(PartidaRepository partidaRepository) {
 		this.partidaRepository = partidaRepository;
 	}
@@ -34,14 +35,17 @@ public class PartidaService {
 		return partidaRepository.findBymomentoFinIsNotNull();
 	}
 
-	/*@Transactional
-	public List<Partida> findPartidasFinalizadasUsuario(){
+	@Transactional
+	public List<Partida> findPartidasFinalizadasPorJugador(Jugador jugador){
 		Collection<Partida> lista = partidaRepository.findBymomentoFinIsNotNull();
 		List<Partida> res= new ArrayList<>();
 		for (Partida partida:lista){
-			if(partida.)
+			if(partida.getJugador().equals(jugador)){
+				res.add(partida);
+			}
 		}
-	}*/
+		return res;
+	}
 	
 
 	@Transactional

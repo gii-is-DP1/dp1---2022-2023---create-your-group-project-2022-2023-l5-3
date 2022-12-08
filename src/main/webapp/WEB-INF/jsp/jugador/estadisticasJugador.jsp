@@ -29,7 +29,14 @@
         <div class="row" align="center">Número total de movimientos: <c:out value="${jugador.numTotalMovimientos}"/></div>
         
         <div class="row" align="center">Número total de puntos: <c:out value="${jugador.numTotalPuntos}"/></div>
+
+        <div class="row" align="center">Número máximo de movimientos en partida ganada: <c:out value="${jugador.numMaxMovimientosPartidaGanada}"/></div>
+
+        <div class="row" align="center">Número mínimo de movimientos en partida ganada: <c:out value="${jugador.numMinMovimientosPartidaGanada}"/></div>
+
+        <div class="row" align="center">Tiempo máximo en partida ganada: <c:out value="${jugador.maxTiempoPartidaGanada}"/></div>
         
+        <div class="row" align="center">Tiempo mínimo en partida ganada: <c:out value="${jugador.minTiempoPartidaGanada}"/></div>
     </div>
 </div>
 

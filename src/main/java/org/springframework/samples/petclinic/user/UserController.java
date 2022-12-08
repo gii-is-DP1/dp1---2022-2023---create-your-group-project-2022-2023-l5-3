@@ -17,15 +17,12 @@ package org.springframework.samples.petclinic.user;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
@@ -37,7 +34,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Juergen Hoeller
@@ -51,13 +47,11 @@ public class UserController {
 	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
-	private final AuthoritiesService authoritiesservice;
 	private final UserService userService;
 	
-	@Autowired
-	public UserController(JugadorService jugadorService,AuthoritiesService authoritiesservice,UserService userService) {
+	
+	public UserController(JugadorService jugadorService,UserService userService) {
 		this.jugadorService = jugadorService;
-		this.authoritiesservice = authoritiesservice;
 		this.userService = userService;
 	}
 
@@ -117,16 +111,19 @@ public class UserController {
     public String showRanking(Map<String, Object> model){
         
 			List<Jugador> jugadores = jugadorService.findAllPlayer();
+			
 			Comparator<Jugador> comparador= Comparator.comparing(Jugador::getPartidasGanadas);
 			Comparator<Jugador> comparador2= Comparator.comparing(Jugador::getNumTotalPuntos);
 			Comparator<Jugador> comparador3= Comparator.comparing(Jugador::getNumTotalMovimientos);
-			List<Jugador> listaOrdenada = jugadores.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-			List<Jugador> listaOrdenada2 = jugadores.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
-			List<Jugador> listaOrdenada3 = jugadores.stream().sorted(comparador3.reversed()).collect(Collectors.toList());
+			
+			List<Jugador> ranking1 = jugadores.stream().sorted(comparador.reversed()).collect(Collectors.toList());
+			List<Jugador> ranking2 = jugadores.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
+			List<Jugador> ranking3 = jugadores.stream().sorted(comparador3.reversed()).collect(Collectors.toList());
 
-			model.put("jugadoresWIN", listaOrdenada);
-			model.put("jugadoresPTN", listaOrdenada2);
-			model.put("jugadoresMOV", listaOrdenada3);
+			model.put("jugadoresWIN", ranking1);
+			model.put("jugadoresPTN", ranking2);
+			model.put("jugadoresMOV", ranking3);
+			
 			return "ranking/rankingGeneral";
 	}
 }

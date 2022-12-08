@@ -26,7 +26,7 @@ public class JugadorService {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-    @Autowired
+
     public JugadorService(JugadorRepository jugadorRepository){
         this.jugadorRepository = jugadorRepository;
     }

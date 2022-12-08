@@ -12,11 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
-import org.springframework.samples.petclinic.logros.Logros;
-import org.springframework.samples.petclinic.logros.LogrosService;
-import org.springframework.samples.petclinic.partida.PartidaBuilder;
-import org.springframework.samples.petclinic.user.User;
-import org.springframework.samples.petclinic.user.UserService;
+
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,12 +38,7 @@ public class PartidaController {
 	private JugadorService jugadorService;
 
 	@Autowired
-	private LogrosService logrosService;
-
-	@Autowired
 	private PartidaBuilder pb;
-
-
 
 	
 	private static final String VIEW_CREATE_PARTIDA = "partidas/createOrUpdatePartidaForm";
@@ -90,7 +81,7 @@ public class PartidaController {
 			String usuario = currentUser.getUsername();
 			Jugador player = jugadorService.findJugadorByUsername(usuario);
 			p.setJugador(player);
-			p.setNumMovimientos(0);
+			p.setNumMovimientos(0); //PREDEFINIDO
 			p.setMomentoInicio(LocalDateTime.now());
 			p.setVictoria(false);
 			this.partidaService.save(p);
@@ -264,7 +255,7 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
-	//CREAR MÉTODO QUE FINALICE UNA PARTIDA
+	
 	@GetMapping(path = "/partidas/finish/{id}")
 	public ModelAndView finishPartida(@PathVariable("id") int id, ModelMap modelMap) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -303,6 +294,44 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
+	@GetMapping(path = "/partidas/finish2/{id}")
+	public ModelAndView finishPartida2(@PathVariable("id") int id, ModelMap modelMap) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+					establecerFinPartidaManual2(id);
+					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					return result;
+					
+				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
+					Partida partida = partidaService.findById(id);
+					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
+						establecerFinPartidaManual2(id);
+						ModelAndView result = new ModelAndView("welcome");
+						result.addObject("message", "Partida acabada");
+						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return result;
+					} else {
+						ModelAndView result = new ModelAndView("welcome");
+						result.addObject("message", "No puedes finalizar esta partida");
+						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return result;
+					}
+					
+				}
+			}
+			
+		} else {
+			return new ModelAndView("exception");
+		}
+		return new ModelAndView("exception");
+	}
+
 	//PARA ESTADÍSTICAS
 	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALORES
 	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 
@@ -317,6 +346,21 @@ public class PartidaController {
 		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
 		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
 		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
+		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
+		//player.setMinTiempoPartidaGanada(null);
+		//player.setMaxTiempoPartidaGanada(null);
+	}
+
+	public void establecerFinPartidaManual2(Integer id){
+		Partida partida = partidaService.findById(id);
+		partida.setMomentoFin(LocalDateTime.now());
+		partida.setVictoria(true);
+		partida.setNumMovimientos(100);
+		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
+		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
+		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
+		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
+		player.setPartidasGanadas(player.getPartidasGanadas()+1);
 		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
 		//player.setMinTiempoPartidaGanada(null);
 		//player.setMaxTiempoPartidaGanada(null);
