@@ -54,7 +54,7 @@
 				</sec:authorize>
 
 				<sec:authorize access="hasAuthority('jugador')">
-				<petclinic:menuItem active="${name eq 'users'}" url="/jugador/logros/"
+				<petclinic:menuItem active="${name eq 'logros'}" url="/jugador/logros/"
 					title="Lista de usuarios">
 					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 					<span>Mis logros</span>
@@ -62,7 +62,7 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('jugador')">
-				<petclinic:menuItem active="${name eq 'users'}" url="/jugador/estadisticas/"
+				<petclinic:menuItem active="${name eq 'stats'}" url="/jugador/estadisticas/"
 					title="Lista de usuarios">
 					<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
 					<span>Mis estadisticas</span>
@@ -70,7 +70,7 @@
 				</sec:authorize>
 
 				<sec:authorize access="hasAuthority('jugador')">
-				<petclinic:menuItem active="${name eq 'users'}" url="/partidas/jugador/"
+				<petclinic:menuItem active="${name eq 'partidasFinalizadasUsuario'}" url="/partidas/jugador/"
 					title="Lista de usuarios">
 					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 					<span>Mis partidas</span>
