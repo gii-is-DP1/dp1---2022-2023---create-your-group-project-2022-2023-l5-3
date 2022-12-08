@@ -6,6 +6,7 @@ import java.util.Set;
 
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -24,42 +25,37 @@ import lombok.Setter;
 @Setter
 public class Jugador extends Person{
 
-    
+    @Column(name = "win")
     private Integer partidasGanadas;
-
+    @Column(name = "lost")
     private Integer partidasNoGanadas;
-
+    @Column(name = "time")
     private LocalTime totalTiempoJugado;
-    
+    @Column(name = "mov")
     private Integer numTotalMovimientos;
-
+    @Column(name = "points")
     private Integer numTotalPuntos;
+    @Column(name = "max_movs")
+    private Long numMaxMovimientosPartidaGanada;
+    @Column(name = "min_movs")
+    private Long numMinMovimientosPartidaGanada;
+    @Column(name = "max_time")
+    private String maxTiempoPartidaGanada;
+    @Column(name = "min_time")
+    private String minTiempoPartidaGanada;
 
-    public void setPartidasGanadas() {
+    public void setAllStats0() {
 		this.partidasGanadas = 0;
-	}
-    public void setPartidasNoGanadas() {
-		this.partidasNoGanadas = 0;
+        this.partidasNoGanadas = 0;
+        this.totalTiempoJugado = LocalTime.of(0, 0, 0);
+        this.numTotalMovimientos = 0;
+        this.numTotalPuntos = 0;
+        this.numMaxMovimientosPartidaGanada=(long) 0;
+        this.numMinMovimientosPartidaGanada=(long) 0;
+        this.maxTiempoPartidaGanada="";
+        this.minTiempoPartidaGanada="";
 	}
     
-    public void setTotalTiempoJugado() {
-		this.totalTiempoJugado = LocalTime.of(0, 0, 0);
-	}
-    
-    public void setNumTotalMovimientos() {
-		this.numTotalMovimientos = 0;
-	}
-    public void setNumTotalPuntos() {
-		this.numTotalPuntos = 0;
-	}
-
-    //private Integer numMaxMovimientosPartidaGanada;
-
-    //private Integer numMinMovimientosPartidaGanada;
-
-    //private LocalTime maxTiempoPartidaGanada;
-
-    //private LocalTime minTiempoPartidaGanada;
 
     
 

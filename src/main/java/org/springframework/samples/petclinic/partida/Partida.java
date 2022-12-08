@@ -47,8 +47,7 @@ public class Partida extends BaseEntity {
 		
 	@Column(name = "num_movimientos")
 	private long numMovimientos;
-	
-	
+
 	public long puntos() {
 		if(numMovimientos==0) {
 			return 0;
@@ -58,6 +57,9 @@ public class Partida extends BaseEntity {
 		}
 	}
 	
+	public long getDuracionMaxMin (){
+		return ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+	}
 	
 	public String duracion() {
 		if(momentoFin == null) {

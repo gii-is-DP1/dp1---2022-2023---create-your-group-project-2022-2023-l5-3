@@ -81,7 +81,7 @@ public class PartidaController {
 			String usuario = currentUser.getUsername();
 			Jugador player = jugadorService.findJugadorByUsername(usuario);
 			p.setJugador(player);
-			p.setNumMovimientos(0);
+			p.setNumMovimientos(0); //PREDEFINIDO
 			p.setMomentoInicio(LocalDateTime.now());
 			p.setVictoria(false);
 			this.partidaService.save(p);
