@@ -28,7 +28,27 @@
                 <spring:url value="/jugador/edit/{id}" var="editUrl">
                     <spring:param name="id" value="${id}"/>
                 </spring:url>
-                <a href="${editUrl}" class="btn btn-default">Editar Jugador</a>
+                <a href="${editUrl}" class="btn btn-default">Editar jugador</a>
+            </tr>
+
+            <tr>
+                <spring:url value="/partidas/jugador/{id}" var="gamesURL">
+                    <spring:param name="id" value="${id}"/>
+                </spring:url>
+                <a href="${gamesURL}" class="btn btn-default">Sus partidas jugadas</a>
+            </tr>
+            <tr>
+                <spring:url value="/jugador/estadisticas/{id}" var="statsURL">
+                    <spring:param name="id" value="${id}"/>
+                </spring:url>
+                <a href="${statsURL}" class="btn btn-default">Sus estadisticas</a>
+            </tr>
+
+            <tr>
+                <spring:url value="/jugador/delete/{id}" var="deleteURL">
+                    <spring:param name="id" value="${id}"/>
+                </spring:url>
+                <a href="${deleteURL}" class="btn btn-default">Eliminar jugador</a>
             </tr>
 
 </petclinic:layout>
