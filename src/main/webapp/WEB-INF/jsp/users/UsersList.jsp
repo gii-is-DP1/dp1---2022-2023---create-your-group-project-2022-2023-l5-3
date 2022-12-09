@@ -6,7 +6,15 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
-    <h2>Users</h2>
+<div class="row text-center">
+    <p><h1><b>Users</b></h1>
+    </br>
+        <spring:url value="/users/new" var="newURL"></spring:url>
+        <a href="${newURL}" class="btn btn-default">Crear nuevo jugador</a>
+    </p>
+</br>
+</br>
+</div>    
 
     <table id="usersTable" class="table table-striped">
         <thead>
@@ -40,7 +48,8 @@
                     <c:out value="${user.getAuthorities()}"/>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/jugador/delete/${user.jugador.id}" class="btn btn-danger"> Eliminar</a>
+                    <spring:url value="/jugador/delete/${user.jugador.id}" var="deleteURL"></spring:url>
+                    <a href="${deleteURL}" class="btn btn-danger">Eliminar</a>
                 </td>  
                 
             </tr>
