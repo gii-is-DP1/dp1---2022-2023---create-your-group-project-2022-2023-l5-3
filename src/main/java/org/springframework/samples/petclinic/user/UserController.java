@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.user;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -25,6 +26,8 @@ import javax.validation.Valid;
 
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.samples.petclinic.logros.Logros;
+import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,11 +51,13 @@ public class UserController {
 
 	private final JugadorService jugadorService;
 	private final UserService userService;
+	private final LogrosService logrosService;
 	
 	
-	public UserController(JugadorService jugadorService,UserService userService) {
+	public UserController(JugadorService jugadorService,UserService userService, LogrosService logrosService) {
 		this.jugadorService = jugadorService;
 		this.userService = userService;
+		this.logrosService = logrosService;
 	}
 
 	@InitBinder
@@ -62,20 +67,62 @@ public class UserController {
 
 	@GetMapping(value = "/users/new")
 	public String initCreationForm(Map<String, Object> model) {
-		Jugador jugador = new Jugador();
-		model.put("jugador", jugador);
-		return VIEWS_JUGADOR_CREATE_FORM;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					Jugador jugador = new Jugador();
+					model.put("jugador", jugador);
+					return VIEWS_JUGADOR_CREATE_FORM;
+				} else {
+					return "welcome";
+				}
+			}
+		} else {
+			return "welcome";
+		}
+		return "exception";
 	}
-
+	
 	@PostMapping(value = "/users/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_JUGADOR_CREATE_FORM;
 		}
 		else {
-			//creating owner, user, and authority
-			this.jugadorService.saveJugador(jugador);
-			return "redirect:/";
+			jugador.setImage("");		
+			jugador.setAllStats0();
+					Logros logro1 = new Logros();
+					Logros logro2 = new Logros();
+					Logros logro3 = new Logros();
+					List<Logros> lista = new ArrayList<>();
+					lista.add(logro1);
+					lista.add(logro2);
+					lista.add(logro3);
+					for(Logros logro:lista){
+						if(lista.get(0).equals(logro)){
+							logro.setName("Máquina de jugar");
+							logro.setDescription("Has jugado 5 partidas");
+						} else if(lista.get(1).equals(logro)){
+							logro.setName("No se te da nada mal");
+							logro.setDescription("Has alcanzado los 100 puntos");
+						} else {
+							logro.setName("¡Estás on fire!");
+							logro.setDescription("Has alcanzado los 200 movimientos");
+						}
+						logro.setIs_unlocked(false);
+						logro.setImage("");
+						logro.setJugador(jugador);	
+					}
+					logrosService.save(lista.get(0));
+					logrosService.save(lista.get(1));
+					logrosService.save(lista.get(2));
+					this.jugadorService.saveJugador(jugador);
+			
+					return "jugador/showJugador";
 		}
 	}
 	
