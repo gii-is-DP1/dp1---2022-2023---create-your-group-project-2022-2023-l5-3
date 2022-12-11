@@ -34,6 +34,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
@@ -60,6 +61,9 @@ public class UserControllerTest {
 
     @MockBean
 	private JugadorService jugadorService;
+
+	@MockBean
+	private LogrosService logrosService;
 
     @BeforeEach
     void setup(){

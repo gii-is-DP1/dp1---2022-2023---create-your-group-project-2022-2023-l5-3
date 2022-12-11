@@ -38,6 +38,9 @@ public class PartidaControllerTests {
 	@MockBean
 	private PartidaService partidaService;
 
+	@MockBean
+	private PartidaBuilder pb;
+
 	@Autowired
 	private MockMvc mockMvc;
 	

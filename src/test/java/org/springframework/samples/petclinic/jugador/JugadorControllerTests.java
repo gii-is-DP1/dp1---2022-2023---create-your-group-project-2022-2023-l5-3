@@ -15,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.logros.LogrosService;
+import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
@@ -42,6 +44,12 @@ class JugadorControllerTests {
 
 	@MockBean
 	private AuthoritiesService authoritiesService;
+	
+	@MockBean
+	private LogrosService logrosService;
+
+	@MockBean
+	private PartidaService partidaService;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -58,7 +66,19 @@ class JugadorControllerTests {
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Franklin");
+		george.setId(10);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
+
+		Jugador admin = new Jugador();
+		User adminUser = new User();
+		Authorities rolAdmin = new Authorities();
+		rolAdmin.setAuthority("admin");
+		adminUser.setEnabled(true);
+		adminUser.setUsername("testAdmin");
+		adminUser.setPassword("123");
+		admin.setFirstName("Admin");
+		admin.setLastName("Test");
+		given(this.jugadorService.findJugadorByUsername("testAdmin")).willReturn(admin);
 
 	}
 
@@ -103,7 +123,7 @@ class JugadorControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testInitUpdateJugadorForm() throws Exception {
-		mockMvc.perform(get("/jugador/{id}/edit", TEST_Jugador_ID)).andExpect(status().isOk());
+		mockMvc.perform(get("/jugador/edit/{id}", TEST_Jugador_ID)).andExpect(status().isOk());
 	}
 
 	@WithMockUser(value = "spring")
@@ -119,7 +139,7 @@ class JugadorControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdateJugadorFormHasErrors() throws Exception {
-		mockMvc.perform(post("/jugador/{id}/edit", TEST_Jugador_ID).with(csrf()).param("firstName", "")
+		mockMvc.perform(post("/jugador/edit/{id}", TEST_Jugador_ID).with(csrf()).param("firstName", "")
 				.param("lastName", "")).andExpect(status().isOk())
 				.andExpect(model().attributeHasErrors("jugador"))
 				.andExpect(model().attributeHasFieldErrors("jugador", "firstName"))
@@ -127,12 +147,20 @@ class JugadorControllerTests {
 				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
 	}
 
-	//Ver  tu perfil de jugador
-	@WithMockUser(value = "spring")
+	//Ver tu propio perfil de jugador
+	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
 	@Test
 	void testShowJugador() throws Exception {
 		mockMvc.perform(get("/jugador/perfil")).andExpect(status().isOk())
 				.andExpect(view().name("jugador/showJugador"));
+	}
+
+	//Ver el perfil de otro jugador
+	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
+	@Test
+	void testShowJugadorAOtroJugador() throws Exception {
+		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
+				.andExpect(view().name("welcome"));
 	}
 /*
 	@WithMockUser(value = "spring")
