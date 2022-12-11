@@ -280,13 +280,17 @@ public class JugadorController {
 					model.addAttribute(jugador);
 					return "jugador/showJugadorByIdADMIN";
 				} else {
-					return "welcome";
+					model.addAttribute("message", "You need to be admin for see this profile!");
+					return "error";
 				}
 			}	
 		} else {
-		return "welcome";
+			
+			model.addAttribute("message", "Id does not exist for any player!");
+			return "error";
 		}
-	return "exception";
+		model.addAttribute("message", "Id does not exist for any player!");
+		return "error";
 	}
 	
 	
@@ -305,7 +309,8 @@ public class JugadorController {
 					setEstadisticasGenerales(result,jugador);
 					return result;
 				} else {
-					ModelAndView result = new ModelAndView("welcome");
+					ModelAndView result = new ModelAndView("error");
+					result.addObject("message", "You need to be admin for see this stats!");
 					return result;
 				}
 			}
@@ -362,6 +367,10 @@ public class JugadorController {
 					return result;
 				}
 				
+			} else {
+				ModelAndView result = new ModelAndView("error");
+				result.addObject("message", "You can not delete a player!");
+				return result;
 			}
 		}
 		

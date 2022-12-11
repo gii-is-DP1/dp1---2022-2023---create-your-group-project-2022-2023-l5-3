@@ -109,7 +109,8 @@ public class PartidaController {
 					model.put("partidas", partidas);
 					return VIEW_LIST;
 				} else {
-					return "welcome";
+					model.put("message", "You can not see the list of games in process!");
+					return "error";
 				}
 			
 			}
@@ -138,7 +139,8 @@ public class PartidaController {
 					model.put("partidas", partidas);
 					return VIEW_LIST2;
 				} else {
-					return "welcome";
+					model.put("message", "You can not see the list of games finished!");
+					return "error";
 				}
 			
 			}
@@ -173,7 +175,8 @@ public class PartidaController {
 						return "partidas/partidaListUser";
 					
 					} else {
-						return "welcome";
+						model.put("message", "You can not see the list of games finished of this player!");
+						return "error";
 					}
 			}
 			return "welcome";	
@@ -207,7 +210,8 @@ public class PartidaController {
 						return "partidas/partidaListUser";
 					
 					} else {
-						return "welcome";
+						model.put("message", "You can not see the list of games finished of this player!");
+						return "error";
 					}
 			}
 			return "welcome";	
@@ -249,6 +253,10 @@ public class PartidaController {
 					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 					return result;
+				} else {
+					ModelAndView result = new ModelAndView("ERROR");
+					result.addObject("message", "You can not delete a game!");
+					return result;
 				}
 			}
 		}
@@ -279,8 +287,8 @@ public class PartidaController {
 						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return result;
 					} else {
-						ModelAndView result = new ModelAndView("welcome");
-						result.addObject("message", "No puedes finalizar esta partida");
+						ModelAndView result = new ModelAndView("error");
+						result.addObject("message", "You can not finish this game!");
 						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return result;
 					}
@@ -294,43 +302,43 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
-	@GetMapping(path = "/partidas/finish2/{id}")
-	public ModelAndView finishPartida2(@PathVariable("id") int id, ModelMap modelMap) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-			for (GrantedAuthority usuarioR : usuario){
-				String credencial = usuarioR.getAuthority();
-				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
-					establecerFinPartidaManual2(id);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
-					return result;
+	// @GetMapping(path = "/partidas/finish2/{id}")
+	// public ModelAndView finishPartida2(@PathVariable("id") int id, ModelMap modelMap) {
+	// 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	// 	if(auth != null){
+	// 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+	// 		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+	// 		for (GrantedAuthority usuarioR : usuario){
+	// 			String credencial = usuarioR.getAuthority();
+	// 			if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+	// 				establecerFinPartidaManual2(id);
+	// 				ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+	// 				result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+	// 				return result;
 					
-				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
-					Partida partida = partidaService.findById(id);
-					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
-						establecerFinPartidaManual2(id);
-						ModelAndView result = new ModelAndView("welcome");
-						result.addObject("message", "Partida acabada");
-						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
-						return result;
-					} else {
-						ModelAndView result = new ModelAndView("welcome");
-						result.addObject("message", "No puedes finalizar esta partida");
-						result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
-						return result;
-					}
+	// 			} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
+	// 				Partida partida = partidaService.findById(id);
+	// 				if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
+	// 					establecerFinPartidaManual2(id);
+	// 					ModelAndView result = new ModelAndView("welcome");
+	// 					result.addObject("message", "Partida acabada");
+	// 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+	// 					return result;
+	// 				} else {
+	// 					ModelAndView result = new ModelAndView("welcome");
+	// 					result.addObject("message", "No puedes finalizar esta partida");
+	// 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+	// 					return result;
+	// 				}
 					
-				}
-			}
+	// 			}
+	// 		}
 			
-		} else {
-			return new ModelAndView("exception");
-		}
-		return new ModelAndView("exception");
-	}
+	// 	} else {
+	// 		return new ModelAndView("exception");
+	// 	}
+	// 	return new ModelAndView("exception");
+	// }
 
 	//PARA ESTADÍSTICAS
 	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALORES
@@ -346,21 +354,6 @@ public class PartidaController {
 		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
 		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
 		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
-		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
-		//player.setMinTiempoPartidaGanada(null);
-		//player.setMaxTiempoPartidaGanada(null);
-	}
-
-	public void establecerFinPartidaManual2(Integer id){
-		Partida partida = partidaService.findById(id);
-		partida.setMomentoFin(LocalDateTime.now());
-		partida.setVictoria(true);
-		partida.setNumMovimientos(100);
-		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
-		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
-		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
-		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
-		player.setPartidasGanadas(player.getPartidasGanadas()+1);
 		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
 		//player.setMinTiempoPartidaGanada(null);
 		//player.setMaxTiempoPartidaGanada(null);

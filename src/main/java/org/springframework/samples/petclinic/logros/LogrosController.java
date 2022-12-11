@@ -63,9 +63,8 @@ public class LogrosController {
 					model.put("logros",logrosDelUsuarioLogeado);
 					return VIEWS_LOGROS;
 				} else {
-					/*List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
-					model.put("logros",logrosDelUsuarioLogeado);*/
-					return "welcome";
+					model.put("message", "You need to be admin for see this achivements!");
+					return "error";
 				}
 			}
 		} else {

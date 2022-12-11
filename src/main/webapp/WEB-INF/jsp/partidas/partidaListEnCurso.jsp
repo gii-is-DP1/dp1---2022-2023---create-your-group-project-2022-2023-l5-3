@@ -51,7 +51,8 @@
                     <c:out value="${partida.duracion()}"/>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar</a>
+                    <spring:url value="/partidas/finish/${partida.id}" var="finalizarURL"></spring:url>
+                    <a href="${finalizarURL}" class="btn btn-default">Finalizar</a>
                 </td>
                 
                 
