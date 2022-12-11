@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,7 @@ public class LogrosController {
 	private final LogrosService logrosService;
 	private final JugadorService jugadorService;
 
-	
+	@Autowired
 	public LogrosController(LogrosService logrosService, JugadorService jugadorService) {
 		this.logrosService = logrosService;
 		this.jugadorService = jugadorService;
