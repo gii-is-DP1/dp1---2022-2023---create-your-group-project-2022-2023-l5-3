@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.logros.Logros;
@@ -53,7 +54,7 @@ public class UserController {
 	private final UserService userService;
 	private final LogrosService logrosService;
 	
-	
+	@Autowired
 	public UserController(JugadorService jugadorService,UserService userService, LogrosService logrosService) {
 		this.jugadorService = jugadorService;
 		this.userService = userService;

@@ -14,6 +14,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.logros.Logros;
 import org.springframework.samples.petclinic.logros.LogrosService;
@@ -53,7 +54,7 @@ public class JugadorController {
 	private final LogrosService logrosService;
 	private final PartidaService partidaService;
     
-	
+	@Autowired
     public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService, PartidaService partidaService){
         this.jugadorService= jugadorService;
 		this.userService=userService;
