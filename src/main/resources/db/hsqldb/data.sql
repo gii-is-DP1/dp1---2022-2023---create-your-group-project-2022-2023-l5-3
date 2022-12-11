@@ -11,7 +11,7 @@ INSERT INTO jugador (id,first_name,last_name,image,win,lost,time,mov,points,max_
 -- -- One jugador jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','jugador');
-INSERT INTO jugador (id,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(3,'jorge','jorge','',0,0,'00:00:00',0,0,0,0,'','','jorge');
+INSERT INTO jugador (id,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(3,'jorge','sillero','',0,0,'00:00:00',0,0,0,0,'','','jorge');
 
 -- -- One jugador barbaat, named barba with password barba
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
