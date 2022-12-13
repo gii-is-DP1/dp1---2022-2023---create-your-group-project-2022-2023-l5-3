@@ -21,6 +21,7 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.security.access.method.P;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -161,6 +162,14 @@ class JugadorControllerTests {
 	void testShowJugadorAOtroJugador() throws Exception {
 		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
 				.andExpect(view().name("welcome"));
+	}
+
+	//Ver el perfil de otro jugador siendo administrador
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testShowJugadorAOtroJugadorComoAdmin() throws Exception {
+		mockMvc.perform(get("/jugador/perfil/10")).andExpect(status().isOk())
+				.andExpect(view().name("jugador/showJugadorByIdADMIN"));
 	}
 /*
 	@WithMockUser(value = "spring")
