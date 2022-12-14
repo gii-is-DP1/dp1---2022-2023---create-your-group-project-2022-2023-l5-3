@@ -1,0 +1,110 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>11</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>143</x><y>440</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Carta
+--
+-id: Long
+-valor:Integer{Range(1,13)}
+-palo:Palos
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>121</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Mazo
+--
+-id: Long
+-posición:Integer
+-cantidad:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>440</y><w>231</w><h>154</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+CartasPartida
+--
+-idCarta: Long
+-idPartida: Long
+-idMazo:Long
+-idMazoFinal:Long
+-idMazoInicial:Long
+-posCartaEnMazo:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>121</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoInicial
+--
+-id: Long
+-cantidad:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1144</x><y>121</y><w>308</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoFinal
+--
+-id: Long
+-posición:Integer
+-cantidad:Integer{Max(52)}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>693</y><w>231</w><h>176</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Partida
+--
+-id: Long
+-momentoInicio:Datetime{NotNull}
+-momentoFin:Datetime{NotNull}
+-victoria:boolean
+-/duración:Datetime
+-numMovimientos: int
+-/puntos: int
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>363</x><y>506</y><w>440</w><h>44</h></coordinates><panel_attributes>m1=1
+m2=1</panel_attributes><additional_attributes>380;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>231</y><w>165</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>10;190;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>891</x><y>583</y><w>44</w><h>132</h></coordinates><panel_attributes>m1=1
+m2=n
+lt=-&gt;
+</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>231</y><w>44</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1606</x><y>737</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+User
+--
+-username:String{NotEmpty}
+-password:String{NotNull}
+-enabled:boolean
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1595</x><y>968</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Authorities
+--
+-authority:String{Size(3,50)}
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1353</x><y>616</y><w>33</w><h>143</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1705</x><y>847</y><w>55</w><h>143</h></coordinates><panel_attributes>m1=1..n
+m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1254</x><y>737</y><w>231</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Jugador
+--
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1232</x><y>506</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Person
+--
+-firstName:String{NotEmpty}
+-lastName:String{NotEmpty}
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1474</x><y>781</y><w>154</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=1
+Es registrado
+lt=&lt;-</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1606</x><y>517</y><w>231</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Admnistrador
+--
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1452</x><y>572</y><w>176</w><h>33</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1705</x><y>605</y><w>44</w><h>154</h></coordinates><panel_attributes>m1=1
+m2=1</panel_attributes><additional_attributes>10;120;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>143</y><w>231</w><h>154</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Palos
+--
+color:Color
+-DIAMANTES
+-PICAS
+-TREBOLES
+-CORAZONES
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>11</x><y>0</y><w>209</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Color
+--
+-ROJO
+-NEGRO</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>341</x><y>11</y><w>363</w><h>77</h></coordinates><panel_attributes>Los diamantes y los corazones tienen color ROJO
+Los treboles y las picas tienen color NEGRO
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>506</x><y>231</y><w>297</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>250;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>770</y><w>275</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=1
+Juega 
+lt=-&gt;
+</panel_attributes><additional_attributes>230;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>737</y><w>275</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=n
+Ha jugado 
+lt=-&gt;</panel_attributes><additional_attributes>230;20;10;20</additional_attributes></element></diagram>
