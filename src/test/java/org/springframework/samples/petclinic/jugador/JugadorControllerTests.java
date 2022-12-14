@@ -163,14 +163,6 @@ class JugadorControllerTests {
 		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
 				.andExpect(view().name("welcome"));
 	}
-
-	//Ver el perfil de otro jugador siendo administrador
-	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
-	@Test
-	void testShowJugadorAOtroJugadorComoAdmin() throws Exception {
-		mockMvc.perform(get("/jugador/perfil/10")).andExpect(status().isOk())
-				.andExpect(view().name("jugador/showJugadorByIdADMIN"));
-	}
 /*
 	@WithMockUser(value = "spring")
 	@Test
