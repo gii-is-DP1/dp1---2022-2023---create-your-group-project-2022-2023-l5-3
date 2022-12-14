@@ -3,15 +3,15 @@ package org.springframework.samples.petclinic.mazoFinal;
 import java.util.Collection;
 
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 public class MazoFinalService {
-    private mazoFinalRepository mazofinalRepository;
+    
+    private MazoFinalRepository mazofinalRepository;
 
     @Autowired
-    public MazoFinalService(mazoFinalRepository mazofinalRepository){
+    public MazoFinalService(MazoFinalRepository mazofinalRepository){
         this.mazofinalRepository = mazofinalRepository;
     }
 

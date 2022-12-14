@@ -33,14 +33,32 @@ public class User{
 	@Length(min = 3, max = 20)
 	@NotEmpty
 	protected String password;
-	
+
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
 
 
-	@OneToOne(cascade = CascadeType.PERSIST, mappedBy = "user")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Jugador jugador;
+
+	public String getAuthorities() {
+		String res = "";
+		for (Authorities authority : authorities){
+			if (authority.getAuthority().equals("admin")){
+				res = "admin";
+			} else if (authority.getAuthority().equals("owner")){
+				res = "owner" ;
+			} else {
+				res = "jugador";
+			}
+		}
+		return res;
+	}	
+
+	public Integer getJugadorId (){
+		return jugador.getId();
+	}
 }
 

@@ -5,24 +5,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.jugador.Jugador;
-import org.springframework.samples.petclinic.jugador.JugadorService;
+
 
 import javax.persistence.OneToMany;
-//import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.CascadeType;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
@@ -33,13 +28,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "partidas")
 public class Partida extends BaseEntity {
 
-	@OneToMany(mappedBy = "partida")
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = false,mappedBy = "partida")
 	private Set<CartasPartida> cartasPartida;
-	
-	
 	
 	@NotNull
 	@Column(name = "momento_inicio")
@@ -55,8 +47,7 @@ public class Partida extends BaseEntity {
 		
 	@Column(name = "num_movimientos")
 	private long numMovimientos;
-	
-	
+
 	public long puntos() {
 		if(numMovimientos==0) {
 			return 0;
@@ -66,6 +57,9 @@ public class Partida extends BaseEntity {
 		}
 	}
 	
+	public long getDuracionMaxMin (){
+		return ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+	}
 	
 	public String duracion() {
 		if(momentoFin == null) {
@@ -94,7 +88,6 @@ public class Partida extends BaseEntity {
 	
 	@OneToOne
     @JoinColumn(name="jugadorId")
-	@NotNull
     Jugador jugador;
 
 

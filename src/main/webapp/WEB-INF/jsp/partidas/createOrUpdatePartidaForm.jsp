@@ -6,7 +6,7 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<petclinic:layout pageName="partidas">
+<petclinic:layout pageName="partidasNueva">
     
     <jsp:body>
    		<div class="container" style="background-color:#51C967;">
@@ -21,6 +21,7 @@
         
         <form:hidden  path="id" />
         <form:hidden  path="momentoInicio" />
+        <form:hidden  path="momentoFin" />
         <form:hidden  path="numMovimientos" />
         <form:hidden  path="victoria" />
         <form:hidden  path="jugador" />

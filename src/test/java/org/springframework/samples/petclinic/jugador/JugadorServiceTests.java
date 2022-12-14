@@ -132,7 +132,7 @@ class JugadorServiceTests {
 	}
 
 	@Test
-	public void shoulFindJugadoresByLastName(){
+	public void shouldFindJugadoresByLastName(){
 		Collection <Jugador> jugadores = this.jugadorService.findJugadoresByLastName("sillero");
 		assertThat(jugadores.size()).isNotEqualTo(0);
 		Collection <Jugador> jugadores1 = this.jugadorService.findJugadoresByLastName("silleto");

@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.jugador;
 
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,8 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
-import org.springframework.samples.petclinic.jugador.Jugador;
-import org.springframework.samples.petclinic.jugador.JugadorController;
-import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.samples.petclinic.logros.LogrosService;
+import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
@@ -41,9 +36,6 @@ class JugadorControllerTests {
 
 	private static final int TEST_Jugador_ID = 1;
 
-	@Autowired
-	private JugadorController jugadorController;
-
 	@MockBean
 	private JugadorService jugadorService;
 
@@ -52,11 +44,15 @@ class JugadorControllerTests {
 
 	@MockBean
 	private AuthoritiesService authoritiesService;
+	
+	@MockBean
+	private LogrosService logrosService;
+
+	@MockBean
+	private PartidaService partidaService;
 
 	@Autowired
 	private MockMvc mockMvc;
-
-	private Jugador george;
 
 	@BeforeEach
 	void setup() {
@@ -70,7 +66,19 @@ class JugadorControllerTests {
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Franklin");
+		george.setId(10);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
+
+		Jugador admin = new Jugador();
+		User adminUser = new User();
+		Authorities rolAdmin = new Authorities();
+		rolAdmin.setAuthority("admin");
+		adminUser.setEnabled(true);
+		adminUser.setUsername("testAdmin");
+		adminUser.setPassword("123");
+		admin.setFirstName("Admin");
+		admin.setLastName("Test");
+		given(this.jugadorService.findJugadorByUsername("testAdmin")).willReturn(admin);
 
 	}
 
@@ -115,7 +123,7 @@ class JugadorControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testInitUpdateJugadorForm() throws Exception {
-		mockMvc.perform(get("/jugador/{id}/edit", TEST_Jugador_ID)).andExpect(status().isOk());
+		mockMvc.perform(get("/jugador/edit/{id}", TEST_Jugador_ID)).andExpect(status().isOk());
 	}
 
 	@WithMockUser(value = "spring")
@@ -131,7 +139,7 @@ class JugadorControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessUpdateJugadorFormHasErrors() throws Exception {
-		mockMvc.perform(post("/jugador/{id}/edit", TEST_Jugador_ID).with(csrf()).param("firstName", "")
+		mockMvc.perform(post("/jugador/edit/{id}", TEST_Jugador_ID).with(csrf()).param("firstName", "")
 				.param("lastName", "")).andExpect(status().isOk())
 				.andExpect(model().attributeHasErrors("jugador"))
 				.andExpect(model().attributeHasFieldErrors("jugador", "firstName"))
@@ -139,12 +147,20 @@ class JugadorControllerTests {
 				.andExpect(view().name("jugador/createOrUpdateJugadorForm"));
 	}
 
-	//Ver  tu perfil de jugador
-	@WithMockUser(value = "spring")
+	//Ver tu propio perfil de jugador
+	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
 	@Test
 	void testShowJugador() throws Exception {
 		mockMvc.perform(get("/jugador/perfil")).andExpect(status().isOk())
 				.andExpect(view().name("jugador/showJugador"));
+	}
+
+	//Ver el perfil de otro jugador
+	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
+	@Test
+	void testShowJugadorAOtroJugador() throws Exception {
+		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
+				.andExpect(view().name("welcome"));
 	}
 /*
 	@WithMockUser(value = "spring")
