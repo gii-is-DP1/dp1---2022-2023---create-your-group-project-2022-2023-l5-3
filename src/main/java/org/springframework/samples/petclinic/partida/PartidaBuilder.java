@@ -34,27 +34,32 @@ public class PartidaBuilder {
 
 	public List<Carta> inicializarCartas() {
 		List<Carta> res = new ArrayList<>();
-
+		String rutaCarta = "/resources/images/cards/";
 		for (int palo = 1; palo <= 4; palo++) {
 			for (int valor = 1; valor <= 13; valor++) {
 				Carta carta = new Carta();
 				carta.setValor(valor);
 				if (palo == 1) {
 
-					carta.setPalo(Palo.CORAZONES);
+					carta.setPalo(Palo.PICAS);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 2) {
 
-					carta.setPalo(Palo.DIAMANTES);
+					carta.setPalo(Palo.TREBOLES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 3) {
 
-					carta.setPalo(Palo.PICAS);
+					carta.setPalo(Palo.DIAMANTES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 4) {
 
-					carta.setPalo(Palo.TREBOLES);
+					carta.setPalo(Palo.CORAZONES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
+
 				res.add(carta);
 
 			}

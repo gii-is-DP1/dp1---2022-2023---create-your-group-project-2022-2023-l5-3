@@ -9,14 +9,18 @@
     <jsp:body>
    		
    		
-        <div class="row" align="center"  >
+        <div class="row" align="center">
         <h2 >
            Tablero Creado
         </h2> 
         </div> 
         <div class="container" style="background-color:#51C967;">
         <div class="row">
-        <div class="col-md-1">Mazo inter. 1
+
+        <div class="col-md-1">
+            <spring:url value="/resources/images/cards/12.png" htmlEscape="true" var="logoUS"/>
+            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${logoUS}"/>  
+            
         </div>
         <div class="col-md-1">Mazo inter. 2
         </div>

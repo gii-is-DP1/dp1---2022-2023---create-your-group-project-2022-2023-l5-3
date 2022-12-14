@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 
@@ -34,6 +35,9 @@ public class PartidaController {
 	@Autowired
 	private PartidaService partidaService;
 	
+	@Autowired
+	private CartasPartidaService cartasPartidaService;
+
 	@Autowired
 	private JugadorService jugadorService;
 
@@ -87,6 +91,9 @@ public class PartidaController {
 			this.partidaService.save(p);
 			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
+
+			model.put("cartasMazo","src/main/resources/static/resources/images/cards/12.png");
+
 			
 			return TABLERO;
 		
