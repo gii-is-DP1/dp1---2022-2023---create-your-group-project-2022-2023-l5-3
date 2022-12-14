@@ -25,6 +25,7 @@ import static org.mockito.BDDMockito.given;
 import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,6 +41,7 @@ import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -50,6 +52,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserControllerTest {
     
+	private User userTest;
+	private Jugador jugadorTest;
+	private Authorities rolTest;
+	private static final int PARTICIPANT_TEST_ID1 = 10;
+	private static final int ROL_TEST_ID = 9;
+
+
     @Autowired
 	private MockMvc mockMvc;
     
@@ -70,13 +79,26 @@ public class UserControllerTest {
         Jugador player = new Jugador();
 		User user = new User();
 		Authorities rol = new Authorities();
-		rol.setAuthority("admin");
+		rol.setAuthority("jugador");
 		user.setEnabled(true);
 		user.setUsername("NuevoJugadorTest");
 		user.setPassword("123");
 		player.setFirstName("User");
-		player.setLastName("AdminPrueba");
+		player.setLastName("Jugador");
+		user.setJugador(player);
 		given(this.userService.findByUser("NuevoJugadorTest")).willReturn(user);
+
+		Jugador playerADMIN = new Jugador();
+		User userADMIN = new User();
+		Authorities rolADMIN = new Authorities();
+		rolADMIN.setAuthority("admin");
+		userADMIN.setEnabled(true);
+		userADMIN.setUsername("NuevoAdminTest");
+		userADMIN.setPassword("123");
+		playerADMIN.setFirstName("User");
+		playerADMIN.setLastName("AdminPrueba");
+		userADMIN.setJugador(playerADMIN);
+		given(this.userService.findByUser("NuevoAdminTest")).willReturn(userADMIN);
     }
 
 
@@ -97,4 +119,44 @@ public class UserControllerTest {
 	 			.andExpect(model().attributeDoesNotExist("users"))
 	 			.andExpect(view().name("welcome"));
 	 }
+
+	 @WithMockUser(value = "spring",username = "NuevoAdminTest", authorities = "admin" )
+	 @Test
+	 @DisplayName("H13+E1 - Delete an user")
+	 
+	 public void testDeleteAdmin() throws Exception {
+			
+		userTest=new User();
+		jugadorTest = new Jugador();
+		rolTest = new Authorities();
+		
+		jugadorTest.setId(PARTICIPANT_TEST_ID1);
+		jugadorTest.setAllStats0();
+		jugadorTest.setFirstName("User");
+		jugadorTest.setLastName("Jugador");
+
+		userTest.setUsername("Elena");
+		userTest.setPassword("elena123");
+		userTest.setEnabled(true);
+		userTest.setJugador(jugadorTest);
+
+		rolTest.setAuthority("jugador");
+		rolTest.setUser(userTest);
+		rolTest.setId(ROL_TEST_ID);
+		
+ 		
+//users(username,password,enabled) VALUES ('marsannar2','mario',TRUE);
+// authorities(id,username,authority) VALUES (8,'marsannar2','jugador');
+// jugador (id,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(2,'mario','sanchez','',0,0,'00:00:00',0,0,0,0,'','','marsannar2');
+
+
+		 mockMvc.perform(get("/jugador/delete/" + userTest.getJugador().getId()))
+		 .andExpect(status().isOk())
+		 .andExpect(model().attributeExists("users"))
+		 .andExpect(view().name("participants/participantsList"));
+		 
+		 
+	 }
+
+
 }
