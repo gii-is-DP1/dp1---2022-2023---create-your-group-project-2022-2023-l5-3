@@ -16,22 +16,22 @@ public class WelcomeController {
 	  public String welcome(Map<String, Object> model) {	    
 		List<Person> persons = new ArrayList<>();
 		Person Mario = new Person();
-		Mario.setFirstName("Mario");
+		Mario.setFirstName("Mario ");
 		Mario.setLastName("Sánchez Naranjo");
 		Person Jorge = new Person();
-		Jorge.setFirstName("Jorge");
+		Jorge.setFirstName("Jorge ");
 		Jorge.setLastName("Sillero Manchon");
 		Person FranciscoJavier = new Person();
-		FranciscoJavier.setFirstName("Francisco Javier");
+		FranciscoJavier.setFirstName("Francisco Javier ");
 		FranciscoJavier.setLastName("Barba Trejo");
 		Person Alvaro = new Person();
-		Alvaro.setFirstName("Álvaro");
+		Alvaro.setFirstName("Álvaro ");
 		Alvaro.setLastName("Navarro Rivera");
 		Person Alberto = new Person();
-		Alberto.setFirstName("Alberto");
+		Alberto.setFirstName("Alberto ");
 		Alberto.setLastName("Gallego Huerta");
 		Person Francisco = new Person();
-		Francisco.setFirstName("Francisco Andres");
+		Francisco.setFirstName("Francisco Andres ");
 		Francisco.setLastName("Caro Huerta");
 		persons.add(Mario);
 		persons.add(Jorge);
@@ -42,7 +42,7 @@ public class WelcomeController {
 
 
 		model.put("persons", persons);
-		model.put("title","Petclinic Application L5-3");
+		model.put("title","SOLITARIO");
 		model.put("group","L5-3");
 
 	    return "welcome";

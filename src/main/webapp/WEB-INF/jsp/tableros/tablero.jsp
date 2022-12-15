@@ -60,7 +60,9 @@
         
         </div>
         </div>
-        
+            <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar partida LOST</a>
+            <a href="http://localhost:8080/partidas/finish2/${partida.id}" class="btn btn-danger"> Finalizar partida WIN</a>
+
          
     </jsp:body>
 </petclinic:layout>

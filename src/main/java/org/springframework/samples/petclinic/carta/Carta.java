@@ -34,6 +34,6 @@ public class Carta extends BaseEntity{
     @OneToOne(mappedBy = "carta")
     private CartasPartida cartasPartida;
     
-
+    private String imagen;
 
 }
