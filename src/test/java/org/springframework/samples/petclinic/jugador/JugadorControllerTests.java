@@ -66,7 +66,7 @@ class JugadorControllerTests {
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Franklin");
-		george.setId(10);
+		george.setId(TEST_Jugador_ID);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
 
 		Jugador admin = new Jugador();
@@ -162,6 +162,14 @@ class JugadorControllerTests {
 		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
 				.andExpect(view().name("welcome"));
 	}
+
+		//Ver el perfil de otro jugador siendo administrador
+		@WithMockUser(value = "spring", authorities = "admin")
+		@Test
+		void testShowJugadorAOtroJugadorComoAdmin() throws Exception {
+			mockMvc.perform(get("/jugador/perfil/{id}",TEST_Jugador_ID)).andExpect(status().isOk())
+					.andExpect(view().name("jugador/showJugadorByIdADMIN"));
+		}
 /*
 	@WithMockUser(value = "spring")
 	@Test
