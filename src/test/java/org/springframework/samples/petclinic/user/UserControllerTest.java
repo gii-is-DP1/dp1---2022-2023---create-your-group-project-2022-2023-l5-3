@@ -120,43 +120,7 @@ public class UserControllerTest {
 	 			.andExpect(view().name("welcome"));
 	 }
 
-	 @WithMockUser(value = "spring",username = "NuevoAdminTest", authorities = "admin" )
-	 @Test
-	 @DisplayName("H13+E1 - Delete an user")
-	 
-	 public void testDeleteAdmin() throws Exception {
-			
-		userTest=new User();
-		jugadorTest = new Jugador();
-		rolTest = new Authorities();
-		
-		jugadorTest.setId(PARTICIPANT_TEST_ID1);
-		jugadorTest.setAllStats0();
-		jugadorTest.setFirstName("User");
-		jugadorTest.setLastName("Jugador");
-
-		userTest.setUsername("Elena");
-		userTest.setPassword("elena123");
-		userTest.setEnabled(true);
-		userTest.setJugador(jugadorTest);
-
-		rolTest.setAuthority("jugador");
-		rolTest.setUser(userTest);
-		rolTest.setId(ROL_TEST_ID);
-		
- 		
-//users(username,password,enabled) VALUES ('marsannar2','mario',TRUE);
-// authorities(id,username,authority) VALUES (8,'marsannar2','jugador');
-// jugador (id,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(2,'mario','sanchez','',0,0,'00:00:00',0,0,0,0,'','','marsannar2');
-
-
-		 mockMvc.perform(get("/jugador/delete/" + userTest.getJugador().getId()))
-		 .andExpect(status().isOk())
-		 .andExpect(model().attributeExists("users"))
-		 .andExpect(view().name("participants/participantsList"));
-		 
-		 
-	 }
+	
 
 
 }

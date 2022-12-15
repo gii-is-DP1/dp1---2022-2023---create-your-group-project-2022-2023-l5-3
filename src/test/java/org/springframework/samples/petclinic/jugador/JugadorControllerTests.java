@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +36,10 @@ import org.springframework.test.web.servlet.MockMvc;
 class JugadorControllerTests {
 
 	private static final int TEST_Jugador_ID = 1;
+	private User userTest;
+	private Jugador jugadorTest;
+	private Authorities rolTest;
+	private static final int PARTICIPANT_TEST_ID1 = 10;
 
 	@MockBean
 	private JugadorService jugadorService;
@@ -159,9 +164,35 @@ class JugadorControllerTests {
 	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
 	@Test
 	void testShowJugadorAOtroJugador() throws Exception {
-		mockMvc.perform(get("/jugador/perfil/3")).andExpect(status().isOk())
+		mockMvc.perform(get("/jugador/perfil/" + userTest.getJugador().getId()))
+				.andExpect(status().isOk())
 				.andExpect(view().name("welcome"));
 	}
+
+
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	public void testDeleteAdmin() throws Exception {
+		userTest=new User();
+		jugadorTest = new Jugador();
+		rolTest= new Authorities();
+
+		rolTest.setAuthority("jugador");
+		userTest.setEnabled(true);
+		userTest.setUsername("test");
+		userTest.setPassword("123");
+		jugadorTest.setFirstName("George");
+		jugadorTest.setLastName("Franklin");
+		jugadorTest.setId(PARTICIPANT_TEST_ID1);
+		userTest.setJugador(jugadorTest);
+			
+		mockMvc.perform(get("/jugador/delete/" + userTest.getJugador().getId()))
+		.andExpect(status().isOk())
+		.andExpect(model().attributeExists("users"))
+		.andExpect(view().name("users/usersList"));
+		
+	}
+
 /*
 	@WithMockUser(value = "spring")
 	@Test
