@@ -10,50 +10,72 @@
    		
    		
         <div class="row" align="center">
-        <h2 >
-           Tablero Creado
-        </h2> 
-        </div> 
-        <div class="container" style="background-color:#51C967;">
-        <div class="row">
+            <h2 >
+            Tablero Creado
+            </h2> 
+            </div> 
 
-        <div class="col-md-1">
-            <spring:url value="/resources/images/cards/12.png" htmlEscape="true" var="logoUS"/>
-            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${logoUS}"/>  
             
+            
+        <!--MAZOS INTERMEDIOS-->        
+        <div class="container" style="background-color:#51C967;">
+            <div class="row">    
+                <c:forEach var="i" begin="1" end="7">
+                <div class="col-md-1">
+                    Mazo ${i}
+                </div>    
+                </c:forEach>
+            </div>
+            <div class="row">
+                <c:forEach items="${cartasPartida}" var="cp">
+                    <c:forEach var="mazo" items="${mazosOrder}">
+                        <c:if test="${cp.mazo.id == mazo && cp.posCartaMazo == 1 }">
+                            <div class="col-md-1">
+                            <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${carta}"/>  
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </c:forEach>
+
+<!--MAZO INICIAL-->
+
+
+            <div class="col-md-1">
+                MAZO INICIAL
+                <c:forEach items="${cartasPartida}" var="cp">
+                    
+                        <c:if test="${cp.mazoInicial.id == cp.partida.id && (cp.posCartaMazo == 1 || cp.posCartaMazo == 2 || cp.posCartaMazo == 3)}">
+                            <div class="col-md-1">
+                            <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${carta}"/>  
+                            </div>
+                        </c:if>
+                    
+                </c:forEach>
+            </div>        
         </div>
-        <div class="col-md-1">Mazo inter. 2
-        </div>
-        <div class="col-md-1">Mazo inter. 3
-        </div>
-        <div class="col-md-1">Mazo inter. 4
-        </div>
-         <div class="col-md-1">Mazo inter. 5
-        </div>
-         <div class="col-md-1">Mazo inter. 6
-        </div>
-         <div class="col-md-1">Mazo inter. 7
-        </div>
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-1">Mazo INICIAL
-        </div>
-        
-        
-        </div>
-       
-        
-        <br><br><br>
-        </div>
+    
+    
+    <br><br><br>
+    </div>
+
+
+<!--MAZOS FINALES-->        
         <div class="container" style="background-color:#51C967;">
         <div class="row">
-        <div class="col-md-2">Mazo final 1
+        <div class="col-md-2">
+            <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones"/>
+            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}"/>  
         </div>
-        <div class="col-md-2">Mazo final 2
+        <div class="col-md-2"><spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas"/>
+            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}"/>  
         </div>
-        <div class="col-md-2">Mazo final 3
+        <div class="col-md-2"><spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes"/>
+            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}"/>  
         </div>
-        <div class="col-md-2">Mazo final 4
+        <div class="col-md-2"><spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles"/>
+            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}"/>  
         </div>
         <div class="col-md-2">
         </div>

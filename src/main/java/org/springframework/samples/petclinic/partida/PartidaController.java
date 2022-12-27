@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
@@ -51,7 +52,7 @@ public class PartidaController {
 	private static final String TABLERO = "tableros/tablero";
 
 	
-
+// ==========================================CREAR PARTIDA===================================================
 	
 	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){
@@ -92,16 +93,19 @@ public class PartidaController {
 			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
 
-			model.put("cartasMazo","src/main/resources/static/resources/images/cards/12.png");
+			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
+			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(p.getId());
+			model.put("cartasPartida",cp);
+			model.put("mazosOrder", mazos);
 
 			
 			return TABLERO;
-		
-		
+	
 		}
 	
 	}
 
+//===============================LISTAR PARTIDAS ================================
 	@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
