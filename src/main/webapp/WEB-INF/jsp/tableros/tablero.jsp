@@ -29,26 +29,21 @@
             <div class="row">
                 <c:forEach items="${cartasPartida}" var="cp">
                     <c:forEach var="mazo" items="${mazosOrder}">
-                        <c:if test="${cp.mazo.id == mazo && cp.posCartaMazo == 1 }">
-                            <div class="col-md-1">
-                            <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
-                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${carta}"/>  
+                        <c:if test="${cp.mazo.id == mazo}">
+                            <div class="col-md-1">    
+                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/> 
                             </div>
                         </c:if>
                     </c:forEach>
-                </c:forEach>
 
 <!--MAZO INICIAL-->
-
-
-            <div class="col-md-1">
-                MAZO INICIAL
-                <c:forEach items="${cartasPartida}" var="cp">
-                    
-                        <c:if test="${cp.mazoInicial.id == cp.partida.id && (cp.posCartaMazo == 1 || cp.posCartaMazo == 2 || cp.posCartaMazo == 3)}">
-                            <div class="col-md-1">
-                            <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
-                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${carta}"/>  
+                        <c:if test="${cp.mazoInicial.id == cp.partida.id && cp.posCartaMazo == 1}">
+                            <div class="col-md-1" style="display: flex; justify-content: space-between;">
+                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" style="margin: 0 10px 0 70px;" width="300" height="300" src="${carta}"/>
+                                <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/> 
                             </div>
                         </c:if>
                     
