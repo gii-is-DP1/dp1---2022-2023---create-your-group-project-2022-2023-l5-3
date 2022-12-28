@@ -28,14 +28,22 @@
             </div>
             <div class="row">
                 <c:forEach items="${cartasPartida}" var="cp">
-                    <c:forEach var="mazo" items="${mazosOrder}">
-                        <c:if test="${cp.mazo.id == mazo}">
-                            <div class="col-md-1">    
-                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
-                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/> 
-                            </div>
+                  <c:forEach var="mazo" items="${mazosOrder}">
+                    <c:if test="${cp.mazo.id == mazo}">
+                        <div class="col-md-1" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">    
+                    <c:if test="${cp.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
                         </c:if>
-                    </c:forEach>
+                        <c:if test="${cp.posCartaMazo == 1}">
+                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                        </div>
+                      
+                    </c:if>
+                  </c:forEach>
+               
 
 <!--MAZO INICIAL-->
                         <c:if test="${cp.mazoInicial.id == cp.partida.id && cp.posCartaMazo == 1}">
