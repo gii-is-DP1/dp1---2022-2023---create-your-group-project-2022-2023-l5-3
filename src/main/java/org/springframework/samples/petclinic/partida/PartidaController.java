@@ -104,7 +104,7 @@ public class PartidaController {
 			}
 
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(p.getId());
-			model.put("mazInicial", mazoIni);
+			
 
 			//List<CartasPartida> mazoIni = cartasPartidaService.
 		
@@ -115,7 +115,9 @@ public class PartidaController {
 			model.put("mazInt5",dicc.get(mazos.get(4)));
 			model.put("mazInt6",dicc.get(mazos.get(5)));
 			model.put("mazInt7",dicc.get(mazos.get(6)));
-			
+			model.put("mazInicial", mazoIni);
+
+			System.out.println(mazoIni.size());
 
 			
 			return TABLERO;
