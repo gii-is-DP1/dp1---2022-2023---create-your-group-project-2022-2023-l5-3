@@ -27,35 +27,107 @@
                 </c:forEach>
             </div>
             <div class="row">
-                <c:forEach items="${cartasPartida}" var="cp">
-                  <c:forEach var="mazo" items="${mazosOrder}">
-                    <c:if test="${cp.mazo.id == mazo}">
-                        <div class="col-md-1" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">    
-                    <c:if test="${cp.posCartaMazo != 1}">
+                
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt1}" var="cp1">
+                        <c:if test="${cp1.posCartaMazo != 1}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
                             <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
                         </c:if>
-                        <c:if test="${cp.posCartaMazo == 1}">
-                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
+                        <c:if test="${cp1.posCartaMazo == 1}">
+                                <spring:url value="${cp1.carta.imagen}" htmlEscape="true" var="carta"/>
                                 <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
                         </c:if>
-                        </div>
-                      
-                    </c:if>
-                  </c:forEach>
-               
+                    </c:forEach>
 
-<!--MAZO INICIAL-->
-                        <c:if test="${cp.mazoInicial.id == cp.partida.id && cp.posCartaMazo == 1}">
-                            <div class="col-md-1" style="display: flex; justify-content: space-between;">
-                                <spring:url value="${cp.carta.imagen}" htmlEscape="true" var="carta"/>
-                                <img class="img-responsive mx-auto d-block" style="margin: 0 10px 0 70px;" width="300" height="300" src="${carta}"/>
-                                <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
-                                <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/> 
-                            </div>
+                </div>
+
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt2}" var="cp2">
+                        <c:if test="${cp2.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
                         </c:if>
-                    
-                </c:forEach>
+                        <c:if test="${cp2.posCartaMazo == 1}">
+                                <spring:url value="${cp2.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt3}" var="cp3">
+                        <c:if test="${cp3.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
+                        </c:if>
+                        <c:if test="${cp3.posCartaMazo == 1}">
+                                <spring:url value="${cp3.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt4}" var="cp4">
+                        <c:if test="${cp4.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
+                        </c:if>
+                        <c:if test="${cp4.posCartaMazo == 1}">
+                                <spring:url value="${cp4.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt5}" var="cp5">
+                        <c:if test="${cp5.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
+                        </c:if>
+                        <c:if test="${cp5.posCartaMazo == 1}">
+                                <spring:url value="${cp5.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt6}" var="cp6">
+                        <c:if test="${cp6.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
+                        </c:if>
+                        <c:if test="${cp6.posCartaMazo == 1}">
+                                <spring:url value="${cp6.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+                <div class="col-md-1">
+
+                    <c:forEach items="${mazoInt7}" var="cp7">
+                        <c:if test="${cp7.posCartaMazo != 1}">
+                            <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta"/>
+                            <img class="img-responsive mx-auto d-block" style="margin: 0 10px;" width="300" height="300" src="${carta}"/>
+                        </c:if>
+                        <c:if test="${cp7.posCartaMazo == 1}">
+                                <spring:url value="${cp7.carta.imagen}" htmlEscape="true" var="carta"/>
+                                <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}"/>
+                        </c:if>
+                    </c:forEach>
+
+                </div>
+
             </div>        
         </div>
     

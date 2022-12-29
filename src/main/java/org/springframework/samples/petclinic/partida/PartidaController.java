@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,8 +96,23 @@ public class PartidaController {
 
 			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
 			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(p.getId());
-			model.put("cartasPartida",cp);
-			model.put("mazosOrder", mazos);
+			Map<Integer,List<CartasPartida>> dicc = new HashMap<>();
+			
+			for (Integer idMazo:mazos){
+				List<CartasPartida> aux = cartasPartidaService.findCartasPartidaByMazoId(idMazo);
+				dicc.put(idMazo, aux);
+			}
+
+			//List<CartasPartida> mazoIni = cartasPartidaService.
+		
+			model.put("mazInt1",dicc.get(mazos.get(0)));
+			model.put("mazInt2",dicc.get(mazos.get(1)));
+			model.put("mazInt3",dicc.get(mazos.get(2)));
+			model.put("mazInt4",dicc.get(mazos.get(3)));
+			model.put("mazInt5",dicc.get(mazos.get(4)));
+			model.put("mazInt6",dicc.get(mazos.get(5)));
+			model.put("mazInt7",dicc.get(mazos.get(6)));
+			
 
 			
 			return TABLERO;
