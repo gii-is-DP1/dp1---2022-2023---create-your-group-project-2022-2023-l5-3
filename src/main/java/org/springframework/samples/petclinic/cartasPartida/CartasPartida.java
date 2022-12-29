@@ -57,5 +57,7 @@ public class CartasPartida extends BaseEntity {
     @OneToOne
     @JoinColumn(name="cartaId")
     private Carta carta;
+
+    private Boolean isShow;
     
 }
