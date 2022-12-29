@@ -59,4 +59,9 @@ public class CartasPartidaService {
         List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaByMazoId(mazoId);
         return res;
     }
+
+    public List<CartasPartida> findCartasPartidaMazoInicialByPartidaId(Integer partidaId){
+        List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
+        return res;
+    }
 }

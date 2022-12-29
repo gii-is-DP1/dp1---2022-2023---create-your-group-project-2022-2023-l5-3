@@ -103,6 +103,9 @@ public class PartidaController {
 				dicc.put(idMazo, aux);
 			}
 
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(p.getId());
+			model.put("mazInicial", mazoIni);
+
 			//List<CartasPartida> mazoIni = cartasPartidaService.
 		
 			model.put("mazInt1",dicc.get(mazos.get(0)));
