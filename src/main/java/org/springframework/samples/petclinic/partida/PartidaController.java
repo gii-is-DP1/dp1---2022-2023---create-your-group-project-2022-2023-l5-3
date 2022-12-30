@@ -4,12 +4,17 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 
@@ -35,6 +40,9 @@ public class PartidaController {
 	private PartidaService partidaService;
 	
 	@Autowired
+	private CartasPartidaService cartasPartidaService;
+
+	@Autowired
 	private JugadorService jugadorService;
 
 	@Autowired
@@ -47,7 +55,7 @@ public class PartidaController {
 	private static final String TABLERO = "tableros/tablero";
 
 	
-
+// ==========================================CREAR PARTIDA===================================================
 	
 	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){
@@ -87,14 +95,54 @@ public class PartidaController {
 			this.partidaService.save(p);
 			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
+
+			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(p.getId());
+			Map<Integer,List<CartasPartida>> dicc = new HashMap<>();
+			
+			for (Integer idMazo:mazos){
+				List<CartasPartida> aux = cartasPartidaService.findCartasPartidaByMazoId(idMazo);
+				dicc.put(idMazo, aux);
+			}
+
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(p.getId());			
+			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
+			
+			cp.removeAll(mazoIni);
+
+			List<CartasPartida> cartasPosiblesAMover = new ArrayList<>();	
+
+			//Bucle para mostrar solo las cartas en posición final de su mazo al iniciar partida
+			for(CartasPartida carta:cp){
+				if (carta.getPosCartaMazo() == dicc.get(carta.getMazo().getId()).size()){
+					carta.setIsShow(true);
+					cartasPosiblesAMover.add(carta);
+				} else {
+					carta.setIsShow(false);
+				}
+			}
+
+			cartasPosiblesAMover.add(mazoIni.get(0));
+					
+		
+			System.out.println(cartasPosiblesAMover.size());
+
+			model.put("mazInt1",dicc.get(mazos.get(0)));
+			model.put("mazInt2",dicc.get(mazos.get(1)));
+			model.put("mazInt3",dicc.get(mazos.get(2)));
+			model.put("mazInt4",dicc.get(mazos.get(3)));
+			model.put("mazInt5",dicc.get(mazos.get(4)));
+			model.put("mazInt6",dicc.get(mazos.get(5)));
+			model.put("mazInt7",dicc.get(mazos.get(6)));
+			model.put("mazInicial", mazoIni);
+			model.put("cartasPosiblesAMover", cartasPosiblesAMover);
 			
 			return TABLERO;
-		
-		
+	
 		}
 	
 	}
 
+//===============================LISTAR PARTIDAS ================================
 	@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
