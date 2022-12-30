@@ -16,12 +16,16 @@ import javax.validation.ValidatorFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.logros.Logros;
 import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.user.UserServicePageable;
 import org.springframework.security.core.Authentication;
 
 
@@ -39,6 +43,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -53,13 +58,15 @@ public class JugadorController {
 	private final UserService userService;
 	private final LogrosService logrosService;
 	private final PartidaService partidaService;
+	private final UserServicePageable pageUser;
     
 	@Autowired
-    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService, PartidaService partidaService){
+    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService, PartidaService partidaService,UserServicePageable pageUser){
         this.jugadorService= jugadorService;
 		this.userService=userService;
 		this.logrosService=logrosService;
 		this.partidaService=partidaService;
+		this.pageUser=pageUser;
     }
 
     @GetMapping(value = "/jugador/new")
@@ -332,7 +339,7 @@ public class JugadorController {
 	}
 	
 	@GetMapping(path = "/jugador/delete/{id}")
-	public ModelAndView deleteJugador(@PathVariable("id") int id, ModelMap modelMap) {
+	public ModelAndView deleteJugador(@PathVariable("id") int id, ModelMap modelMap,@RequestParam(defaultValue="0") int page) {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	if(auth != null){
 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -343,10 +350,10 @@ public class JugadorController {
 				Jugador jugador = jugadorService.findJugadorById(id);
 				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){ //para que el admin no pueda eliminarse a sí mismo
 					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
-					List<User> usuarios = userService.findAllUsers();
-					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
-					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
-					result.addObject("users", listaOrdenada);
+					Pageable pageable = PageRequest.of(page,4);
+					Page<User> users = pageUser.findAllUsers(pageable);
+					
+					result.addObject("users", users);
 					return result;
 				} else {
 					List<Logros> listaLogros = logrosService.findById(jugador.getId());
@@ -355,16 +362,15 @@ public class JugadorController {
 					}
 					jugadorService.deleteJugador(jugador);
 					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
-					List<User> usuarios = userService.findAllUsers();
-					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
-					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
-					result.addObject("users", listaOrdenada);
+					Pageable pageable = PageRequest.of(page,4);
+					Page<User> users = pageUser.findAllUsers(pageable);
+					result.addObject("users", users);
 					return result;
 				}
 				
 			}
 		}
-		
+		 
 	}else{
 		return new ModelAndView("exception");
 	}
