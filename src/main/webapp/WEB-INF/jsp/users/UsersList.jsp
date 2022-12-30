@@ -6,6 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
+
 <div class="row text-center">
     <p><h1><b>Users</b></h1>
     </br>
@@ -15,7 +16,7 @@
 </br>
 </br>
 </div>    
-
+<body>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
@@ -29,7 +30,8 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${users}" var="user">
+        
+            <c:forEach items="${users.content}" var="user">
             <tr>
                 
                 <td>
@@ -56,4 +58,17 @@
         </c:forEach>
         </tbody>
     </table>
+    
+    <div class="pagination">
+        <c:if test="${users.hasPrevious()}">
+          <a href="?page=${users.number - 1}" class="previous">Anterior</a>
+        </c:if>
+        <c:if test="${!users.isLast()}">
+          <a href="?page=${users.number + 1}" class="next">Siguiente</a>
+        </c:if>
+      </div>
+      
+      <p>Pagina ${users.number + 1} de ${users.totalPages}</p>
+
+</body>
 </petclinic:layout>
