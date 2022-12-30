@@ -6,6 +6,28 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
+<head>
+    <meta content="initial-scale=1, 
+        maximum-scale=1, user-scalable=0"
+        name="viewport" />
+  
+    <meta name="viewport" 
+        content="width=device-width" />
+  
+    <!--Datatable plugin CSS file -->
+    <link rel="stylesheet" href=
+"https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
+  
+    <!--jQuery library file -->
+    <script type="text/javascript" 
+        src="https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+  
+    <!--Datatable plugin JS library file -->
+    <script type="text/javascript" 
+src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+    </script>
+</head>
 <div class="row text-center">
     <p><h1><b>Users</b></h1>
     </br>
@@ -15,7 +37,7 @@
 </br>
 </br>
 </div>    
-
+<body>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
@@ -56,4 +78,11 @@
         </c:forEach>
         </tbody>
     </table>
+    <script>
+        /* Initialization of datatables */
+        $(document).ready(function () {
+            $('table.display').DataTable();
+        });
+    </script>
+</body>
 </petclinic:layout>
