@@ -4,6 +4,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html"%>
+<%@page pageEncoding="UTF-8"%>
+
+
 
 <petclinic:layout pageName="users">
 
@@ -61,14 +65,22 @@
     
     <div class="pagination">
         <c:if test="${users.hasPrevious()}">
-          <a href="?page=${users.number - 1}" class="previous">Anterior</a>
+          <a href="?page=${users.number - 1}" class="previous">
+            <button class="btn btn-default">
+                Anterior
+            </button>
+        </a>
         </c:if>
         <c:if test="${!users.isLast()}">
-          <a href="?page=${users.number + 1}" class="next">Siguiente</a>
+            <a href="?page=${users.number + 1}" class="next">
+                <button class="btn btn-default">
+                    Siguiente
+                </button>
+            </a>
         </c:if>
       </div>
       
-      <p>Pagina ${users.number + 1} de ${users.totalPages}</p>
+      <p>Página ${users.number + 1} de ${users.totalPages}</p>
 
 </body>
 </petclinic:layout>
