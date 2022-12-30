@@ -6,28 +6,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="users">
-<head>
-    <meta content="initial-scale=1, 
-        maximum-scale=1, user-scalable=0"
-        name="viewport" />
-  
-    <meta name="viewport" 
-        content="width=device-width" />
-  
-    <!--Datatable plugin CSS file -->
-    <link rel="stylesheet" href=
-"https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" />
-  
-    <!--jQuery library file -->
-    <script type="text/javascript" 
-        src="https://code.jquery.com/jquery-3.5.1.js">
-    </script>
-  
-    <!--Datatable plugin JS library file -->
-    <script type="text/javascript" 
-src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
-    </script>
-</head>
+
 <div class="row text-center">
     <p><h1><b>Users</b></h1>
     </br>
@@ -51,7 +30,8 @@ src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${users}" var="user">
+        
+            <c:forEach items="${users.content}" var="user">
             <tr>
                 
                 <td>
@@ -78,11 +58,17 @@ src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
         </c:forEach>
         </tbody>
     </table>
-    <script>
-        /* Initialization of datatables */
-        $(document).ready(function () {
-            $('table.display').DataTable();
-        });
-    </script>
+    
+    <div class="pagination">
+        <c:if test="${users.hasPrevious()}">
+          <a href="?page=${users.number - 1}" class="previous">Anterior</a>
+        </c:if>
+        <c:if test="${!users.isLast()}">
+          <a href="?page=${users.number + 1}" class="next">Siguiente</a>
+        </c:if>
+      </div>
+      
+      <p>Pagina ${users.number + 1} de ${users.totalPages}</p>
+
 </body>
 </petclinic:layout>
