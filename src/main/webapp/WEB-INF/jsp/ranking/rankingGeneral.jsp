@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-md-1" style="display: flex; text-align: center; justify-content: center; padding-left: 150px;">
-            <h2>Ranking partidas</h2>
+            <h2>Ranking partidas ganadas</h2>
         </div>
         <div class="col-md-1" style="display: flex; text-align: center; justify-content: center; padding-left: 420px;">
             <h2>Ranking puntos ganados</h2>
@@ -37,10 +37,10 @@
                     <tr>
                         
                         <td>
-                            <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
-                            <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
-                            <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</a></c:if>
-                            <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
+                            <c:if test="${status.count == 1}"><img class="rounded d-block" src="/resources/images/oro.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 2}"><img class="rounded d-block" src="/resources/images/plata.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 3}"><img class="rounded d-block" src="/resources/images/bronce.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count > 3}"><a style="color:black; padding-left: 8px;">${status.count}</a></c:if>
                         </td>  
                         <td>
                             <c:out value="${jugador.user.username}"/>
@@ -73,10 +73,10 @@
                     <tr>
                         
                         <td>
-                            <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
-                            <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
-                            <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</a></c:if>
-                            <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
+                            <c:if test="${status.count == 1}"><img class="rounded d-block" src="/resources/images/oro.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 2}"><img class="rounded d-block" src="/resources/images/plata.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 3}"><img class="rounded d-block" src="/resources/images/bronce.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count > 3}"><a style="color:black; padding-left: 8px;">${status.count}</a></c:if>
                         </td>   
                         <td>
                             <c:out value="${jugador2.user.username}"/>
@@ -108,10 +108,10 @@
                     <tr>
                         
                         <td>
-                            <c:if test="${status.count == 1}"><a class="btn btn-warning"> 1</a></c:if>
-                            <c:if test="${status.count == 2}"><a class="btn btn-default"> 2</a></c:if>
-                            <c:if test="${status.count == 3}"><a class="btn btn-info"> 3</a></c:if>
-                            <c:if test="${status.count > 3}"><c:out value="${status.count}"/></c:if>
+                            <c:if test="${status.count == 1}"><img class="rounded d-block" src="/resources/images/oro.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 2}"><img class="rounded d-block" src="/resources/images/plata.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count == 3}"><img class="rounded d-block" src="/resources/images/bronce.png" width="25" height="25"></c:if>
+                            <c:if test="${status.count > 3}"><a style="color:black; padding-left: 8px;">${status.count}</a></c:if>
                         </td>  
                         <td>
                             <c:out value="${jugador3.user.username}"/>

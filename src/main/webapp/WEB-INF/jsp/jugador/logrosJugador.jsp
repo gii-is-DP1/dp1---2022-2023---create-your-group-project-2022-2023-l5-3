@@ -29,19 +29,23 @@
 						<img class="rounded d-block" src="${logro.image}" width="200" height="200">
 					</div>
 					<div class="card-body" style="text-align: center;">
+						
 						<c:if test="${logro.is_unlocked == false}">
 							Logro -> <c:out value="${logro.name}" />	
 						</br>
 							<c:out value="${logro.description}" />
 						</br>
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</br>
+							<h2 style="color: red;">NO CONSEGUIDO</h2>
 						</c:if>
+						
 						<c:if test="${logro.is_unlocked == true}">
 							Logro -> <c:out value="${logro.name}" />	
 						</br>
 							<c:out value="${logro.description}" />
 						</br>
-							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+					</br>
+						<h2 style="color: green;">CONSEGUIDO</h2>
 						</c:if>
 					</div>
 				</div>
