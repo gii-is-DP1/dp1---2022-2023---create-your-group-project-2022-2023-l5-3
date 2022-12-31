@@ -349,7 +349,7 @@ public class JugadorController {
 			if (credencial.equals("admin")) {
 				Jugador jugador = jugadorService.findJugadorById(id);
 				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){ //para que el admin no pueda eliminarse a sí mismo
-					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
+					ModelAndView result = new ModelAndView("redirect:/users/all");
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
 					
@@ -361,7 +361,7 @@ public class JugadorController {
 						logrosService.delete(logro);
 					}
 					jugadorService.deleteJugador(jugador);
-					ModelAndView result = new ModelAndView(VIEW_JUGADORES);
+					ModelAndView result = new ModelAndView("redirect:/users/all");
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
 					result.addObject("users", users);

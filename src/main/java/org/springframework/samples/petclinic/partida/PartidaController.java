@@ -294,7 +294,7 @@ public class PartidaController {
 						logrosService.delete(logro);
 					}*/
 					partidaService.deletePartida(partida);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+					ModelAndView result = new ModelAndView("redirect:/partidas/finalizadas");
 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 					return result;
 				}
@@ -314,8 +314,8 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual(id);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					ModelAndView result = new ModelAndView("redirect:/partidas/enCurso");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return result;
 					
 				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
@@ -352,8 +352,8 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual2(id);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					ModelAndView result = new ModelAndView("redirect:/partidas/enCurso");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return result;
 					
 				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	

@@ -26,6 +26,7 @@
         <tr>
             
             <th style="width: 150px;">Jugador Id</th>
+            <th style="width: 150px;">Imagen</th>
             <th style="width: 200px;">Username</th>
             <th style="width: 200px;">Name</th>
             <th style="width: 200px;">Lastname</th>
@@ -42,7 +43,11 @@
                     <c:out value="${user.jugador.id}"/>
                 </td>  
                 <td>
-                    <a href="http://localhost:8080/jugador/perfil/${user.jugador.id}">${user.username}</a>
+                    <c:if test="${user.jugador.image == ''}"><img class="rounded d-block" src="/resources/images/defecto.png" width="50" height="50"></c:if>
+                    <c:if test="${user.jugador.image != ''}"><img class="rounded d-block" src="${user.jugador.image}" width="50" height="50"></c:if>
+                </td>
+                <td>
+                    <a href="http://localhost:8080/jugador/perfil/${user.jugador.id}" style="color: black;">${user.username}</a>
                 </td>
                 <td>
                     <c:out value="${user.jugador.firstName}"/>
