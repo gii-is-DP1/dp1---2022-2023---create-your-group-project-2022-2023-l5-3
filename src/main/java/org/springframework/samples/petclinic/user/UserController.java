@@ -17,10 +17,8 @@ package org.springframework.samples.petclinic.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -55,14 +53,12 @@ public class UserController {
 	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
-	private final UserService userService;
 	private final LogrosService logrosService;
 	private final UserServicePageable pageUser;
 	
 	@Autowired
-	public UserController(JugadorService jugadorService,UserService userService, LogrosService logrosService, UserServicePageable up) {
+	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up) {
 		this.jugadorService = jugadorService;
-		this.userService = userService;
 		this.logrosService = logrosService;
 		this.pageUser=up;
 	}
@@ -161,23 +157,5 @@ public class UserController {
 		return "welcome";
 	}
 
-	@GetMapping("/ranking")
-    public String showRanking(Map<String, Object> model){
-        
-			List<Jugador> jugadores = jugadorService.findAllPlayer();
-			
-			Comparator<Jugador> comparador= Comparator.comparing(Jugador::getPartidasGanadas);
-			Comparator<Jugador> comparador2= Comparator.comparing(Jugador::getNumTotalPuntos);
-			Comparator<Jugador> comparador3= Comparator.comparing(Jugador::getNumTotalMovimientos);
-			
-			List<Jugador> ranking1 = jugadores.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-			List<Jugador> ranking2 = jugadores.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
-			List<Jugador> ranking3 = jugadores.stream().sorted(comparador3.reversed()).collect(Collectors.toList());
-
-			model.put("jugadoresWIN", ranking1);
-			model.put("jugadoresPTN", ranking2);
-			model.put("jugadoresMOV", ranking3);
-			
-			return "ranking/rankingGeneral";
-	}
+	
 }
