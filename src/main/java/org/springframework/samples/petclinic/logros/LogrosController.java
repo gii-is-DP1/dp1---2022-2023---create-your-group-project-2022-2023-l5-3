@@ -37,7 +37,7 @@ public class LogrosController {
 			logro.setJugador(jugador);
 		}
 		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
-		getLogrosDeCadaJugador(jugador.getId());
+		logrosService.getLogrosDeCadaJugador(jugador.getId());
 		model.put("logros",logrosDelUsuarioLogeado);
 		return VIEWS_LOGROS;
 	}
@@ -59,7 +59,7 @@ public class LogrosController {
 					}
 				if (credencial.equals("admin")) { 
 					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
-					getLogrosDeCadaJugador(id);
+					logrosService.getLogrosDeCadaJugador(id);
 					model.put("logros",logrosDelUsuarioLogeado);
 					return VIEWS_LOGROS;
 				} else {
@@ -74,28 +74,5 @@ public class LogrosController {
 		return "exception";
 	}
 
-	public void getLogrosDeCadaJugador(Integer idJugador) {
-		Jugador player = jugadorService.findJugadorById(idJugador);
-		List<Logros> logros = logrosService.findById(player.getId());
-		Integer primerId = logros.get(0).getId();
-		
-		for (Logros logro: logros){
-
-			if (player.getPartidasJugadas() >= 5){
-				if(logro.getId().equals(primerId)){
-					logro.setIs_unlocked(true);
-				}
-			}
-			if (player.getNumTotalPuntos() >= 100){
-				if(logro.getId().equals(primerId+1)){
-					logro.setIs_unlocked(true);
-				}
-			}
-			if (player.getNumTotalMovimientos() >= 200 ){
-				if(logro.getId().equals(primerId+2)){
-					logro.setIs_unlocked(true);
-				}
-			} 
-		}
-	}
+	
 }
