@@ -13,6 +13,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.carta.Carta;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoService;
+import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
+import org.springframework.samples.petclinic.mazoFinal.MazoFinalService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,9 @@ public class CartasPartidaService {
     
     @Autowired
     private MazoService mazoService;
+
+    @Autowired
+    private MazoFinalService mazoFinalService;
 
 
 
@@ -87,6 +92,33 @@ public class CartasPartidaService {
         int i = 1;
         for (CartasPartida cp : cartasMovidas) {
             cp.setMazo(mazoDest);
+            cp.setPosCartaMazo(indexUltCarta+i);
+            i++;
+            cartasPartidaRepository.save(cp);
+        }
+
+        System.out.println("probando");
+
+    }
+
+    @Transactional
+    public void moverCartaInterFin(int mazoOrigenId, int mazoDestinoId, int partidaId){
+        
+        MazoFinal mazoDest = mazoFinalService.findMazoFinalById(mazoDestinoId);
+
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
+
+        int startIndex = cpOrigen.size() - 1;
+
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+
+        int indexUltCarta = cpDestino.size();
+        int i = 1;
+        for (CartasPartida cp : cartasMovidas) {
+            cp.setMazo(null);
+            cp.setMazoFinal(mazoDest);
             cp.setPosCartaMazo(indexUltCarta+i);
             i++;
             cartasPartidaRepository.save(cp);

@@ -346,7 +346,7 @@ public class PartidaController {
 	@GetMapping(path = "partidas/prueba")
 	public String prueba(Map<String,Object> model){
 
-		cartasPartidaService.moverCartaInterInter(3, 4, 1, 1);
+		cartasPartidaService.moverCartaInterFin(3, 1, 1);
 		
 		return "welcome";
 		
