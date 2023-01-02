@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -93,11 +96,45 @@ public class PartidaController {
 			pb.crearMazosIntermedios(p);
 			model.put("message", "Partida empezada");
 
-			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
 			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(p.getId());
-			model.put("cartasPartida",cp);
-			model.put("mazosOrder", mazos);
+			Map<Integer,List<CartasPartida>> dicc = new HashMap<>();
+			
+			for (Integer idMazo:mazos){
+				List<CartasPartida> aux = cartasPartidaService.findCartasPartidaByMazoId(idMazo);
+				dicc.put(idMazo, aux);
+			}
 
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(p.getId());			
+			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
+			
+			cp.removeAll(mazoIni);
+
+			List<CartasPartida> cartasPosiblesAMover = new ArrayList<>();	
+
+			//Bucle para mostrar solo las cartas en posición final de su mazo al iniciar partida
+			for(CartasPartida carta:cp){
+				if (carta.getPosCartaMazo() == dicc.get(carta.getMazo().getId()).size()){
+					carta.setIsShow(true);
+					cartasPosiblesAMover.add(carta);
+				} else {
+					carta.setIsShow(false);
+				}
+			}
+
+			cartasPosiblesAMover.add(mazoIni.get(0));
+					
+		
+			System.out.println(cartasPosiblesAMover.size());
+
+			model.put("mazInt1",dicc.get(mazos.get(0)));
+			model.put("mazInt2",dicc.get(mazos.get(1)));
+			model.put("mazInt3",dicc.get(mazos.get(2)));
+			model.put("mazInt4",dicc.get(mazos.get(3)));
+			model.put("mazInt5",dicc.get(mazos.get(4)));
+			model.put("mazInt6",dicc.get(mazos.get(5)));
+			model.put("mazInt7",dicc.get(mazos.get(6)));
+			model.put("mazInicial", mazoIni);
+			model.put("cartasPosiblesAMover", cartasPosiblesAMover);
 			
 			return TABLERO;
 	
@@ -257,7 +294,7 @@ public class PartidaController {
 						logrosService.delete(logro);
 					}*/
 					partidaService.deletePartida(partida);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
+					ModelAndView result = new ModelAndView("redirect:/partidas/finalizadas");
 					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 					return result;
 				}
@@ -277,8 +314,8 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual(id);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					ModelAndView result = new ModelAndView("redirect:/partidas/enCurso");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return result;
 					
 				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
@@ -315,8 +352,8 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI ERES ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual2(id);
-					ModelAndView result = new ModelAndView("partidas/partidaListFinalizadas");
-					result.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+					ModelAndView result = new ModelAndView("redirect:/partidas/enCurso");
+					result.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return result;
 					
 				} else { //SI ERES JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	

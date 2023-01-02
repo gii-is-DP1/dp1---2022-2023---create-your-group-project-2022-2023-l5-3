@@ -41,7 +41,7 @@
                     </c:when>
                     <c:otherwise>
                         <button class="btn btn-default" type="submit">Actualizar datos</button>
-                        <spring:url value="/jugador/perfil/{id}" var="editUrl">
+                        <spring:url value="/jugador/perfil/" var="editUrl">
                             <spring:param name="id" value="${id}"/>
                         </spring:url>
                         <a href="${editUrl}" class="btn btn-default">Volver</a>

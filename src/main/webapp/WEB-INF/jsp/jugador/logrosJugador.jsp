@@ -16,44 +16,48 @@
 		<h1><b>Logros</b></h1>
 	</br>
 	</div>
-			<table id="usersTable" class="table table-striped">
-				<thead>
-				<tr>
-					<th style="width: 150px;">Logro</th>
-					<th style="width: 200px;">Descripcion</th>
-					<th style="width: 200px;">Desbloqueado?</th>
-				</tr>
-				</thead>
-				<tbody>
-				<c:forEach items="${logros}" var="logro">
-					<c:if test="${logro.is_unlocked == false}">
-						<tr> 
-							<td>
-								<c:out value="${logro.name}"/>
-							</td>
-							<td>
-								<c:out value="${logro.description}"/>
-							</td>
-							<td>
-								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-							</td>
-						</tr>
-					</c:if>
-                	<c:if test="${logro.is_unlocked == true}">
-						<tr>
-							<td>
-								<c:out value="${logro.name}"/>
-							</td>
-							<td>
-								<c:out value="${logro.description}"/>
-							</td>
-							<td>
-								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-							</td>
-						</tr>
-					</c:if>
-					
-				</c:forEach>
-			</tbody>
-		</table>
+	
+</br>
+	<div class="container" style="width: 1600px;">
+
+		<div class="row" style="display: flex; justify-content: space-between; padding-right: 460px;">
+			<c:forEach items="${logros}" var="logro">
+		
+			<div class="col-md-3">
+				<div class="card" style="width:300px; height: 300px; border: 10px solid-black; border-radius: 50px; background-color: beige;">
+					<div class="card-header" style="text-align: center;">
+						<img class="rounded d-block" src="${logro.image}" width="200" height="200">
+					</div>
+					<div class="card-body" style="text-align: center;">
+						
+						<c:if test="${logro.is_unlocked == false}">
+							Logro -> <c:out value="${logro.name}" />	
+						</br>
+							<c:out value="${logro.description}" />
+						</br>
+					</br>
+							<h2 style="color: red;">NO CONSEGUIDO</h2>
+						</c:if>
+						
+						<c:if test="${logro.is_unlocked == true}">
+							Logro -> <c:out value="${logro.name}" />	
+						</br>
+							<c:out value="${logro.description}" />
+						</br>
+					</br>
+						<h2 style="color: green;">CONSEGUIDO</h2>
+						</c:if>
+					</div>
+				</div>
+	
+			</div>
+	
+			</c:forEach>
+	
+		</div>
+
+	</div>
+	
+	
+	
 </petclinic:layout>

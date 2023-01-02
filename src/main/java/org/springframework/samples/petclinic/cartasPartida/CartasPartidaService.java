@@ -67,6 +67,7 @@ public class CartasPartidaService {
         
     }
 
+
     public CartasPartida findCartasPartidaByCartaId(int cartaId){
         return cartasPartidaRepository.findCartasPartidaByCartaId(cartaId);
     }
@@ -129,8 +130,18 @@ public class CartasPartidaService {
     }
 
     @Transactional
-	public void saveCartasPartida(CartasPartida cp) throws DataAccessException {
-		cartasPartidaRepository.save(cp);
-		
+    public void saveCartasPartida(CartasPartida cp) throws DataAccessException {
+	    cartasPartidaRepository.save(cp);	
 	}	
+
+    public List<CartasPartida> findCartasPartidaByMazoId(Integer mazoId){
+        List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaByMazoId(mazoId);
+        return res;
+    }
+
+    public List<CartasPartida> findCartasPartidaMazoInicialByPartidaId(Integer partidaId){
+        List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
+        return res;
+    }
+
 }

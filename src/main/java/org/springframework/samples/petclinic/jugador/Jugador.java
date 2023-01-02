@@ -70,9 +70,9 @@ public class Jugador extends Person{
         return partidasJugadas.size();
     }
     
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
-    Set<Logros> logros;
+    @OneToOne
+    @JoinColumn(name="jugador_id")
+    Logros logros;
     
 
 }
