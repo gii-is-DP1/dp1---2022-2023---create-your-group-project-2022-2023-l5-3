@@ -71,34 +71,28 @@ public class CartasPartidaService {
     }
 
     @Transactional
-    public void moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas){
+    public void moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId){
         Mazo mazoOrigen = mazoService.findMazoById(mazoOrigenId);
         Mazo mazoDest = mazoService.findMazoById(mazoDestinoId);
-        List<Carta> cartasMazoOrigenOld = findCartasByMazoIdList(mazoOrigenId);
-        List<Carta> cartasMazoDestOld = findCartasByMazoIdList(mazoDestinoId);
 
-        int startIndex = cartasMazoOrigenOld.size() - cantidadCartas;
-        List<Carta> cartasMovidas = cartasMazoDestOld.subList(startIndex, cartasMazoDestOld.size());
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestinoId, partidaId);
 
-        int indexUltCarta = cartasMazoOrigenOld.size();
+        int startIndex = cpOrigen.size() - cantidadCartas;
+
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+
+        int indexUltCarta = cpDestino.size();
         int i = 1;
-        for (Carta carta : cartasMovidas) {
-            CartasPartida cp = findCartasPartidaByCartaId(carta.getId());
-            CartasPartida cpNew = new CartasPartida();
-            cpNew.setId(cp.getId());
-            cpNew.setMazo(mazoDest);
-            cpNew.setCarta(cp.getCarta());
-            cpNew.setPartida(cp.getPartida());
-            cpNew.setPosCartaMazo(indexUltCarta+i);
+        for (CartasPartida cp : cartasMovidas) {
+            cp.setMazo(mazoDest);
+            cp.setPosCartaMazo(indexUltCarta+i);
             i++;
-            cartasPartidaRepository.delete(cp);
-            cartasPartidaRepository.save(cpNew);
+            cartasPartidaRepository.save(cp);
         }
 
-
-        List<Carta> destinoNew = findCartasByMazoIdList(mazoDestinoId);
-        System.out.println(destinoNew.toString());
-
+        System.out.println("probando");
 
     }
 
