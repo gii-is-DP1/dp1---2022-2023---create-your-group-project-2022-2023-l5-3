@@ -20,8 +20,8 @@ public class MazoService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Mazo> findMazoById(Integer id) throws DataAccessException{
-        return mazoRepository.findById(id);
+    public Mazo findMazoById(Integer id) throws DataAccessException{
+        return mazoRepository.findMazoById(id);
     }
 
 

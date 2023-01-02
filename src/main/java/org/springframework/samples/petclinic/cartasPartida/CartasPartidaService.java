@@ -10,7 +10,9 @@ import java.util.SortedSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.carta.Carta;
 import org.springframework.samples.petclinic.mazo.Mazo;
+import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartasPartidaService {
 
     private CartasPartidaRepository cartasPartidaRepository;
+    
+    @Autowired
+    private MazoService mazoService;
+
+
 
     @Autowired
     public CartasPartidaService(CartasPartidaRepository cartasPartidaRepository) {
@@ -55,6 +62,47 @@ public class CartasPartidaService {
         
     }
 
+
+    public CartasPartida findCartasPartidaByCartaId(int cartaId){
+        return cartasPartidaRepository.findCartasPartidaByCartaId(cartaId);
+    }
+
+    public List<Carta> findCartasByMazoIdList(int mazoId){
+        return cartasPartidaRepository.findCartasByMazoIdList(mazoId);
+    }
+
+    @Transactional
+    public void moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId){
+        Mazo mazoOrigen = mazoService.findMazoById(mazoOrigenId);
+        Mazo mazoDest = mazoService.findMazoById(mazoDestinoId);
+
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestinoId, partidaId);
+
+        int startIndex = cpOrigen.size() - cantidadCartas;
+
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+
+        int indexUltCarta = cpDestino.size();
+        int i = 1;
+        for (CartasPartida cp : cartasMovidas) {
+            cp.setMazo(mazoDest);
+            cp.setPosCartaMazo(indexUltCarta+i);
+            i++;
+            cartasPartidaRepository.save(cp);
+        }
+
+        System.out.println("probando");
+
+    }
+
+    @Transactional
+	  public void saveCartasPartida(CartasPartida cp) throws DataAccessException {
+		cartasPartidaRepository.save(cp);
+		
+	  }	
+
     public List<CartasPartida> findCartasPartidaByMazoId(Integer mazoId){
         List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaByMazoId(mazoId);
         return res;
@@ -64,4 +112,5 @@ public class CartasPartidaService {
         List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         return res;
     }
+
 }

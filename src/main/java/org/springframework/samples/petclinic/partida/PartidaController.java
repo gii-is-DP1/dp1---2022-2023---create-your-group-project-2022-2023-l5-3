@@ -380,6 +380,15 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
+	@GetMapping(path = "partidas/prueba")
+	public String prueba(Map<String,Object> model){
+
+		cartasPartidaService.moverCartaInterInter(3, 4, 1, 1);
+		
+		return "welcome";
+		
+	}
+
 	//PARA ESTADÍSTICAS
 	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALORES
 	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 
