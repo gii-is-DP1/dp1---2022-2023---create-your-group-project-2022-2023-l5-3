@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -135,6 +139,7 @@ public class PartidaController {
 			model.put("mazInt7",dicc.get(mazos.get(6)));
 			model.put("mazInicial", mazoIni);
 			model.put("cartasPosiblesAMover", cartasPosiblesAMover);
+			model.put("partidaId",p.getId());
 			
 			return TABLERO;
 	
@@ -380,15 +385,31 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
-	@GetMapping(path = "partidas/prueba")
-	public String prueba(Map<String,Object> model){
-
-		cartasPartidaService.moverCartaInterInter(3, 4, 1, 1);
+	@PostMapping(value="/partidas/moverCarta/{partidaId}")
+	public String procesMoveCardForm(@PathVariable("partidaId") int partidaId,@RequestParam Integer mazoOrigen,@RequestParam Integer mazoDestino, @RequestParam Integer cantidad,Map<String, Object> model) {
 		
-		return "welcome";
-		
-	}
+			
+			System.out.println(mazoOrigen);
+			System.out.println(mazoDestino);
+			System.out.println(cantidad);
+			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(partidaId);			
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			Map<Integer, List<CartasPartida>> res = cartasPartidaService.moverCartaInterInter(mazoOrigen, mazoDestino, cantidad, partidaId);
 
+			model.put("mazInt1",res.get(mazos.get(0)));
+			model.put("mazInt2",res.get(mazos.get(1)));
+			model.put("mazInt3",res.get(mazos.get(2)));
+			model.put("mazInt4",res.get(mazos.get(3)));
+			model.put("mazInt5",res.get(mazos.get(4)));
+			model.put("mazInt6",res.get(mazos.get(5)));
+			model.put("mazInt7",res.get(mazos.get(6)));
+			model.put("mazInicial", mazoIni);
+			model.put("partidaId",partidaId);
+			return TABLERO;
+	
+		}
+	
+	
 	//PARA ESTADÍSTICAS
 	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALORES
 	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 

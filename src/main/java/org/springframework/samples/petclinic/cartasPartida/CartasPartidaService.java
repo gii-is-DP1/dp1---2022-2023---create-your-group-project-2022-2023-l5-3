@@ -2,8 +2,10 @@ package org.springframework.samples.petclinic.cartasPartida;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
@@ -72,8 +74,13 @@ public class CartasPartidaService {
     }
 
     @Transactional
-    public void moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId){
-        Mazo mazoOrigen = mazoService.findMazoById(mazoOrigenId);
+    public Map<Integer, List<CartasPartida>> moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId){
+        //Mazo mazoOrigen = mazoService.findMazoById(mazoOrigenId);
+        if(partidaId >1 ){
+            mazoOrigenId = mazoOrigenId+(partidaId*7);
+            mazoDestinoId = mazoDestinoId*(partidaId*7);
+        }
+        
         Mazo mazoDest = mazoService.findMazoById(mazoDestinoId);
 
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId, partidaId);
@@ -93,8 +100,24 @@ public class CartasPartidaService {
             cartasPartidaRepository.save(cp);
         }
 
-        System.out.println("probando");
+        List<Integer> mazos = getMazosIdSorted(partidaId);
+			Map<Integer,List<CartasPartida>> res = new HashMap<>();
+			for (Integer idMazo:mazos){
+				List<CartasPartida> aux = findCartasPartidaByMazoId(idMazo);
+				res.put(idMazo, aux);
+			}
+			List<CartasPartida> mazoIni = findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			List<CartasPartida> cp = findCartasPartidaByPartidaId(partidaId);
+			cp.removeAll(mazoIni);
 
+			for(CartasPartida carta:cp){
+				if (carta.getPosCartaMazo() == res.get(carta.getMazo().getId()).size()){
+					carta.setIsShow(true);
+				} else {
+					carta.setIsShow(false);
+				}
+			}
+            return res;
     }
 
     @Transactional
