@@ -1,11 +1,14 @@
 package org.springframework.samples.petclinic.user;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
@@ -14,8 +17,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "authorities")
-public class Authorities extends BaseEntity{
+public class Authorities extends AuditableEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "username")

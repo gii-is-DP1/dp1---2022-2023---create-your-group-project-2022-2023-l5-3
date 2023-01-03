@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.petclinic.jugador.Jugador;
 
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-
+@Audited
 @Table(name = "users")
 public class User{
 	@Id
