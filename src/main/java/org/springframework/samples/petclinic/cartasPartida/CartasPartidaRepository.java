@@ -12,7 +12,7 @@ public interface CartasPartidaRepository extends CrudRepository<CartasPartida,In
     @Query("select cp from CartasPartida cp where cp.partida.id = ?1")
     public List<CartasPartida>findCartasPartidaByPartidaId(Integer partidaId);
 
-    @Query("select cp from CartasPartida cp WHERE cp.mazo.id = ?1")
+    @Query("select cp from CartasPartida cp WHERE cp.mazo.id = ?1 ORDER BY cp.posCartaMazo")
     public List<CartasPartida> findCartasPartidaByMazoId(Integer mazoId);
 
     @Query("select cp from CartasPartida cp WHERE cp.mazo.id = ?1 and cp.partida.id = ?2")
@@ -28,7 +28,7 @@ public interface CartasPartidaRepository extends CrudRepository<CartasPartida,In
     public List<CartasPartida> findCartasPartidaMazoInicial(Integer partidaId);
 
     
-    @Query("select cp.carta from CartasPartida cp where cp.mazo.id = ?1")
+    @Query("select cp.carta from CartasPartida cp where cp.mazo.id = ?1 ORDER BY cp.posCartaMazo")
     public List<Carta> findCartasByMazoIdList(Integer mazoId);
 
     @Query("select cp.carta from CartasPartida cp where cp.mazo.id = ?1 and cp.partida.id = ?2")
@@ -39,4 +39,7 @@ public interface CartasPartidaRepository extends CrudRepository<CartasPartida,In
 
     @Query("select cp from CartasPartida cp where cp.carta.id = ?1 and cp.partida.id = ?2")
     public CartasPartida findCartasPartidaByCartaIdAndPartidaId(Integer cartaId, Integer partidaId);
+
+    @Query("select cp from CartasPartida cp WHERE cp.mazoFinal.id = ?1")
+    public List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo);
 }

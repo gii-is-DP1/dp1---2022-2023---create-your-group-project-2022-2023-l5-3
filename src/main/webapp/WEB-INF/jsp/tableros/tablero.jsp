@@ -145,9 +145,18 @@
 
         <!--MAZOS FINALES-->
                 <div class="col-md-2" style="padding-left: 100px;">
-                
-                    <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />
+
+                    <c:forEach items="${mazoFinalCorazones}" var="mfc" varStatus="status">
+                        <c:if test="${status.size == 0}">
+                            <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
+                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />
+                        </c:if>
+                        <c:if test ="${status.last}">
+                            <spring:url value="${mfc.carta.imagen}" htmlEscape="true" var="carta" />
+                            <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                        </c:if>
+                    </c:forEach>
+                    
                     
                     <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
                     <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" />
@@ -232,31 +241,6 @@
             </table>
 
 
-
-
-
-            <table id="board1Game" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Mazo destino</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Mazo intermedio 1</td>
-                        <td>Mazo intermedio 2</td>
-                        <td>Mazo intermedio 3</td>
-                        <td>Mazo intermedio 4</td>
-                        <td>Mazo intermedio 5</td>
-                        <td>Mazo intermedio 6</td>
-                        <td>Mazo intermedio 7</td>
-                        <td>Mazo final Corazones</td>
-                        <td>Mazo final Picas</td>
-                        <td>Mazo final Tréboles</td>
-                        <td>Mazo final Diamantes</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
 
