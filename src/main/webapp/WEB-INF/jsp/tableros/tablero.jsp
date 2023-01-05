@@ -146,18 +146,8 @@
         <!--MAZOS FINALES-->
                 <div class="col-md-2" style="padding-left: 100px;">
 
-                    <c:forEach items="${mazoFinalCorazones}" var="mfc" varStatus="status">
-                        <c:if test="${status.size == 0}">
-                            <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
-                            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />
-                        </c:if>
-                        <c:if test ="${status.last}">
-                            <spring:url value="${mfc.carta.imagen}" htmlEscape="true" var="carta" />
-                            <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
-                        </c:if>
-                    </c:forEach>
-                    
-                    
+                    <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
+                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />                    
                     <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
                     <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" />
                 

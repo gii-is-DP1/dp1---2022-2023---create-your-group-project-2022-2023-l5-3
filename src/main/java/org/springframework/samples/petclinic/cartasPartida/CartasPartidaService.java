@@ -62,7 +62,7 @@ public class CartasPartidaService {
         List<Integer> res= new ArrayList<>();
         for (int i = 1; i < 5; i++) {
          if(partidaId >1 ){
-            res.add(i+((partidaId-1)*7));
+            res.add(i+((partidaId-1)*4));
             
         }
         else{
@@ -154,30 +154,32 @@ public class CartasPartidaService {
             cartasPartidaRepository.save(cp);
         }
         //Obtengo los mazos actuales
-        List<Integer> mazos = getMazosIdSorted(partidaId);
-        
-        Map<Integer,List<CartasPartida>> res = new HashMap<>();
-        
-        Map<Integer,List<CartasPartida>> mazosFinales = new HashMap<>();
-        
-        Map<Integer,List<CartasPartida>> mazoInicial = new HashMap<>();
+        List<Integer> listaMazos = getMazosIdSorted(partidaId);
+        List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
+        Map<Integer, List<CartasPartida>> mazosFinales = new HashMap<>();
+        Map<Integer, List<CartasPartida>> mazoInicial = new HashMap<>();
+        Map<Integer,List<CartasPartida>> mazosInter = new HashMap<>();
 		
-        for (Integer idMazo:mazos){
-				List<CartasPartida> aux = findCartasPartidaByMazoId(idMazo);
-				res.put(idMazo, aux);
-			}
+        for (Integer idMazo:listaMazos){
+            List<CartasPartida> aux = findCartasPartidaByMazoId(idMazo);
+            mazosInter.put(idMazo, aux);
+        }
+        for(Integer idMazo:listaMazosFinales){
+            List<CartasPartida> aux = findCartasPartidaByMazoFinalId(idMazo);
+            mazosFinales.put(idMazo, aux);
+        }
 			List<CartasPartida> mazoIni = findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			List<CartasPartida> cp = findCartasPartidaByPartidaId(partidaId);
 			cp.removeAll(mazoIni);
 
 			for(CartasPartida carta:cp){
-				if (carta.getPosCartaMazo() == res.get(carta.getMazo().getId()).size() || carta.getIsShow() == true){
+				if (carta.getPosCartaMazo() == mazosInter.get(carta.getMazo().getId()).size() || carta.getIsShow() == true){
 					carta.setIsShow(true);
 				} else {
 					carta.setIsShow(false);
 				}
 			}
-            return new Tuple3(res,mazosFinales,mazoInicial);
+            return new Tuple3(mazosInter,mazosFinales,mazoInicial);
     }
 
     
@@ -219,8 +221,13 @@ public class CartasPartidaService {
 			}
             for(Integer idMazo:listaMazosFinales){
                 List<CartasPartida> aux = findCartasPartidaByMazoFinalId(idMazo);
-				mazosInter.put(idMazo, aux);
+				mazosFinales.put(idMazo, aux);
             }
+            List<CartasPartida> mazoIni = findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			List<CartasPartida> cp = findCartasPartidaByPartidaId(partidaId);
+			cp.removeAll(mazoIni);
+
+		
 
             //return mazosInter;
             return new Tuple3(mazosInter, mazosFinales, mazoInicial);

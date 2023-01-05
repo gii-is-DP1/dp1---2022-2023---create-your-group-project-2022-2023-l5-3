@@ -154,7 +154,9 @@ public class PartidaController {
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
 			//Map<Integer, List<CartasPartida>> mazosFinales = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId).getSecond();
-
+			Map<Integer, List<CartasPartida>> prueba = mazos.getSecond();
+			Map<Integer, List<CartasPartida>> prueba1 = mazos.getFirst();
+			Integer i = 0;
 			model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
 			model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
 			model.put("mazInt3",mazos.getFirst().get(listaMazos.get(2)));
