@@ -70,7 +70,7 @@ public class JugadorService {
 
 
 	@Transactional
-	public Collection<Partida> findPartidasByUserId(int id ) throws DataAccessException{
+	public Collection<Partida> findPartidasByJugadorId(int id ) throws DataAccessException{
 		return jugadorRepository.findPartidasByJugador(id);
 	}
 

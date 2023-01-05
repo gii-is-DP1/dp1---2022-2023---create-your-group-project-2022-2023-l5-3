@@ -85,7 +85,7 @@ public class PartidaController {
 			model.put("message", result.getAllErrors());
 			return VIEW_CREATE_PARTIDA;
 		} else if(partidaService.jugadorTienePartidaEnCurso(jugador)){
-			return "redirect:/";
+			return "redirect:/partidas/sinFinalizar";
 		} else {
 			//Para asociar la partida nueva a un jugador:
 			String usuario = currentUser.getUsername();
@@ -138,6 +138,20 @@ public class PartidaController {
 	
 		}
 	
+	}
+
+	@GetMapping (value="/partidas/sinFinalizar")
+	public String finalizarPartida (Map<String, Object> model){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Jugador jugador = jugadorService.findJugadorByUsername(currentUser.getUsername());
+		Collection<Partida> res = jugadorService.findPartidasByJugadorId(jugador.getUser().getJugadorId());
+		for (Partida partida:res){
+			if(partida.getMomentoFin() == null){
+				model.put("id", partida.getId());
+			}
+		}
+		return "partidas/partidaEnCursoIndividual";
 	}
 
 
@@ -360,12 +374,12 @@ public class PartidaController {
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
 						establecerFinPartidaManual(id);
-						ModelAndView mazosInterult = new ModelAndView("welcome");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "Partida acabada");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
 					} else {
-						ModelAndView mazosInterult = new ModelAndView("welcome");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
