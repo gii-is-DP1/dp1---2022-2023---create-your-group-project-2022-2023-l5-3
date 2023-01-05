@@ -34,6 +34,11 @@ public class PartidaService {
 	public Collection<Partida> findPartidasEnCurso(){
 		return partidaRepository.findBymomentoFinIsNull();
 	}
+
+	@Transactional
+	public Boolean jugadorTienePartidaEnCurso (Jugador jugador){
+		return partidaRepository.findBymomentoFinIsNull().stream().anyMatch(x -> x.getJugador().equals(jugador));
+	}
 	
 	@Transactional
 	public Collection<Partida> findPartidasFinalizadas(){

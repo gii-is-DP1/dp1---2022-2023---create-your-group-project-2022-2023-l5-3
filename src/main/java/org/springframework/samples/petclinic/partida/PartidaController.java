@@ -63,33 +63,37 @@ public class PartidaController {
 	
 	@GetMapping(path="/partidas/create")
 	public String initCreationForm(Map<String,Object> model){
-		Partida partida = new Partida();
-	
-		partida.setNumMovimientos(0);
-		partida.setMomentoInicio(LocalDateTime.now());
-		partida.setVictoria(false);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-		String usuario = currentUser.getUsername();
-		Jugador player = jugadorService.findJugadorByUsername(usuario);
-		partida.setJugador(player);
-		model.put("partida", partida);
-		return VIEW_CREATE_PARTIDA;
+			Partida partida = new Partida();
+			partida.setNumMovimientos(0);
+			partida.setMomentoInicio(LocalDateTime.now());
+			partida.setVictoria(false);
+			
+			String usuario = currentUser.getUsername();
+			Jugador player = jugadorService.findJugadorByUsername(usuario);
+			partida.setJugador(player);
+			model.put("partida", partida);
+			return VIEW_CREATE_PARTIDA;
+		
 		
 	}
 	
 	@PostMapping(path="/partidas/create")
 	public String processCreationForm(@Valid Partida p, BindingResult result, Map<String, Object> model) {
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Jugador jugador = jugadorService.findJugadorByUsername(currentUser.getUsername());
+
 		if (result.hasErrors()) {
 			
 			model.put("message", result.getAllErrors());
 			return VIEW_CREATE_PARTIDA;
-		}
-		else {
+		} else if(partidaService.jugadorTienePartidaEnCurso(jugador)){
+			return "redirect:/";
+		} else {
 			//Para asociar la partida nueva a un jugador:
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 			String usuario = currentUser.getUsername();
 			Jugador player = jugadorService.findJugadorByUsername(usuario);
 			p.setJugador(player);
@@ -148,7 +152,8 @@ public class PartidaController {
 	}
 
 //===============================LISTAR PARTIDAS ================================
-	@GetMapping(value = { "/partidas/enCurso" })
+	
+@GetMapping(value = { "/partidas/enCurso" })
 	public String showPartidaList(Map<String, Object> model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
@@ -162,15 +167,15 @@ public class PartidaController {
 					model.put("partidas", partidas);
 					return VIEW_LIST;
 				} else {
-					return "welcome";
+					return "redirect:/";
 				}
 			
 			}
 		} else {
-			return "welcome";
+			return "redirect:/";
 		}
 
-		return "welcome";
+		return "redirect:/";
 	}
 
 
@@ -191,15 +196,15 @@ public class PartidaController {
 					model.put("partidas", partidas);
 					return VIEW_LIST2;
 				} else {
-					return "welcome";
+					return "redirect:/";
 				}
 			
 			}
 		} else {
-			return "welcome";
+			return "redirect:/";
 		}
 
-		return "welcome";
+		return "redirect:/";
 	}
 
 	@GetMapping(value = { "/partidas/jugador" })
@@ -226,12 +231,12 @@ public class PartidaController {
 						return "partidas/partidaListUser";
 					
 					} else {
-						return "welcome";
+						return "redirect:/";
 					}
 			}
-			return "welcome";	
+			return "redirect:/";
 		} else {
-			return "welcome";
+			return "redirect:/";
 		}
 	}
 
@@ -260,12 +265,12 @@ public class PartidaController {
 						return "partidas/partidaListUser";
 					
 					} else {
-						return "welcome";
+						return "redirect:/";
 					}
 			}
-			return "welcome";	
+			return "redirect:/";
 		} else {
-			return "welcome";
+			return "redirect:/";
 		}
 	}
 
@@ -389,9 +394,9 @@ public class PartidaController {
 	public String procesMoveCardForm(@PathVariable("partidaId") int partidaId,@RequestParam Integer mazoOrigen,@RequestParam Integer mazoDestino, @RequestParam Integer cantidad,Map<String, Object> model) {
 		
 			
-			System.out.println(mazoOrigen);
-			System.out.println(mazoDestino);
-			System.out.println(cantidad);
+			// System.out.println(mazoOrigen);
+			// System.out.println(mazoDestino);
+			// System.out.println(cantidad);
 			List<Integer> mazos = cartasPartidaService.getMazosIdSorted(partidaId);			
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			Map<Integer, List<CartasPartida>> res = cartasPartidaService.moverCartaInterInter(mazoOrigen, mazoDestino, cantidad, partidaId);
