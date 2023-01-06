@@ -43,6 +43,7 @@ public class EstadisticasService {
 			Integer sumaGanadas = (lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList())).size();
 			Integer sumaPerdidas = lista.size() - sumaGanadas;
 			long tiempoJugado = lista.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
+			LocalTime totalJugado = LocalTime.of(0, 0, 0);
 			// Duration duration = Duration.ofSeconds(tiempoJugado);
 			// long horas = duration.toHours();
 			// long minutos = duration.toMinutes() % 60;
@@ -51,7 +52,7 @@ public class EstadisticasService {
 
 			jugador.setPartidasGanadas(sumaGanadas);
 			jugador.setPartidasNoGanadas(sumaPerdidas);
-			jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().plusSeconds(tiempoJugado));
+			jugador.setTotalTiempoJugado(totalJugado.plusSeconds(tiempoJugado));
 			jugador.setNumTotalMovimientos(sumaMovimientos);
 			jugador.setNumTotalPuntos(sumaPuntos);
 			if(partidasGanadas.size()>0){
