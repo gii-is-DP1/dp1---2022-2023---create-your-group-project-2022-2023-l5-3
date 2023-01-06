@@ -140,7 +140,7 @@ public class PartidaController {
 	
 	}
 
-	@GetMapping (value="/partidas/sinFinalizar")
+	@GetMapping(value="/partidas/sinFinalizar")
 	public String finalizarPartida (Map<String, Object> model){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -156,6 +156,16 @@ public class PartidaController {
 
 
 
+	@GetMapping(value="/partidas/gana")
+	public String ganarPartida (Map<String, Object> model){
+		return "partidas/win";
+	}
+
+	@GetMapping(value="/partidas/pierde")
+	public String pierdePartida (Map<String, Object> model){
+		return "partidas/lost";
+	}
+
 	@PostMapping(value="/partidas/moverCarta/{partidaId}")
 	public String procesMoveCardForm(@PathVariable("partidaId") int partidaId,@RequestParam Integer mazoOrigen,@RequestParam Integer mazoDestino, @RequestParam Integer cantidad,Map<String, Object> model) {
 		
@@ -167,28 +177,41 @@ public class PartidaController {
 			List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
-			//Map<Integer, List<CartasPartida>> mazosFinales = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId).getSecond();
-			Map<Integer, List<CartasPartida>> prueba = mazos.getSecond();
-			Map<Integer, List<CartasPartida>> prueba1 = mazos.getFirst();
-			Integer i = 0;
-			model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
-			model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
-			model.put("mazInt3",mazos.getFirst().get(listaMazos.get(2)));
-			model.put("mazInt4",mazos.getFirst().get(listaMazos.get(3)));
-			model.put("mazInt5",mazos.getFirst().get(listaMazos.get(4)));
-			model.put("mazInt6",mazos.getFirst().get(listaMazos.get(5)));
-			model.put("mazInt7",mazos.getFirst().get(listaMazos.get(6)));
 			
-			model.put("mazoFinalCorazones",mazos.getSecond().get(listaMazosFinales.get(0)));
-			model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
-			model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
-			model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
- 
-			//model.put("mazoInicial", mazosInter.get(mazos.get(11)));
+			if(mazos.getSecond().get(listaMazosFinales.get(0)).size() == 13 &&
+				mazos.getSecond().get(listaMazosFinales.get(1)).size() == 13 &&
+				mazos.getSecond().get(listaMazosFinales.get(2)).size() == 13 &&
+				mazos.getSecond().get(listaMazosFinales.get(3)).size() == 13) {
+				return "redirect:/partidas/win";
 			
-			model.put("mazInicial", mazoIni);
-			model.put("partidaId",partidaId);
-			return TABLERO;
+			} else if (partidaService.noExisteMovimientoPosible(partidaId)) {
+			
+				return "redirect:/partidas/lost";
+
+			} else {
+
+				model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
+				model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
+				model.put("mazInt3",mazos.getFirst().get(listaMazos.get(2)));
+				model.put("mazInt4",mazos.getFirst().get(listaMazos.get(3)));
+				model.put("mazInt5",mazos.getFirst().get(listaMazos.get(4)));
+				model.put("mazInt6",mazos.getFirst().get(listaMazos.get(5)));
+				model.put("mazInt7",mazos.getFirst().get(listaMazos.get(6)));
+				
+				model.put("mazoFinalCorazones",mazos.getSecond().get(listaMazosFinales.get(0)));
+				model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
+				model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
+				model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
+	
+				
+				model.put("mazInicial", mazoIni);
+				model.put("partidaId",partidaId);
+				return TABLERO;
+			}
+
+			
+			
+			
 	
 		}
 	

@@ -6,21 +6,20 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
-<petclinic:layout pageName="partidaFinalizar">
+<petclinic:layout pageName="partidaWin">
 
     <div class="m-0 row justify-content-center">
         <div class="col-auto text-center">
-            <h1 style="font-weight: bold;">TIENES UNA PARTIDA EN CURSO, FINALIZA LA PARTIDA PARA CREAR UNA NUEVA</h1>
+            <h1 style="font-size: 3em; font-weight: bold;">ENHORABUENA, ¡HAS GANADO LA PARTIDA!</h1>
         </br>
             <div class="mx-auto" style="justify-content: center; display: flex;">
-                <a href="/partidas/finish/${id}" class="btn btn-danger"> Finalizar partida en curso</a>
+                <a href="/partidas/create" class="btn btn-default">Volver a jugar</a>
     
             </div>
-        </br>
-    </br>
         
         </div>
     
     </div>
+
 
 </petclinic:layout>
