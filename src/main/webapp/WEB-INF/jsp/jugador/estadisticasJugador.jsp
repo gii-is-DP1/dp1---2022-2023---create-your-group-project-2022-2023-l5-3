@@ -90,6 +90,9 @@
                     <div class="row" align="center">Movimientos promedio:
                         <c:out value="${movimientosPromedio}" />
                     </div>
+                    <div class="row" align="center">Tiempo total jugado:
+                        <c:out value="${horas}"/> horas, <c:out value="${minutos}"/> minutos y <c:out value="${segundos}"/> segundos.
+                    </div>
                 </div>
             
         </div>

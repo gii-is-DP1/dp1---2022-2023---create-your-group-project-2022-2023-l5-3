@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.estadisticas;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +31,7 @@ public class EstadisticasService {
 
     public void setEstadisticasJugador(Jugador jugador){
 		Collection<Partida> lista = serv.findPartidasFinalizadasPorJugador(jugador);
+		LocalTime aux = LocalTime.of(0, 0, 0);
 		if(lista.size()>0){
 			List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
 			Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
@@ -40,6 +43,11 @@ public class EstadisticasService {
 			Integer sumaGanadas = (lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList())).size();
 			Integer sumaPerdidas = lista.size() - sumaGanadas;
 			long tiempoJugado = lista.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
+			// Duration duration = Duration.ofSeconds(tiempoJugado);
+			// long horas = duration.toHours();
+			// long minutos = duration.toMinutes() % 60;
+			// long segundos = duration.getSeconds() % 60;
+			// String srt = 
 
 			jugador.setPartidasGanadas(sumaGanadas);
 			jugador.setPartidasNoGanadas(sumaPerdidas);
@@ -61,13 +69,22 @@ public class EstadisticasService {
 		Integer ganadas = (int) listPartidas.stream().filter(x -> x.getVictoria()==true).count();
 		Integer puntos = (int) listPartidas.stream().mapToLong(x -> x.puntos()).sum();
 		Integer movimientos = (int) listPartidas.stream().mapToLong(x -> x.getNumMovimientos()).sum();
-		
+		long duracionTotal = listPartidas.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
+		Duration duration = Duration.ofSeconds(duracionTotal);
+		long horas = duration.toHours();
+		long minutos = duration.toMinutes() % 60;
+		long segundos = duration.getSeconds() % 60;
+
+
 		if(listPartidas.size()==0){
 			result.addObject("partidasTotalesJugadas", 0);
 			result.addObject("partidasGanadasTotales", 0);
 			result.addObject("partidasPerdidasTotales", 0);
 			result.addObject("puntosPromedio", 0);
 			result.addObject("movimientosPromedio", 0);
+				result.addObject("horas",0);
+				result.addObject("minutos",0);
+				result.addObject("segundos",0);
 			result.addObject(jugador);
 		}else {
 			Integer puntosPromedio = puntos/listPartidas.size();
@@ -77,6 +94,9 @@ public class EstadisticasService {
 			result.addObject("partidasPerdidasTotales", listPartidas.size()-ganadas);
 			result.addObject("puntosPromedio", puntosPromedio);
 			result.addObject("movimientosPromedio",movPromedio);
+				result.addObject("horas",horas);
+				result.addObject("minutos",minutos);
+				result.addObject("segundos",segundos);
 			result.addObject(jugador);
 		}
 	}
