@@ -9,15 +9,12 @@
 <petclinic:layout pageName="partidaWin">
 
     <div class="m-0 row justify-content-center">
-        <div class="col-auto text-center">
-            <h1 style="font-size: 3em; font-weight: bold;">ENHORABUENA, ¡HAS GANADO LA PARTIDA!</h1>
         </br>
             <div class="mx-auto" style="justify-content: center; display: flex;">
-                <a href="/partidas/create" class="btn btn-default">Volver a jugar</a>
+                <a href="/partidas/create" style="font-size: 3em;" class="btn btn-default">Volver a jugar</a>
     
             </div>
         
-        </div>
     
     </div>
 

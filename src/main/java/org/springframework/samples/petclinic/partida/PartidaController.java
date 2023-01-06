@@ -158,12 +158,14 @@ public class PartidaController {
 
 	@GetMapping(value="/partidas/gana")
 	public String ganarPartida (Map<String, Object> model){
-		return "partidas/win";
+		model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
+		return "partidas/messagePartida";
 	}
 
 	@GetMapping(value="/partidas/pierde")
 	public String pierdePartida (Map<String, Object> model){
-		return "partidas/lost";
+		model.put("message", "HAS PERDIDO LA PARTIDA");
+		return "partidas/messagePartida";
 	}
 
 	@PostMapping(value="/partidas/moverCarta/{partidaId}")
@@ -389,7 +391,7 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual(id);
-					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/enCurso");
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return mazosInterult;
 					
@@ -397,8 +399,7 @@ public class PartidaController {
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
 						establecerFinPartidaManual(id);
-						ModelAndView mazosInterult = new ModelAndView("redirect:/");
-						mazosInterult.addObject("message", "Partida acabada");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
 					} else {
@@ -427,7 +428,7 @@ public class PartidaController {
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
 					establecerFinPartidaManual2(id);
-					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/enCurso");
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
 					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return mazosInterult;
 					
@@ -435,12 +436,11 @@ public class PartidaController {
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
 						establecerFinPartidaManual2(id);
-						ModelAndView mazosInterult = new ModelAndView("welcome");
-						mazosInterult.addObject("message", "Partida acabada");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
 					} else {
-						ModelAndView mazosInterult = new ModelAndView("welcome");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
