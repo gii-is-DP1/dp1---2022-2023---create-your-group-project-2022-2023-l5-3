@@ -83,11 +83,20 @@ public class EstadisticasService {
 			result.addObject("partidasPerdidasTotales", 0);
 			result.addObject("puntosPromedio", 0);
 			result.addObject("movimientosPromedio", 0);
-				result.addObject("horas",0);
-				result.addObject("minutos",0);
-				result.addObject("segundos",0);
+			result.addObject("horas",0);
+			result.addObject("minutos",0);
+			result.addObject("segundos",0);
+			result.addObject("horasPromedio",0);
+			result.addObject("minutosPromedio",0);
+			result.addObject("segundosPromedio",0);
 			result.addObject(jugador);
-		}else {
+		
+		} else {
+			long duracionPromedioTotal = duracionTotal / listPartidas.size();
+			Duration durationPromedio = Duration.ofSeconds(duracionPromedioTotal);
+			long horasPromedio = durationPromedio.toHours();
+			long minutosPromedio = durationPromedio.toMinutes() % 60;
+			long segundosPromedio = durationPromedio.getSeconds() % 60;
 			Integer puntosPromedio = puntos/listPartidas.size();
 			Integer movPromedio = movimientos/listPartidas.size();
 			result.addObject("partidasTotalesJugadas", listPartidas.size());
@@ -95,9 +104,12 @@ public class EstadisticasService {
 			result.addObject("partidasPerdidasTotales", listPartidas.size()-ganadas);
 			result.addObject("puntosPromedio", puntosPromedio);
 			result.addObject("movimientosPromedio",movPromedio);
-				result.addObject("horas",horas);
-				result.addObject("minutos",minutos);
-				result.addObject("segundos",segundos);
+			result.addObject("horas",horas);
+			result.addObject("minutos",minutos);
+			result.addObject("segundos",segundos);
+			result.addObject("horasPromedio",horasPromedio);
+			result.addObject("minutosPromedio",minutosPromedio);
+			result.addObject("segundosPromedio",segundosPromedio);
 			result.addObject(jugador);
 		}
 	}

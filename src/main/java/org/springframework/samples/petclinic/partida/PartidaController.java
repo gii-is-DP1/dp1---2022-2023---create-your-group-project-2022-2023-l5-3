@@ -282,6 +282,10 @@ public class PartidaController {
 						jugador.setPartidasGanadas(jugador.getPartidasGanadas()-1);
 						jugador.setNumTotalMovimientos(jugador.getNumTotalMovimientos()- (int) partida.getNumMovimientos());
 						jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().minusSeconds(diffInSeconds));
+						jugador.setNumMaxMovimientosPartidaGanada((long) 0);
+						jugador.setNumMinMovimientosPartidaGanada((long) 0);
+						jugador.setMaxTiempoPartidaGanada("");
+						jugador.setMinTiempoPartidaGanada("");
 					}
 					if(partida.getVictoria() == false){
 						jugador.setPartidasNoGanadas(jugador.getPartidasNoGanadas()-1);

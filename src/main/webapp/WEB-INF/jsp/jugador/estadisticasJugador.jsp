@@ -86,12 +86,15 @@
                     <div class="row" align="center">Puntos promedio:
                         <c:out value="${puntosPromedio}" />
                     </div>
-
+ 
                     <div class="row" align="center">Movimientos promedio:
                         <c:out value="${movimientosPromedio}" />
                     </div>
                     <div class="row" align="center">Tiempo total jugado:
                         <c:out value="${horas}"/> horas, <c:out value="${minutos}"/> minutos y <c:out value="${segundos}"/> segundos.
+                    </div>
+                    <div class="row" align="center">Tiempo promedio por partida:
+                        <c:out value="${horasPromedio}"/> horas, <c:out value="${minutosPromedio}"/> minutos y <c:out value="${segundosPromedio}"/> segundos.
                     </div>
                 </div>
             
