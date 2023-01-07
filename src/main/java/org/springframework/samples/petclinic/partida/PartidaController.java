@@ -151,12 +151,10 @@ public class PartidaController {
 			System.out.println(cantidad);
 			List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
 			List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
-			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 			//Map<Integer, List<CartasPartida>> mazosFinales = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId).getSecond();
-			Map<Integer, List<CartasPartida>> prueba = mazos.getSecond();
-			Map<Integer, List<CartasPartida>> prueba1 = mazos.getFirst();
-			Integer i = 0;
+		
 			model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
 			model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
 			model.put("mazInt3",mazos.getFirst().get(listaMazos.get(2)));
@@ -170,9 +168,9 @@ public class PartidaController {
 			model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
 			model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
  
-			//model.put("mazoInicial", mazosInter.get(mazos.get(11)));
-			
 			model.put("mazInicial", mazoIni);
+			
+			//model.put("mazInicial", mazos.getThird().get(partidaId));
 			model.put("partidaId",partidaId);
 			return TABLERO;
 	

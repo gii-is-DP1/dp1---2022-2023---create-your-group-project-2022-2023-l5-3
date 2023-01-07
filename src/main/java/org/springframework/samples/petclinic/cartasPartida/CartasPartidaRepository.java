@@ -42,4 +42,7 @@ public interface CartasPartidaRepository extends CrudRepository<CartasPartida,In
 
     @Query("select cp from CartasPartida cp WHERE cp.mazoFinal.id = ?1")
     public List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo);
+
+    @Query("select cp from CartasPartida cp WHERE cp.mazoInicial.id = ?1 and cp.partida.id = ?2")
+    public List<CartasPartida> findCartasPartidaByMazoInicialIdAndPartidaId(int mazoOrigenId, int partidaId);
 }

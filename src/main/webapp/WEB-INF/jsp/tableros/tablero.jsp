@@ -184,10 +184,18 @@
             <form:form action="${moverCarta}" method="post">
                 Mazo Origen
                 <select name="mazoOrigen">
-                   <c:forEach var="i" begin="1" end="7" step="1">
-                       <option value="${i}">Mazo Intermedio ${i}</option>    
-                    </c:forEach>
+                   <c:forEach var="i" begin="0" end="7" step="1">
+                    <c:choose>
+                        <c:when test="${i==0}">
+                            <option value="${i}">Mazo Inicial</option>             
+                        </c:when>
+                        <c:when test="${i>0}"> 
+                   <option value="${i}">Mazo Intermedio ${i}</option>        
+                </c:when>
+                    </c:choose>
+                </c:forEach>
                    </select>
+
                    Mazo Destino
             <select name="mazoDestino" >
                 <c:forEach var="i" begin="1" end="11" step="1">
