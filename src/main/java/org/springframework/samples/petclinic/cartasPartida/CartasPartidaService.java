@@ -202,6 +202,8 @@ public class CartasPartidaService {
             i++;
             cartasPartidaRepository.save(cp);
         }
+        System.out.println("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        setCartaVisibleIntermedio(mazoOrigenId, partidaId);
         // Obtengo los mazos actuales
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
@@ -365,7 +367,7 @@ public class CartasPartidaService {
     }
 
     public void setCartaVisibleIntermedio(int mazoId, int partidaId){
-        List<CartasPartida> mazo = cartasPartidaRepository.findCartasPartidaByMazoInicialIdAndPartidaId(mazoId, partidaId);
+        List<CartasPartida> mazo = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoId, partidaId);
         Collections.sort(mazo, new ComparadorCartasPartidaPorPosCartaMazo());
         if(mazo.size()!=0){
             CartasPartida ultCarta = mazo.get(mazo.size()-1);
