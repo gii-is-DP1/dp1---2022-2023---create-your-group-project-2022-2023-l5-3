@@ -364,6 +364,20 @@ public class CartasPartidaService {
 
     }
 
+    public void setCartaVisibleIntermedio(int mazoId, int partidaId){
+        List<CartasPartida> mazo = cartasPartidaRepository.findCartasPartidaByMazoInicialIdAndPartidaId(mazoId, partidaId);
+        Collections.sort(mazo, new ComparadorCartasPartidaPorPosCartaMazo());
+        if(mazo.size()!=0){
+            CartasPartida ultCarta = mazo.get(mazo.size()-1);
+            if(!ultCarta.getIsShow()){
+                ultCarta.setIsShow(true);
+                cartasPartidaRepository.save(ultCarta);
+            }
+
+        }
+        
+    }
+
     private List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo) {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalId(idMazo);
     }
