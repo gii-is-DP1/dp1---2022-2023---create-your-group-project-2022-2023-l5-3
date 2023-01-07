@@ -196,7 +196,7 @@ public class PartidaBuilder {
 			CartasPartida cp = cartasP.get(random);
 			cp.setMazoInicial(mI);
 			cp.setPosCartaMazo(k);
-			cp.setIsShow(false);
+			cp.setIsShow(true);
 			cartasPartidaRepository.save(cp);
 			cartasP.remove(cp);
 		}

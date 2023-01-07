@@ -379,7 +379,20 @@ public class CartasPartidaService {
         
     }
 
-    private List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo) {
+    public void cambiaPosCartaMazoIni(int index,List<CartasPartida> mazoIni){
+        if(mazoIni.get(index).getPosCartaMazo()==mazoIni.size()){
+            mazoIni.get(index).setPosCartaMazo(1);
+            cartasPartidaRepository.save(mazoIni.get(index));
+        }else{
+            mazoIni.get(index).setPosCartaMazo(mazoIni.get(index).getPosCartaMazo()+1);
+            cartasPartidaRepository.save(mazoIni.get(index));
+
+        }
+        
+
+    }
+
+    public List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo) {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalId(idMazo);
     }
 
@@ -397,5 +410,6 @@ public class CartasPartidaService {
         List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         return res;
     }
+
 
 }

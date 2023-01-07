@@ -18,7 +18,8 @@
         <div class="container" style="background-color:#51C967;">
 
             <!-- MAZO INICIAL -->
-
+            <c:url value="/partidas/moverCartaIni/${partidaId}" var="moverCartaIni"/>
+            <form:form action="${moverCartaIni}" method="post">
             <div class="row">
                 <div class="col-md-1">
                     <spring:url value="${mazInicial[0].carta.imagen}" htmlEscape="true" var="carta" />
@@ -34,6 +35,7 @@
 
                 <button class="btn btn-default">PASAR CARTA</button>
             </div>
+            </form:form>
 
 
             </br>

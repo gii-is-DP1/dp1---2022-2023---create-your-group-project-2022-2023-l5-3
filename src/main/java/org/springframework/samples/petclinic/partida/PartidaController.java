@@ -140,6 +140,42 @@ public class PartidaController {
 	
 	}
 
+	@PostMapping(value="/partidas/moverCartaIni/{partidaId}")
+	public String procesMoveCardIniForm(@PathVariable("partidaId") int partidaId,Map<String, Object> model) {
+		if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
+			List<CartasPartida> mazoIni = new ArrayList<>();
+			model.put("mazInicial", mazoIni);
+		}else{
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			for (int i=0;i<mazoIni.size();i++) {
+			
+				cartasPartidaService.cambiaPosCartaMazoIni(i,mazoIni);
+				
+			}
+			model.put("mazInicial", mazoIni);
+		}
+		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
+		List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
+			
+		for(int i=0;i<listaMazos.size();i++){
+		List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
+		model.put("mazInt"+(i+1),cpm);
+		}	
+		
+
+		
+		
+		model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
+		model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
+		model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
+		model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
+		model.put("partidaId",partidaId);
+		return TABLERO;
+
+	}
+		
+			
+
 
 
 	@PostMapping(value="/partidas/moverCarta/{partidaId}")
@@ -152,7 +188,14 @@ public class PartidaController {
 			List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
 			List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
 			Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
-			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			
+			if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
+				List<CartasPartida> mazoIni = new ArrayList<>();
+				model.put("mazInicial", mazoIni);
+			}else{
+				List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
+				model.put("mazInicial", mazoIni);
+			}
 			//Map<Integer, List<CartasPartida>> mazosFinales = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId).getSecond();
 		
 			model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
@@ -168,7 +211,6 @@ public class PartidaController {
 			model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
 			model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
  
-			model.put("mazInicial", mazoIni);
 			
 			//model.put("mazInicial", mazos.getThird().get(partidaId));
 			model.put("partidaId",partidaId);
