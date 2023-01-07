@@ -5,6 +5,14 @@
 <%@ taglib prefix="solitario" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<style>
+    .vertical {
+        writing-mode: vertical-rl;
+        font-size: large;
+        font-weight: bold;
+    }
+</style>
+
 <solitario:layout pageName="partidas">
 
     <jsp:body>
@@ -143,23 +151,63 @@
 
                 </div>
 
-        <!--MAZOS FINALES-->
-                <div class="col-md-2" style="padding-left: 100px;">
+                <div class="vertical col-md-1">
+                    MAZOS FINALES
+                </div>
+        
 
-                    <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />                    
-                    <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" />
-                
-                    <spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}" />
-                    
-                    <spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}" />
-                
+                <!-- MAZOS FINALES -->
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalCorazones) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalCorazones) != 0}">
+                        <spring:url value="${mazoFinalCorazones[fn:length(mazoFinalCorazones)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
                 </div>
 
+                
+            
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalPicas) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalPicas) != 0}">
+                        <spring:url value="${mazoFinalPicas[fn:length(mazoFinalPicas)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
 
+               
+                
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalDiamantes) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalDiamantes) != 0}">
+                        <spring:url value="${mazoFinalDiamantes[fn:length(mazoFinalDiamantes)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
+
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalTreboles) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalTreboles) != 0}">
+                        <spring:url value="${mazoFinalTreboles[fn:length(mazoFinalTreboles)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
 
         </div>
 

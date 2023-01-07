@@ -240,16 +240,17 @@ public class CartasPartidaService {
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
-        int indexUltCarta = cpDestino.size();
-        int i = 1;
+        //int indexUltCarta = cpDestino.size();
+        //int i = 1;
         for (CartasPartida cp : cartasMovidas) {
             cp.setMazo(null);
             cp.setMazoFinal(mazoDest);
             // cp.getMazoFinal().setCantidad(i);
-            cp.setPosCartaMazo(indexUltCarta + i);
-            i++;
+            cp.setPosCartaMazo(mazoDest.getCartasPartida().size()+1);
+            //i++;
             cartasPartidaRepository.save(cp);
         }
+        setCartaVisibleIntermedio(mazoOrigenId, partidaId);
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);

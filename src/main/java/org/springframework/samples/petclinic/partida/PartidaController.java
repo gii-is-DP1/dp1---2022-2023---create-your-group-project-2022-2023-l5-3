@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
+import org.springframework.samples.petclinic.cartasPartida.ComparadorCartasPartidaPorPosCartaMazo;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.util.Tuple3;
@@ -162,7 +164,12 @@ public class PartidaController {
 			model.put("mazInt5",mazos.getFirst().get(listaMazos.get(4)));
 			model.put("mazInt6",mazos.getFirst().get(listaMazos.get(5)));
 			model.put("mazInt7",mazos.getFirst().get(listaMazos.get(6)));
-			
+
+			Collections.sort(mazos.getSecond().get(listaMazosFinales.get(0)), new ComparadorCartasPartidaPorPosCartaMazo());
+			Collections.sort(mazos.getSecond().get(listaMazosFinales.get(1)), new ComparadorCartasPartidaPorPosCartaMazo());
+			Collections.sort(mazos.getSecond().get(listaMazosFinales.get(2)), new ComparadorCartasPartidaPorPosCartaMazo());
+			Collections.sort(mazos.getSecond().get(listaMazosFinales.get(3)), new ComparadorCartasPartidaPorPosCartaMazo());
+
 			model.put("mazoFinalCorazones",mazos.getSecond().get(listaMazosFinales.get(0)));
 			model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
 			model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
