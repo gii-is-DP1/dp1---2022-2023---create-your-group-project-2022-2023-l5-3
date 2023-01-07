@@ -202,7 +202,6 @@ public class CartasPartidaService {
             i++;
             cartasPartidaRepository.save(cp);
         }
-        System.out.println("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         setCartaVisibleIntermedio(mazoOrigenId, partidaId);
         // Obtengo los mazos actuales
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
