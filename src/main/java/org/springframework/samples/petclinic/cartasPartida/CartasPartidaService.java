@@ -118,7 +118,6 @@ public class CartasPartidaService {
         Boolean res = false;
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
         List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
-        
         int startIndex = cpOrigen.size() - cantidad;
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         //Collections.sort(cpDestino, new ComparadorCartasPartidaPorPosCartaMazo());
@@ -126,14 +125,20 @@ public class CartasPartidaService {
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
         CartasPartida cartaPrimeraAMover = cartasMovidas.get(0);
-        CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
-        
-        Carta cartaAbajo = cartaPrimeraAMover.getCarta();
-        Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
-        
-        if(!(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()).equals(cartaArriba.getPalo().getColor(cartaArriba.getPalo())))){
-            if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+        if(cpDestino.size()==0){
+            if(cartaPrimeraAMover.getCarta().getValor()==13){
                 res = true;
+            }
+        }else{
+            CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
+        
+            Carta cartaAbajo = cartaPrimeraAMover.getCarta();
+            Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
+            
+            if(!(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()).equals(cartaArriba.getPalo().getColor(cartaArriba.getPalo())))){
+                if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+                    res = true;
+                }
             }
         }
 
@@ -154,16 +159,23 @@ public class CartasPartidaService {
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
         CartasPartida cartaPrimeraAMover = cartasMovidas.get(0);
-        CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
-        
-        Carta cartaAbajo = cartaPrimeraAMover.getCarta();
-        Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
-
-        if(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()) != cartaArriba.getPalo().getColor(cartaArriba.getPalo())){
-            if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+        if(cpDestino.size()==0){
+            if(cartaPrimeraAMover.getCarta().getValor()==13){
                 res = true;
             }
+        }else{
+            CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
+        
+            Carta cartaAbajo = cartaPrimeraAMover.getCarta();
+            Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
+
+            if(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()) != cartaArriba.getPalo().getColor(cartaArriba.getPalo())){
+                if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+                    res = true;
+                }
+            }
         }
+        
         return res;
     }
 
