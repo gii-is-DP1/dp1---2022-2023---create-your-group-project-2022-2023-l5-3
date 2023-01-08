@@ -323,23 +323,19 @@ public class CartasPartidaService {
         List<CartasPartida> cpDestino = cartasPartidaRepository
                 .findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
 
-                // Indice de la ultima carta del mazo origen
+                
         
-        int startIndex = cpOrigen.size() - 1;
         
-        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo().reversed());
-        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+        
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        CartasPartida cpMovida = cpOrigen.get(cpOrigen.size()-1);
+        cpMovida.setMazoInicial(null);
+        cpMovida.setMazoFinal(mazoDest);
+        // cp.getMazoFinal().setCantidad(i);
+        cpMovida.setPosCartaMazo(mazoDest.getCartasPartida().size() + 1);
+        cartasPartidaRepository.save(cpMovida);
 
-        int indexUltCarta = cpDestino.size();
-        int i = 1;
-        for (CartasPartida cp : cartasMovidas) {
-            cp.setMazoInicial(null);
-            cp.setMazoFinal(mazoDest);
-            // cp.getMazoFinal().setCantidad(i);
-            cp.setPosCartaMazo(indexUltCarta + i);
-            i++;
-            cartasPartidaRepository.save(cp);
-        }
+        
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
@@ -377,34 +373,18 @@ public class CartasPartidaService {
         
     }
 
-   /* public void cambiaPosCartaMazoIni(int index,List<CartasPartida> mazoIni){
-        
-
-        if(mazoIni.get(index).getPosCartaMazo()>=mazoIni.size()){
-            mazoIni.get(index).setPosCartaMazo(1);
-            cartasPartidaRepository.save(mazoIni.get(index));
-        }else{
-            mazoIni.get(index).setPosCartaMazo(mazoIni.get(index).getPosCartaMazo()+1);
-            cartasPartidaRepository.save(mazoIni.get(index));
-
-        }
-        
-
-    }*/
-
-
+    @Transactional
     public void cambiaPosCartaMazoIni(int mazoIniId){
         List<CartasPartida> mazoInicial = cartasPartidaRepository.findCartasPartidaByMazoInicialIdAndPartidaId(mazoIniId, mazoIniId);
 
         for (CartasPartida cp : mazoInicial){
-            if(cp.getPosCartaMazo()==mazoInicial.size()){
-                cp.setPosCartaMazo(1);
-                cartasPartidaRepository.save(cp);
-            }else{
-                cp.setPosCartaMazo(cp.getPosCartaMazo()+1);
-                cartasPartidaRepository.save(cp);
-            }
+            cp.setPosCartaMazo(cp.getPosCartaMazo()+1);
+            cartasPartidaRepository.save(cp);
         }
+        Collections.sort(mazoInicial, new ComparadorCartasPartidaPorPosCartaMazo());
+        CartasPartida ultCarta = mazoInicial.get(mazoInicial.size()-1);
+        ultCarta.setPosCartaMazo(1);
+        cartasPartidaRepository.save(ultCarta);
         
 
     }
