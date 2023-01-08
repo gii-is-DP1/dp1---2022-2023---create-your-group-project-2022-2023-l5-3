@@ -82,103 +82,251 @@ public class CartasPartidaService {
         return cartasPartidaRepository.findCartasByMazoIdList(mazoId);
     }
 
-    public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId){
-        Tuple3 res = new Tuple3(null, null, null);
-        if(partidaId >1){
+    // Solo se debe validar cuando esté algún mazo intermedio como destino y se debe
+    // validar la primera carta de la cantidad con la última carta del mazo destino
+    public Boolean validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
+        
+        Boolean res = false;
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
+        
+        int startIndex = cpOrigen.size() - cantidad;
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
-            if(mazoOrigenId>0){
-                mazoOrigenId = mazoOrigenId+((partidaId-1)*7);
-                if(mazoDestinoId<=7){
-                    mazoDestinoId = mazoDestinoId+((partidaId-1)*7);
-                    res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                }
-                if(mazoDestinoId==8){
-                    mazoDestinoId = 1+((partidaId-1)*4);
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
-                }else if(mazoDestinoId==9){
-                    mazoDestinoId = 2+((partidaId-1)*4);
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);                            
-                }else if(mazoDestinoId==10){
-                    mazoDestinoId = 3+((partidaId-1)*4);
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);   
-                }else if(mazoDestinoId==11){
-                    mazoDestinoId = 4+((partidaId-1)*4);
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
-                }
-        }else{
-            if(mazoDestinoId<=7){
-                mazoDestinoId = mazoDestinoId+((partidaId-1)*7);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
-            }
-            if(mazoDestinoId==8){
-                mazoDestinoId = 1+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
-            }else if(mazoDestinoId==9){
-                mazoDestinoId = 2+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);                            
-            }else if(mazoDestinoId==10){
-                mazoDestinoId = 3+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);   
-            }else if(mazoDestinoId==11){
-                mazoDestinoId = 4+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+        CartasPartida cartaPrimeraAMover = cartasMovidas.get(0);
+        CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
+        
+        Carta cartaAbajo = cartaPrimeraAMover.getCarta();
+        Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
+        
+        if(!(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()).equals(cartaArriba.getPalo().getColor(cartaArriba.getPalo())))){
+            if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+                res = true;
             }
         }
-        }else {
 
-            if(mazoOrigenId>0){
+        return res;
 
-                if(mazoDestinoId<=7){
-                    res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                }
-                if(mazoDestinoId==8){
-                    mazoDestinoId = 1;
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
-                }else if(mazoDestinoId==9){
-                    mazoDestinoId = 2;
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);                            
-                }else if(mazoDestinoId==10){
-                    mazoDestinoId = 3;
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);   
-                }else if(mazoDestinoId==11){
-                    mazoDestinoId = 4;
-                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
-                }
-            }else{
-                if(mazoDestinoId<=7){
-                    mazoOrigenId=partidaId;
-                    mazoOrigenId=partidaId;  
-                    res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
-                }
-                if(mazoDestinoId==8){
-                    mazoDestinoId = 1;
-                    mazoOrigenId=partidaId; 
-                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
-                }else if(mazoDestinoId==9){
-                    mazoDestinoId = 2;
-                    mazoOrigenId=partidaId; 
-                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);                            
-                }else if(mazoDestinoId==10){
-                    mazoDestinoId = 3;
-                    mazoOrigenId=partidaId; 
-                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);   
-                }else if(mazoDestinoId==11){
-                    mazoDestinoId = 4;
-                    mazoOrigenId=partidaId; 
-                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
-                }
-            }
     }
+
+
+    public Boolean validaColorYEscaleraDesdeMazoInicialAMazoIntermedio (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
         
+        Boolean res = false;
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
+        
+        int startIndex = cpOrigen.size() - 1;
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+
+        CartasPartida cartaPrimeraAMover = cartasMovidas.get(0);
+        CartasPartida cartaUltimaMazoDestino = cpDestino.get(cpDestino.size()-1); 
+        
+        Carta cartaAbajo = cartaPrimeraAMover.getCarta();
+        Carta cartaArriba = cartaUltimaMazoDestino.getCarta();
+
+        if(cartaAbajo.getPalo().getColor(cartaAbajo.getPalo()) != cartaArriba.getPalo().getColor(cartaArriba.getPalo())){
+            if (cartaAbajo.getValor() + 1 == cartaArriba.getValor()){
+                res = true;
+            }
+        }
         return res;
     }
 
-    
+public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
+        Tuple3 res = new Tuple3(null, null, null);
+        if (partidaId > 1) {
+
+            if (mazoOrigenId > 0) {
+                mazoOrigenId = mazoOrigenId + ((partidaId - 1) * 7);
+                if (mazoDestinoId <= 7) {
+                    mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
+                    res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1 + ((partidaId - 1) * 4);
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2 + ((partidaId - 1) * 4);
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3 + ((partidaId - 1) * 4);
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4 + ((partidaId - 1) * 4);
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+            } else {
+                if (mazoDestinoId <= 7) {
+                    mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+            }
+        } else {
+
+            if (mazoOrigenId > 0) {
+
+                if (mazoDestinoId <= 7) {
+                    res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1;
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2;
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3;
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4;
+                    res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+            } else {
+                if (mazoDestinoId <= 7) {
+                    mazoOrigenId = partidaId;
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1;
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2;
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3;
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4;
+                    mazoOrigenId = partidaId;
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    public Boolean validacionMovimiento(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
+        Boolean res = true;
+        if (partidaId > 1) {
+
+            if (mazoOrigenId > 0) {
+                mazoOrigenId = mazoOrigenId + ((partidaId - 1) * 7);
+                if (mazoDestinoId <= 7) {
+                    mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1 + ((partidaId - 1) * 4);
+                    res = true;
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2 + ((partidaId - 1) * 4);
+                    res = true;
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3 + ((partidaId - 1) * 4);
+                    res = true;
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4 + ((partidaId - 1) * 4);
+                    res = true;
+                }
+            } else {
+                if (mazoDestinoId <= 7) {
+                    mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
+                    mazoOrigenId = partidaId;
+                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4 + ((partidaId - 1) * 4);
+                    mazoOrigenId = partidaId;
+                    res = true;
+                }
+            }
+        } else {
+
+            if (mazoOrigenId > 0) {
+
+                if (mazoDestinoId <= 7) {
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1;
+                    res = true;
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2;
+                    res = true;
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3;
+                    res = true;
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4;
+                    res = true;
+                }
+            } else {
+                if (mazoDestinoId <= 7) {
+                    mazoOrigenId = partidaId;
+                    mazoOrigenId = partidaId;
+                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                }
+                if (mazoDestinoId == 8) {
+                    mazoDestinoId = 1;
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 9) {
+                    mazoDestinoId = 2;
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 10) {
+                    mazoDestinoId = 3;
+                    mazoOrigenId = partidaId;
+                    res = true;
+                } else if (mazoDestinoId == 11) {
+                    mazoDestinoId = 4;
+                    mazoOrigenId = partidaId;
+                    res = true;
+                }
+            }
+        }
+
+        return res;
+    }
 
     @Transactional
     public Tuple3 moverCartaInterInter(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
@@ -219,7 +367,6 @@ public class CartasPartidaService {
             mazosFinales.put(idMazo, aux);
         }
         mazoInicial.put(partidaId, findCartasPartidaMazoInicialByPartidaId(partidaId));
-
 
         return new Tuple3(mazosInter, mazosFinales, mazoInicial);
     }
@@ -266,11 +413,11 @@ public class CartasPartidaService {
         }
         mazoInicial.put(partidaId, findCartasPartidaMazoInicialByPartidaId(partidaId));
 
-
         // return mazosInter;
         return new Tuple3(mazosInter, mazosFinales, mazoInicial);
 
     }
+
     private Tuple3 moverCartaInicialInter(int mazoOrigenId, int mazoDestinoId, int partidaId) {
         Mazo mazoDest = mazoService.findMazoById(mazoDestinoId);
         // Obtiene lista de cartas partida de los mazos origen y destino
@@ -307,9 +454,8 @@ public class CartasPartidaService {
             List<CartasPartida> aux = findCartasPartidaByMazoFinalId(idMazo);
             mazosFinales.put(idMazo, aux);
         }
-        //Asigna el diccionario el mazo inicial con las cartas 
+        // Asigna el diccionario el mazo inicial con las cartas
         mazoInicial.put(mazoOrigenId, findCartasPartidaMazoInicialByPartidaId(partidaId));
-        
 
         // return mazosInter;
         return new Tuple3(mazosInter, mazosFinales, mazoInicial);
@@ -325,10 +471,10 @@ public class CartasPartidaService {
         List<CartasPartida> cpDestino = cartasPartidaRepository
                 .findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
 
-                // Indice de la ultima carta del mazo origen
-        
+        // Indice de la ultima carta del mazo origen
+
         int startIndex = cpOrigen.size() - 1;
-        
+
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
@@ -356,39 +502,37 @@ public class CartasPartidaService {
             List<CartasPartida> aux = findCartasPartidaByMazoFinalId(idMazo);
             mazosFinales.put(idMazo, aux);
         }
-        //Asigna el diccionario el mazo inicial con las cartas 
+        // Asigna el diccionario el mazo inicial con las cartas
         mazoInicial.put(partidaId, findCartasPartidaMazoInicialByPartidaId(partidaId));
-        
 
         // return mazosInter;
         return new Tuple3(mazosInter, mazosFinales, mazoInicial);
 
     }
 
-    public void setCartaVisibleIntermedio(int mazoId, int partidaId){
+    public void setCartaVisibleIntermedio(int mazoId, int partidaId) {
         List<CartasPartida> mazo = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoId, partidaId);
         Collections.sort(mazo, new ComparadorCartasPartidaPorPosCartaMazo());
-        if(mazo.size()!=0){
-            CartasPartida ultCarta = mazo.get(mazo.size()-1);
-            if(!ultCarta.getIsShow()){
+        if (mazo.size() != 0) {
+            CartasPartida ultCarta = mazo.get(mazo.size() - 1);
+            if (!ultCarta.getIsShow()) {
                 ultCarta.setIsShow(true);
                 cartasPartidaRepository.save(ultCarta);
             }
 
         }
-        
+
     }
 
-    public void cambiaPosCartaMazoIni(int index,List<CartasPartida> mazoIni){
-        if(mazoIni.get(index).getPosCartaMazo()==mazoIni.size()){
+    public void cambiaPosCartaMazoIni(int index, List<CartasPartida> mazoIni) {
+        if (mazoIni.get(index).getPosCartaMazo() == mazoIni.size()) {
             mazoIni.get(index).setPosCartaMazo(1);
             cartasPartidaRepository.save(mazoIni.get(index));
-        }else{
-            mazoIni.get(index).setPosCartaMazo(mazoIni.get(index).getPosCartaMazo()+1);
+        } else {
+            mazoIni.get(index).setPosCartaMazo(mazoIni.get(index).getPosCartaMazo() + 1);
             cartasPartidaRepository.save(mazoIni.get(index));
 
         }
-        
 
     }
 
@@ -410,6 +554,5 @@ public class CartasPartidaService {
         List<CartasPartida> res = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         return res;
     }
-
 
 }
