@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.carta.Carta;
+import org.springframework.samples.petclinic.carta.Palo;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
@@ -166,6 +167,47 @@ public class CartasPartidaService {
         return res;
     }
 
+    public Boolean validaMovimientoIntermedioMazoFinal (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
+        boolean res = true;
+        MazoFinal mazoDest = mazoFinalService.findMazoFinalById(mazoDestino);
+
+        // Obtiene lista de cartas partida de los mazos origen y destino
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestino, partidaId);
+
+        
+        
+
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        Collections.sort(cpDestino, new ComparadorCartasPartidaPorPosCartaMazo());
+        Carta cartaMovida = cpOrigen.get(cpOrigen.size()-1).getCarta();
+        
+        if(cartaMovida.getValor()==1 || cpDestino.size()==0){
+            if(mazoDestino==1 && cartaMovida.getPalo() == Palo.CORAZONES){
+                res = true;
+            }else if(mazoDestino==2 && cartaMovida.getPalo() == Palo.PICAS){
+                res = true;
+            }else if(mazoDestino==3 && cartaMovida.getPalo() == Palo.DIAMANTES){
+                res = true;
+            }else if(mazoDestino==4 && cartaMovida.getPalo() == Palo.TREBOLES){
+                res = true;
+            }else{
+                res = false;
+            }
+        }   
+        else{
+            Carta ultCartaMazoFinal = cpDestino.get(cpDestino.size()-1).getCarta();
+            if(cartaMovida.getValor()==ultCartaMazoFinal.getValor()+1 && cartaMovida.getPalo()==ultCartaMazoFinal.getPalo()){
+                res = true;
+            }else{
+                res = false;
+            }
+        }
+        
+
+        return res;
+    }
+
     public Boolean validacionMovimiento(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
         Boolean res = true;
         if (partidaId > 1) {
@@ -178,16 +220,16 @@ public class CartasPartidaService {
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
                     mazoDestinoId = 2 + ((partidaId - 1) * 4);
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 10) {
                     mazoDestinoId = 3 + ((partidaId - 1) * 4);
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 11) {
                     mazoDestinoId = 4 + ((partidaId - 1) * 4);
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
             } else {
                 if (mazoDestinoId <= 7) {
@@ -222,16 +264,16 @@ public class CartasPartidaService {
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
                     mazoDestinoId = 2;
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 10) {
                     mazoDestinoId = 3;
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 11) {
                     mazoDestinoId = 4;
-                    res = true;
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
             } else {
                 if (mazoDestinoId <= 7) {
