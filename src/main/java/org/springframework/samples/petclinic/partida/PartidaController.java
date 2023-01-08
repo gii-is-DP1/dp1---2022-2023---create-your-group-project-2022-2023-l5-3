@@ -242,10 +242,7 @@ public class PartidaController {
 				model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
 				model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
 				model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
-	
-	 
-				
-				//model.put("mazInicial", mazos.getThird().get(partidaId));
+
 				model.put("partidaId",partidaId);
 				return TABLERO;
 			} else {
