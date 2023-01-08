@@ -2,8 +2,7 @@ package org.springframework.samples.petclinic.jugador;
 
 import java.time.LocalTime;
 import java.util.Set;
-
-
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,7 +66,7 @@ public class Jugador extends Person{
     Set<Partida> partidasJugadas;
 
     public Integer getPartidasJugadas(){
-        return partidasJugadas.size();
+        return partidasJugadas.stream().filter(x -> x.getMomentoFin()!=null).collect(Collectors.toList()).size();
     }
     
     @OneToOne

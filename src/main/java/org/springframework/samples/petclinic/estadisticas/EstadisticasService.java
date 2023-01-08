@@ -31,7 +31,6 @@ public class EstadisticasService {
 
     public void setEstadisticasJugador(Jugador jugador){
 		Collection<Partida> lista = serv.findPartidasFinalizadasPorJugador(jugador);
-		LocalTime aux = LocalTime.of(0, 0, 0);
 		if(lista.size()>0){
 			List<Partida> partidasGanadas = lista.stream().filter(x -> x.getVictoria()==true).collect(Collectors.toList());
 			Comparator<Partida> comparador= Comparator.comparing(Partida::getNumMovimientos);
@@ -44,11 +43,6 @@ public class EstadisticasService {
 			Integer sumaPerdidas = lista.size() - sumaGanadas;
 			long tiempoJugado = lista.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
 			LocalTime totalJugado = LocalTime.of(0, 0, 0);
-			// Duration duration = Duration.ofSeconds(tiempoJugado);
-			// long horas = duration.toHours();
-			// long minutos = duration.toMinutes() % 60;
-			// long segundos = duration.getSeconds() % 60;
-			// String srt = 
 
 			jugador.setPartidasGanadas(sumaGanadas);
 			jugador.setPartidasNoGanadas(sumaPerdidas);
@@ -66,8 +60,9 @@ public class EstadisticasService {
     }
 
     public void setEstadisticasGenerales(ModelAndView result,Jugador jugador){
-		List<Partida> listPartidas = serv.findAllPartidas();
+		List<Partida> listPartidas = serv.findAllPartidas().stream().filter(x -> x.getMomentoFin() != null).collect(Collectors.toList());
 		Integer ganadas = (int) listPartidas.stream().filter(x -> x.getVictoria()==true).count();
+		Integer perdidas = (int) listPartidas.stream().filter(x -> x.getVictoria()==false).count();
 		Integer puntos = (int) listPartidas.stream().mapToLong(x -> x.puntos()).sum();
 		Integer movimientos = (int) listPartidas.stream().mapToLong(x -> x.getNumMovimientos()).sum();
 		long duracionTotal = listPartidas.stream().mapToInt(x -> (int) x.getDuracionMaxMin()).sum();
@@ -101,7 +96,7 @@ public class EstadisticasService {
 			Integer movPromedio = movimientos/listPartidas.size();
 			result.addObject("partidasTotalesJugadas", listPartidas.size());
 			result.addObject("partidasGanadasTotales", ganadas);
-			result.addObject("partidasPerdidasTotales", listPartidas.size()-ganadas);
+			result.addObject("partidasPerdidasTotales", perdidas);
 			result.addObject("puntosPromedio", puntosPromedio);
 			result.addObject("movimientosPromedio",movPromedio);
 			result.addObject("horas",horas);
