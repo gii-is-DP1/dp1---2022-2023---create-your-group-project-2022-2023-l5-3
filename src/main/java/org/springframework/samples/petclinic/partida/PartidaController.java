@@ -148,12 +148,8 @@ public class PartidaController {
 			List<CartasPartida> mazoIni = new ArrayList<>();
 			model.put("mazInicial", mazoIni);
 		}else{
-			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
-			for (int i=0;i<mazoIni.size();i++) {
-			
-				cartasPartidaService.cambiaPosCartaMazoIni(i,mazoIni);
-				
-			}
+			cartasPartidaService.cambiaPosCartaMazoIni(partidaId);
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);				
 			model.put("mazInicial", mazoIni);
 		}
 		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);

@@ -30,7 +30,7 @@
             <form:form action="${moverCartaIni}" method="post">
             <div class="row">
                 <div class="col-md-1">
-                    <spring:url value="${mazInicial[0].carta.imagen}" htmlEscape="true" var="carta" />
+                    <spring:url value="${mazInicial[fn:length(mazInicial)-1].carta.imagen}" htmlEscape="true" var="carta" />
                     <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
                 </div>
 

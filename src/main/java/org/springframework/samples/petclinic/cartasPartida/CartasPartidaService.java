@@ -105,30 +105,30 @@ public class CartasPartidaService {
                     mazoDestinoId = 4+((partidaId-1)*4);
                     res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
                 }
-        }else{
-            if(mazoDestinoId<=7){
-                mazoDestinoId = mazoDestinoId+((partidaId-1)*7);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
-            }
-            if(mazoDestinoId==8){
-                mazoDestinoId = 1+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
-            }else if(mazoDestinoId==9){
-                mazoDestinoId = 2+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);                            
-            }else if(mazoDestinoId==10){
-                mazoDestinoId = 3+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);   
-            }else if(mazoDestinoId==11){
-                mazoDestinoId = 4+((partidaId-1)*4);
-                mazoOrigenId=partidaId; 
-                res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
-            }
-        }
+            }else{
+                if(mazoDestinoId<=7){
+                    mazoDestinoId = mazoDestinoId+((partidaId-1)*7);
+                    mazoOrigenId=partidaId; 
+                    res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
+                }
+                if(mazoDestinoId==8){
+                    mazoDestinoId = 1+((partidaId-1)*4);
+                    mazoOrigenId=partidaId; 
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                }else if(mazoDestinoId==9){
+                    mazoDestinoId = 2+((partidaId-1)*4);
+                    mazoOrigenId=partidaId; 
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);                            
+                }else if(mazoDestinoId==10){
+                    mazoDestinoId = 3+((partidaId-1)*4);
+                    mazoOrigenId=partidaId; 
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);   
+                }else if(mazoDestinoId==11){
+                    mazoDestinoId = 4+((partidaId-1)*4);
+                    mazoOrigenId=partidaId; 
+                    res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
+                        }
+                    }
         }else {
 
             if(mazoOrigenId>0){
@@ -231,8 +231,7 @@ public class CartasPartidaService {
         // Obtiene lista de cartas partida de los mazos origen y destino
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId,
                 partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository
-                .findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
 
         // Indice de la ultima carta del mazo origen
         int startIndex = cpOrigen.size() - 1;
@@ -240,13 +239,13 @@ public class CartasPartidaService {
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
-        //int indexUltCarta = cpDestino.size();
+        int indexUltCarta = cpDestino.size();
         //int i = 1;
         for (CartasPartida cp : cartasMovidas) {
             cp.setMazo(null);
             cp.setMazoFinal(mazoDest);
             // cp.getMazoFinal().setCantidad(i);
-            cp.setPosCartaMazo(mazoDest.getCartasPartida().size()+1);
+            cp.setPosCartaMazo(indexUltCarta+1);
             //i++;
             cartasPartidaRepository.save(cp);
         }
@@ -275,25 +274,23 @@ public class CartasPartidaService {
     private Tuple3 moverCartaInicialInter(int mazoOrigenId, int mazoDestinoId, int partidaId) {
         Mazo mazoDest = mazoService.findMazoById(mazoDestinoId);
         // Obtiene lista de cartas partida de los mazos origen y destino
-        List<CartasPartida> cpOrigen = cartasPartidaRepository
-                .findCartasPartidaByMazoInicialIdAndPartidaId(mazoOrigenId, partidaId);
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoId(mazoDestinoId);
 
         // Indice de la ultima carta del mazo origen
-        int startIndex = cpOrigen.size() - 1;
+        
 
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
-        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+        //List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
         int indexUltCarta = cpDestino.size();
-        int i = 1;
-        for (CartasPartida cp : cartasMovidas) {
+        CartasPartida cp = cpOrigen.get(cpOrigen.size()-1);
             cp.setMazoInicial(null);
             cp.setMazo(mazoDest);
-            cp.setPosCartaMazo(indexUltCarta + i);
-            i++;
+            cp.setPosCartaMazo(indexUltCarta + 1);
+            
             cartasPartidaRepository.save(cp);
-        }
+        
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
@@ -322,7 +319,7 @@ public class CartasPartidaService {
 
         // Obtiene lista de cartas partida de los mazos origen y destino
         List<CartasPartida> cpOrigen = cartasPartidaRepository
-                .findCartasPartidaByMazoInicialIdAndPartidaId(mazoOrigenId, partidaId);
+                .findCartasPartidaMazoInicial(partidaId);
         List<CartasPartida> cpDestino = cartasPartidaRepository
                 .findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
 
@@ -330,7 +327,7 @@ public class CartasPartidaService {
         
         int startIndex = cpOrigen.size() - 1;
         
-        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo().reversed());
         List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
 
         int indexUltCarta = cpDestino.size();
@@ -380,8 +377,10 @@ public class CartasPartidaService {
         
     }
 
-    public void cambiaPosCartaMazoIni(int index,List<CartasPartida> mazoIni){
-        if(mazoIni.get(index).getPosCartaMazo()==mazoIni.size()){
+   /* public void cambiaPosCartaMazoIni(int index,List<CartasPartida> mazoIni){
+        
+
+        if(mazoIni.get(index).getPosCartaMazo()>=mazoIni.size()){
             mazoIni.get(index).setPosCartaMazo(1);
             cartasPartidaRepository.save(mazoIni.get(index));
         }else{
@@ -391,7 +390,25 @@ public class CartasPartidaService {
         }
         
 
+    }*/
+
+
+    public void cambiaPosCartaMazoIni(int mazoIniId){
+        List<CartasPartida> mazoInicial = cartasPartidaRepository.findCartasPartidaByMazoInicialIdAndPartidaId(mazoIniId, mazoIniId);
+
+        for (CartasPartida cp : mazoInicial){
+            if(cp.getPosCartaMazo()==mazoInicial.size()){
+                cp.setPosCartaMazo(1);
+                cartasPartidaRepository.save(cp);
+            }else{
+                cp.setPosCartaMazo(cp.getPosCartaMazo()+1);
+                cartasPartidaRepository.save(cp);
+            }
+        }
+        
+
     }
+    
 
     public List<CartasPartida> findCartasPartidaByMazoFinalId(Integer idMazo) {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalId(idMazo);
