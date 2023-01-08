@@ -19,7 +19,7 @@
     </p>
 </br>
 </br>
-</div>    
+</div>  
 <body>
     <table id="usersTable" class="table table-striped">
         <thead>
@@ -47,7 +47,7 @@
                     <c:if test="${user.jugador.image != ''}"><img class="rounded d-block" src="${user.jugador.image}" width="50" height="50"></c:if>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/jugador/perfil/${user.jugador.id}" style="color: black;">${user.username}</a>
+                    <a href="http://localhost:8080/jugador/perfil/${user.jugador.id}" class="btn btn-warning btn-sm" style="color: black;">${user.username}</a>
                 </td>
                 <td>
                     <c:out value="${user.jugador.firstName}"/>

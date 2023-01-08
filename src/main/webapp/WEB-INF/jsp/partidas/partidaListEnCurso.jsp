@@ -38,8 +38,7 @@
                 	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
                 </td>
                 <td>
-                    <c:if test="${partida.momentoFin == null}"><c:out value="En curso"/></c:if>
-                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.victoria}"/></c:if>
+                    <c:if test="${partida.momentoFin == null}"><a class="btn btn-primary btn-sm">En curso</a></c:if>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>
