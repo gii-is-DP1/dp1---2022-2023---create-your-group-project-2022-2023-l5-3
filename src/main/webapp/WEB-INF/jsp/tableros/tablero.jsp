@@ -2,10 +2,18 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="solitario" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<petclinic:layout pageName="partidas">
+<style>
+    .vertical {
+        writing-mode: vertical-rl;
+        font-size: large;
+        font-weight: bold;
+    }
+</style>
+
+<solitario:layout pageName="partidas">
 
     <jsp:body>
 
@@ -18,10 +26,11 @@
         <div class="container" style="background-color:#51C967;">
 
             <!-- MAZO INICIAL -->
-
+            <c:url value="/partidas/moverCartaIni/${partidaId}" var="moverCartaIni"/>
+            <form:form action="${moverCartaIni}" method="post">
             <div class="row">
                 <div class="col-md-1">
-                    <spring:url value="${mazInicial[0].carta.imagen}" htmlEscape="true" var="carta" />
+                    <spring:url value="${mazInicial[fn:length(mazInicial)-1].carta.imagen}" htmlEscape="true" var="carta" />
                     <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
                 </div>
 
@@ -34,6 +43,7 @@
 
                 <button class="btn btn-default">PASAR CARTA</button>
             </div>
+            </form:form>
 
 
             </br>
@@ -143,69 +153,142 @@
 
                 </div>
 
-        <!--MAZOS FINALES-->
-                <div class="col-md-2" style="padding-left: 100px;">
-                
-                    <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" />
-                    
-                    <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" />
-                
-                    <spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}" />
-                    
-                    <spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles" />
-                    <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}" />
-                
+                <div class="vertical col-md-1">
+                    MAZOS FINALES
+                </div>
+        
+
+                <!-- MAZOS FINALES -->
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalCorazones) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalCorazones) != 0}">
+                        <spring:url value="${mazoFinalCorazones[fn:length(mazoFinalCorazones)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
                 </div>
 
+                
+            
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalPicas) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalPicas) != 0}">
+                        <spring:url value="${mazoFinalPicas[fn:length(mazoFinalPicas)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
 
+               
+                
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalDiamantes) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalDiamantes) != 0}">
+                        <spring:url value="${mazoFinalDiamantes[fn:length(mazoFinalDiamantes)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
+
+                <div class="col-md-1">
+                    <c:if test="${fn:length(mazoFinalTreboles) == 0}">
+                        
+                        <spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles" />
+                        <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}" /> 
+                    </c:if>
+                    <c:if test="${fn:length(mazoFinalTreboles) != 0}">
+                        <spring:url value="${mazoFinalTreboles[fn:length(mazoFinalTreboles)-1].carta.imagen}" htmlEscape="true" var="carta" />
+                        <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
+                    </c:if>
+                </div>
 
         </div>
 
         <div class="row">
             
-            <table id="board1Game" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Cartas que se pueden mover:</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <c:forEach items="${cartasPosiblesAMover}" var="cartaPartida">
-                            <td>
-                                <spring:url value="${cartaPartida.carta.imagen}" htmlEscape="true" var="carta" />
-                            <img class="img-responsive mx-auto d-block" width="100" height="100" src="${carta}" />
-                            </td>
-                        </c:forEach>
-                    </tr>
-                </tbody>
-            </table>
+           
             
+
             <table id="board1Game" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Mazo destino</th>
+                        <th>Mover Cartas</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     <tr>
-                        <td>Mazo intermedio 1</td>
-                        <td>Mazo intermedio 2</td>
-                        <td>Mazo intermedio 3</td>
-                        <td>Mazo intermedio 4</td>
-                        <td>Mazo intermedio 5</td>
-                        <td>Mazo intermedio 6</td>
-                        <td>Mazo intermedio 7</td>
-                        <td>Mazo final Corazones</td>
-                        <td>Mazo final Picas</td>
-                        <td>Mazo final Tréboles</td>
-                        <td>Mazo final Diamantes</td>
+                        <td>
+            
+            
+            <c:url value="/partidas/moverCarta/${partidaId}" var="moverCarta"/>
+            <form:form action="${moverCarta}" method="post">
+                Mazo Origen
+                <select name="mazoOrigen">
+                   <c:forEach var="i" begin="0" end="7" step="1">
+                    <c:choose>
+                        <c:when test="${i==0}">
+                            <option value="${i}">Mazo Inicial</option>             
+                        </c:when>
+                        <c:when test="${i>0}"> 
+                   <option value="${i}">Mazo Intermedio ${i}</option>        
+                </c:when>
+                    </c:choose>
+                </c:forEach>
+                   </select>
+
+                   Mazo Destino
+            <select name="mazoDestino" >
+                <c:forEach var="i" begin="1" end="11" step="1">
+                      
+                    <c:choose>
+                        <c:when test="${i==8}">
+                            <option value="${i}">Mazo Final Corazones </option>  
+                        </c:when>
+                        <c:when test="${i==9}">
+                            <option value="${i}">Mazo Final Picas</option>  
+                        </c:when>
+                        <c:when test="${i==10}">
+                            <option value="${i}">Mazo Final Diamantes</option>  
+                        </c:when>
+                        <c:when test="${i==11}">
+                            <option value="${i}">Mazo Final Treboles</option>  
+                        </c:when>
+                        <c:otherwise>
+                            <option value="${i}">Mazo Intermedio ${i}</option>  
+                        </c:otherwise>
+                    </c:choose>
+                 </c:forEach>
+                </select>
+                Cantidad
+                <select name="cantidad">
+                    <c:forEach var="i" begin="1" end="10" step="1">
+                        <option value="${i}">${i}</option>    
+                     </c:forEach>
+                    </select>
+            
+
+             
+             <button class="btn btn-default" type="submit">Enviar</button>
+            
+            </form:form>
+            
+            
+            </td>
                     </tr>
                 </tbody>
             </table>
+
+
         </div>
 
 
@@ -217,4 +300,4 @@
 
 
     </jsp:body>
-</petclinic:layout>
+</solitario:layout>

@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="jugadores">
     <h2>
-        <c:if test="${jugador['new']}">New </c:if> Player
+        <c:if test="${jugador['new']}">Nuevo </c:if> Jugador
     </h2>
     <form:form modelAttribute="jugador" class="form-horizontal" id="add-jugador-form">
         <div class="form-group has-feedback">
@@ -21,10 +21,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${jugador['new']}">
-                        <button class="btn btn-default" type="submit">Add Player</button>
+                        <button class="btn btn-default" type="submit">Crear Jugador</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Player</button>
+                        <button class="btn btn-default" type="submit">Actualizar Datos</button>
                     </c:otherwise>
                 </c:choose>
             </div>

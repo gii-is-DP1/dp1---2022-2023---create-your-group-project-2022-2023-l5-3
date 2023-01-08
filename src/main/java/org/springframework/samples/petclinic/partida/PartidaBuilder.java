@@ -76,6 +76,7 @@ public class PartidaBuilder {
 			cp.setCarta(c);
 			cp.setPartida(p);
 			cp.setPosCartaMazo(0);
+
 			//cartasPartidaRepository.save(cp);
 			res.add(cp);
 
@@ -162,6 +163,7 @@ public class PartidaBuilder {
 
 				// Asigno la posición actual al mazo
 				cp.setPosCartaMazo(k);
+			
 				// Indico la cantidad de cartas que hay ahora en el mazo
 				mact.setCantidad(k);
 
@@ -194,6 +196,7 @@ public class PartidaBuilder {
 			CartasPartida cp = cartasP.get(random);
 			cp.setMazoInicial(mI);
 			cp.setPosCartaMazo(k);
+			cp.setIsShow(true);
 			cartasPartidaRepository.save(cp);
 			cartasP.remove(cp);
 		}
