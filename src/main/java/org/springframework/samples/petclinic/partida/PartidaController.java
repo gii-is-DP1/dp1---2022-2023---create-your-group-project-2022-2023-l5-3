@@ -526,7 +526,7 @@ public class PartidaController {
 	}
 
 
-	
+	@GetMapping(value="/partidas/gana")
 	public String ganarPartida (Map<String, Object> model){
 		model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
 		return "partidas/messagePartida";
