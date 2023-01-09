@@ -14,7 +14,6 @@ import org.springframework.samples.petclinic.carta.Palo;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
-import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinalService;
 import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.partida.PartidaService;
