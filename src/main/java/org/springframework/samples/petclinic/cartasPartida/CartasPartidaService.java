@@ -13,6 +13,7 @@ import org.springframework.samples.petclinic.carta.Carta;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
+import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinalService;
 import org.springframework.samples.petclinic.util.Tuple3;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartasPartidaService {
 
     private CartasPartidaRepository cartasPartidaRepository;
+    
+    private MazoFinalRepository mazoFinalRepository;
 
     @Autowired
     private MazoService mazoService;
@@ -227,6 +230,7 @@ public class CartasPartidaService {
     @Transactional
     public Tuple3 moverCartaInterFin(int mazoOrigenId, int mazoDestinoId, int partidaId) {
         MazoFinal mazoDest = mazoFinalService.findMazoFinalById(mazoDestinoId);
+        
 
         // Obtiene lista de cartas partida de los mazos origen y destino
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId,
@@ -246,6 +250,8 @@ public class CartasPartidaService {
             cp.setMazoFinal(mazoDest);
             // cp.getMazoFinal().setCantidad(i);
             cp.setPosCartaMazo(indexUltCarta+1);
+            //mazoDest.setCantidad(mazoDest.getCantidad()+1);
+            //mazoFinalRepository.save(mazoDest);
             //i++;
             cartasPartidaRepository.save(cp);
         }
@@ -314,6 +320,17 @@ public class CartasPartidaService {
     }
 
     @Transactional
+    public boolean mazoFinalCompleto(Integer mazoId, Integer partidaId){
+        if(mazoId<8){
+            return false;
+        }else{
+        MazoFinal mazoFinal = mazoFinalService.findMazoFinalById((mazoId-7) +((partidaId-1)*4));
+        boolean res = mazoFinal.getCantidad() == 13;
+        return res;
+        }
+    }
+
+    @Transactional
     public Tuple3 moverCartaInicialFinal(int mazoOrigenId, int mazoDestinoId, int partidaId) {
         MazoFinal mazoDest = mazoFinalService.findMazoFinalById(mazoDestinoId);
 
@@ -337,9 +354,13 @@ public class CartasPartidaService {
             cp.setMazoFinal(mazoDest);
             // cp.getMazoFinal().setCantidad(i);
             cp.setPosCartaMazo(indexUltCarta + i);
+            mazoDest.setCantidad(mazoDest.getCantidad()+1);
+            mazoFinalRepository.save(mazoDest);
             i++;
             cartasPartidaRepository.save(cp);
         }
+
+        
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
