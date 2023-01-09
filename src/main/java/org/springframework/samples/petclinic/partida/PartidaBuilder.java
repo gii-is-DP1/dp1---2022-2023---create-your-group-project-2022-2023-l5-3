@@ -24,13 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PartidaBuilder {
 
-	/*
-	 * CartasPartida cartasPartida = new CartasPartida();
-	 * cartasPartida.setPartida(p);
-	 * for (Carta inicializar_cartas : inicializar_cartas()) {
-	 * cartasPartida.setCarta(inicializar_cartas);
-	 * }
-	 */
+	
 
 	public List<Carta> inicializarCartas() {
 		List<Carta> res = new ArrayList<>();

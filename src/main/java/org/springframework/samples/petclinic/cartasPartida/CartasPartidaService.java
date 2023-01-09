@@ -124,8 +124,9 @@ public class CartasPartidaService {
 
         for (Integer m : listaMazosFinales) {
             MazoFinal mf = cartasPartidaRepository.findMazoFinalByIdAndPartidaId(m,partidaId);
-            if(mf.getCantidad()==13){
-                res++;
+            if(mf!=null && mf.getCantidad()==13){
+                
+                    res++;
             }
         }
         if (res==4){

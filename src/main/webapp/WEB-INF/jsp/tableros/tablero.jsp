@@ -295,7 +295,6 @@
         <br><br><br>
         </div>
         <a href="/partidas/derrota/${partidaId}" class="btn btn-danger"> RENDIRTE</a>
-        <a href="/partidas/victoria/${partidaId}" class="btn btn-danger"> Finalizar partida WIN</a>
 
 
     </jsp:body>
