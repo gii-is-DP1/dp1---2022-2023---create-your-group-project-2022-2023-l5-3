@@ -50,11 +50,11 @@
             </br>
             </br>
 
-            <!-- MAZOS INTERMEDIOS -->
+            <!-- MAZOSS -->
             <div class="row">
 
                 <div class="col-md-1">
-
+                    MAZO 1
                     <c:forEach items="${mazInt1}" var="cp1">
                         <c:if test="${cp1.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="col-md-1" style="text-align: center;">
-
+                    MAZO 2
                     <c:forEach items="${mazInt2}" var="cp2">
                         <c:if test="${cp2.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -83,7 +83,7 @@
 
                 </div>
                 <div class="col-md-1">
-
+                    MAZO 3
                     <c:forEach items="${mazInt3}" var="cp3">
                         <c:if test="${cp3.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -97,7 +97,7 @@
 
                 </div>
                 <div class="col-md-1">
-
+                    MAZO 4
                     <c:forEach items="${mazInt4}" var="cp4">
                         <c:if test="${cp4.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -111,7 +111,7 @@
 
                 </div>
                 <div class="col-md-1">
-
+                    MAZO 5
                     <c:forEach items="${mazInt5}" var="cp5">
                         <c:if test="${cp5.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -125,7 +125,7 @@
 
                 </div>
                 <div class="col-md-1">
-
+                    MAZO 6
                     <c:forEach items="${mazInt6}" var="cp6">
                         <c:if test="${cp6.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -139,7 +139,7 @@
 
                 </div>
                 <div class="col-md-1">
-
+                    MAZO 7
                     <c:forEach items="${mazInt7}" var="cp7">
                         <c:if test="${cp7.isShow == false}">
                             <spring:url value="/resources/images/cards/00.png" htmlEscape="true" var="carta" />
@@ -160,8 +160,8 @@
 
                 <!-- MAZOS FINALES -->
                 <div class="col-md-1">
+                    
                     <c:if test="${fn:length(mazoFinalCorazones) == 0}">
-                        
                         <spring:url value="/resources/images/cards/fondoCorazon.png" htmlEscape="true" var="mazoCorazones" />
                         <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoCorazones}" /> 
                     </c:if>
@@ -175,7 +175,6 @@
             
                 <div class="col-md-1">
                     <c:if test="${fn:length(mazoFinalPicas) == 0}">
-                        
                         <spring:url value="/resources/images/cards/fondoPica.png" htmlEscape="true" var="mazoPicas" />
                         <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoPicas}" /> 
                     </c:if>
@@ -184,12 +183,13 @@
                         <img class="img-responsive mx-auto d-block" width="200" height="200" src="${carta}" />
                     </c:if>
                 </div>
+                
 
                
                 
                 <div class="col-md-1">
+                    
                     <c:if test="${fn:length(mazoFinalDiamantes) == 0}">
-                        
                         <spring:url value="/resources/images/cards/fondoDiamante.png" htmlEscape="true" var="mazoDiamantes" />
                         <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoDiamantes}" /> 
                     </c:if>
@@ -200,8 +200,8 @@
                 </div>
 
                 <div class="col-md-1">
+                    
                     <c:if test="${fn:length(mazoFinalTreboles) == 0}">
-                        
                         <spring:url value="/resources/images/cards/fondoTrebol.png" htmlEscape="true" var="mazoTreboles" />
                         <img class="img-responsive mx-auto d-block" width="300" height="300" src="${mazoTreboles}" /> 
                     </c:if>
@@ -240,7 +240,7 @@
                             <option value="${i}">Mazo Inicial</option>             
                         </c:when>
                         <c:when test="${i>0}"> 
-                   <option value="${i}">Mazo Intermedio ${i}</option>        
+                   <option value="${i}">Mazo ${i}</option>        
                 </c:when>
                     </c:choose>
                 </c:forEach>
@@ -264,7 +264,7 @@
                             <option value="${i}">Mazo Final Treboles</option>  
                         </c:when>
                         <c:otherwise>
-                            <option value="${i}">Mazo Intermedio ${i}</option>  
+                            <option value="${i}">Mazo ${i}</option>  
                         </c:otherwise>
                     </c:choose>
                  </c:forEach>
@@ -294,9 +294,8 @@
 
         <br><br><br>
         </div>
-      
-        <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar partida LOST</a>
-        <a href="http://localhost:8080/partidas/finish2/${partida.id}" class="btn btn-danger"> Finalizar partida WIN</a>
+        <a href="/partidas/derrota/${partidaId}" class="btn btn-danger"> RENDIRTE</a>
+        <a href="/partidas/victoria/${partidaId}" class="btn btn-danger"> Finalizar partida WIN</a>
 
 
     </jsp:body>

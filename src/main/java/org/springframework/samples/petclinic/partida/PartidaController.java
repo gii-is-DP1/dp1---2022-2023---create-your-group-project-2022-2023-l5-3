@@ -87,7 +87,7 @@ public class PartidaController {
 			model.put("message", result.getAllErrors());
 			return VIEW_CREATE_PARTIDA;
 		} else if(partidaService.jugadorTienePartidaEnCurso(jugador)){
-			return "redirect:/";
+			return "redirect:/partidas/sinFinalizar";
 		} else {
 			//Para asociar la partida nueva a un jugador:
 			String usuario = currentUser.getUsername();
@@ -141,7 +141,7 @@ public class PartidaController {
 		}
 	
 	}
-
+	//================MOVER CARTAS================
 	@PostMapping(value="/partidas/moverCartaIni/{partidaId}")
 	public String procesMoveCardIniForm(@PathVariable("partidaId") int partidaId,Map<String, Object> model) {
 		if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
@@ -171,47 +171,55 @@ public class PartidaController {
 		return TABLERO;
 
 	}
-		
-			
+	//METODO AUXILIAR PARA MOSTRAR LAS CARTAS EN EL ESTADO ACTUAL	
+	public void cartaEnEstadoActual(Map<String, Object> model, int partidaId,List<Integer> listaMazos,List<Integer> listaMazosFinales){
+		if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
+			List<CartasPartida> mazoIni = new ArrayList<>();
+			model.put("mazInicial", mazoIni);
+		}else{
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
+			model.put("mazInicial", mazoIni);
+		}
+		for(int i=0;i<listaMazos.size();i++){
+			List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
+			model.put("mazInt"+(i+1),cpm);
+		}
 
+		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)), new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)), new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)), new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)), new ComparadorCartasPartidaPorPosCartaMazo());
+
+		model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
+		model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
+		model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
+		model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
+		model.put("partidaId",partidaId);
+	}
 
 
 	@PostMapping(value="/partidas/moverCarta/{partidaId}")
 	public String procesMoveCardForm(@PathVariable("partidaId") int partidaId,@RequestParam Integer mazoOrigen,@RequestParam Integer mazoDestino, @RequestParam Integer cantidad,Map<String, Object> model) {
 		
+		
 			
-			System.out.println(mazoOrigen);
-			System.out.println(mazoDestino);
-			System.out.println(cantidad);
 			List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
 			List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
 			
 			if(cartasPartidaService.mazoFinalCompleto(mazoDestino, partidaId) == true){
 				model.put("message", "EL MAZO FINAL YA ESTÁ COMPLETADO");
-			
-				for(int i=0;i<listaMazos.size();i++){
-					List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
-					model.put("mazInt"+(i+1),cpm);
-				}
-		
-		
-				model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
-				model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
-				model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
-				model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
-				model.put("partidaId",partidaId);
-				if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
-					List<CartasPartida> mazoIni = new ArrayList<>();
-					model.put("mazInicial", mazoIni);
-				}else{
-					List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
-					model.put("mazInicial", mazoIni);
-				}
-				return TABLERO;
+				cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
+				
+				
 
 
-			}else{
+			}else if(cartasPartidaService.validacionMovimiento(mazoOrigen, mazoDestino, cantidad, partidaId)){
+				
+				model.put("message","Movimiento hecho");
 				Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
+				if(cartasPartidaService.validarVictoria(partidaId)){
+					ganarPartida(model);
+				}else{
 				
 				if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
 					List<CartasPartida> mazoIni = new ArrayList<>();
@@ -220,7 +228,7 @@ public class PartidaController {
 					List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
 					model.put("mazInicial", mazoIni);
 				}
-				//Map<Integer, List<CartasPartida>> mazosFinales = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId).getSecond();
+	
 			
 				model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
 				model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
@@ -229,7 +237,7 @@ public class PartidaController {
 				model.put("mazInt5",mazos.getFirst().get(listaMazos.get(4)));
 				model.put("mazInt6",mazos.getFirst().get(listaMazos.get(5)));
 				model.put("mazInt7",mazos.getFirst().get(listaMazos.get(6)));
-
+				
 				Collections.sort(mazos.getSecond().get(listaMazosFinales.get(0)), new ComparadorCartasPartidaPorPosCartaMazo());
 				Collections.sort(mazos.getSecond().get(listaMazosFinales.get(1)), new ComparadorCartasPartidaPorPosCartaMazo());
 				Collections.sort(mazos.getSecond().get(listaMazosFinales.get(2)), new ComparadorCartasPartidaPorPosCartaMazo());
@@ -239,14 +247,26 @@ public class PartidaController {
 				model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
 				model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
 				model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
-	
-				
-				//model.put("mazInicial", mazos.getThird().get(partidaId));
+
 				model.put("partidaId",partidaId);
-				return TABLERO;
-		}
+			}
+			} else {
+				
+				model.put("message","No se puede realizar ese movimiento.");
+
+				cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
+
+			}
+			
+			return TABLERO;
+
+			
+			
+			
+
+			}
 	
-		}
+	
 	
 
 //===============================LISTAR PARTIDAS ================================
@@ -390,6 +410,10 @@ public class PartidaController {
 						jugador.setPartidasGanadas(jugador.getPartidasGanadas()-1);
 						jugador.setNumTotalMovimientos(jugador.getNumTotalMovimientos()- (int) partida.getNumMovimientos());
 						jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().minusSeconds(diffInSeconds));
+						jugador.setNumMaxMovimientosPartidaGanada((long) 0);
+						jugador.setNumMinMovimientosPartidaGanada((long) 0);
+						jugador.setMaxTiempoPartidaGanada("");
+						jugador.setMinTiempoPartidaGanada("");
 					}
 					if(partida.getVictoria() == false){
 						jugador.setPartidasNoGanadas(jugador.getPartidasNoGanadas()-1);
@@ -411,9 +435,24 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
+	@GetMapping(value="/partidas/sinFinalizar")
+	public String finalizarPartida (Map<String, Object> model){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Jugador jugador = jugadorService.findJugadorByUsername(currentUser.getUsername());
+		Collection<Partida> res = jugadorService.findPartidasByJugadorId(jugador.getUser().getJugadorId());
+		for (Partida partida:res){
+			if(partida.getMomentoFin() == null){
+				model.put("id", partida.getId());
+			}
+		}
+		return "partidas/partidaEnCursoIndividual";
+	}
+
+	//===================================ESTABLECER RESULTADO DE LA PARTIDA===================================
 	
-	@GetMapping(path = "/partidas/finish/{id}")
-	public ModelAndView finishPartida(@PathVariable("id") int id, ModelMap modelMap) {
+	@GetMapping(path = "/partidas/derrota/{id}")
+	public ModelAndView derrotaPartida(@PathVariable("id") int id, ModelMap modelMap) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -421,21 +460,20 @@ public class PartidaController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
-					establecerFinPartidaManual(id);
-					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/enCurso");
+					partidaService.establecerDerrotaPartida(id);
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return mazosInterult;
 					
 				} else { //SI EmazosInter JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
-						establecerFinPartidaManual(id);
-						ModelAndView mazosInterult = new ModelAndView("welcome");
-						mazosInterult.addObject("message", "Partida acabada");
+						partidaService.establecerDerrotaPartida(id);
+						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
 					} else {
-						ModelAndView mazosInterult = new ModelAndView("welcome");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
@@ -450,8 +488,8 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
-	@GetMapping(path = "/partidas/finish2/{id}")
-	public ModelAndView finishPartida2(@PathVariable("id") int id, ModelMap modelMap) {
+	@GetMapping(path = "/partidas/victoria/{id}")
+	public ModelAndView victoriaPartida(@PathVariable("id") int id, ModelMap modelMap) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -459,21 +497,20 @@ public class PartidaController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
-					establecerFinPartidaManual2(id);
-					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/enCurso");
+					partidaService.establecerVictoriaPartida(id);
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
 					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
 					return mazosInterult;
 					
 				} else { //SI EmazosInter JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
 					Partida partida = partidaService.findById(id);
 					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
-						establecerFinPartidaManual2(id);
-						ModelAndView mazosInterult = new ModelAndView("welcome");
-						mazosInterult.addObject("message", "Partida acabada");
+						partidaService.establecerVictoriaPartida(id);
+						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
 					} else {
-						ModelAndView mazosInterult = new ModelAndView("welcome");
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
@@ -488,42 +525,33 @@ public class PartidaController {
 		return new ModelAndView("exception");
 	}
 
+
 	
-	
-	
-	//PARA ESTADÍSTICAS
-	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALOmazosInter
-	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 
-	
-	public void establecerFinPartidaManual (Integer id){
-		Partida partida = partidaService.findById(id);
-		partida.setMomentoFin(LocalDateTime.now());
-		partida.setVictoria(false);
-		partida.setNumMovimientos(100);
-		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
-		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
-		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
-		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
-		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
-		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
-		//player.setMinTiempoPartidaGanada(null);
-		//player.setMaxTiempoPartidaGanada(null);
+	public String ganarPartida (Map<String, Object> model){
+		model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
+		return "partidas/messagePartida";
 	}
 
-	public void establecerFinPartidaManual2(Integer id){
-		Partida partida = partidaService.findById(id);
-		partida.setMomentoFin(LocalDateTime.now());
-		partida.setVictoria(true);
-		partida.setNumMovimientos(100);
-		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
-		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
-		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
-		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
-		player.setPartidasGanadas(player.getPartidasGanadas()+1);
-		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
-		//player.setMinTiempoPartidaGanada(null);
-		//player.setMaxTiempoPartidaGanada(null);
+	@GetMapping(value="/partidas/pierde")
+	public String pierdePartida (Map<String, Object> model){
+		model.put("message", "HAS PERDIDO LA PARTIDA");
+		return "partidas/messagePartida";
 	}
+
+	//========================REANUDAR PARTIDA=================================
+	
+	@GetMapping(value="/partidas/play/{partidaId}")
+	public String reanudarPartida(@PathVariable("partidaId") int partidaId,Map<String, Object> model) {
+		
+		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
+		List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
+		cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);	
+	
+		return TABLERO;
+
+	}
+
+	
 }
 	
 

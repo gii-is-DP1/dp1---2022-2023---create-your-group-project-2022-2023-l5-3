@@ -32,7 +32,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +39,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -213,7 +211,7 @@ public class JugadorController {
 	
 	
 	@PostMapping(value = "/jugador/edit/{id}")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
 		if(result.hasErrors()){
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
@@ -235,6 +233,8 @@ public class JugadorController {
 					for (Logros logro:conjunto){
 						logro.setJugador(jugador);
 					}
+					model.put("message","Jugador editado correctamente");
+					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 
 				}catch (DataIntegrityViolationException ex){
@@ -296,7 +296,7 @@ public class JugadorController {
 
 	
 	@GetMapping(path = "/jugador/delete/{id}")
-	public ModelAndView deleteJugador(@PathVariable("id") int id, ModelMap modelMap,@RequestParam(defaultValue="0") int page) {
+	public String deleteJugador(@PathVariable("id") int id, Map<String, Object> model,@RequestParam(defaultValue="0") int page) {
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	if(auth != null){
 		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -306,32 +306,31 @@ public class JugadorController {
 			if (credencial.equals("admin")) {
 				Jugador jugador = jugadorService.findJugadorById(id);
 				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){ //para que el admin no pueda eliminarse a sí mismo
-					ModelAndView result = new ModelAndView("redirect:/users/all");
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
-					
-					result.addObject("users", users);
-					return result;
+					model.put("users", users);
+					model.put("message","Un administrador no puede eliminarse a sí mismo");
+					return "users/UsersList";
 				} else {
 					List<Logros> listaLogros = logrosService.findById(jugador.getId());
 					for(Logros logro : listaLogros){
 						logrosService.delete(logro);
 					}
 					jugadorService.deleteJugador(jugador);
-					ModelAndView result = new ModelAndView("redirect:/users/all");
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
-					result.addObject("users", users);
-					return result;
+					model.put("users", users);
+					model.put("message","Jugador eliminado correctamente");
+					return "users/UsersList";
 				}
 				
 			}
 		}
 		 
 	}else{
-		return new ModelAndView("exception");
+		return "exception";
 	}
-	return new ModelAndView("exception");
+	return "exception";
 	}
 
 

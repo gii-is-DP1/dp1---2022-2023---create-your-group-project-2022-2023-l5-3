@@ -58,7 +58,11 @@ public class Partida extends BaseEntity {
 	}
 	
 	public long getDuracionMaxMin (){
-		return ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+		if(momentoFin == null){
+			return ChronoUnit.SECONDS.between(momentoInicio, LocalDateTime.now());
+		} else {
+			return ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+		}
 	}
 	
 	public String duracion() {
