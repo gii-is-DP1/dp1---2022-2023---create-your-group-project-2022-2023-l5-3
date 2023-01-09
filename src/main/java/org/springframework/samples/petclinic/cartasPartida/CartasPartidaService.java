@@ -14,6 +14,8 @@ import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinalService;
+import org.springframework.samples.petclinic.partida.Partida;
+import org.springframework.samples.petclinic.partida.PartidaService;
 import org.springframework.samples.petclinic.util.Tuple3;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,9 @@ public class CartasPartidaService {
 
     @Autowired
     private MazoFinalService mazoFinalService;
+
+    @Autowired
+    private PartidaService partidaService;
 
 
 
@@ -355,7 +360,9 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                 }
             }
         }
-
+        Partida p = partidaService.findById(partidaId);
+        p.setNumMovimientos(p.getNumMovimientos()+1);
+        partidaService.save(p);
         return res;
     }
 
@@ -507,8 +514,6 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         
 
-        
-        
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         CartasPartida cpMovida = cpOrigen.get(cpOrigen.size()-1);
         cpMovida.setMazoInicial(null);

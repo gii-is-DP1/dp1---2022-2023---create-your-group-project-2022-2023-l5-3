@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.partida;
 
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -95,5 +97,35 @@ public class PartidaService {
 			res = true;
 		}
 		return res;
+	}
+
+	public void establecerDerrotaPartida(Integer id){
+		Partida partida = findById(id);
+		partida.setMomentoFin(LocalDateTime.now());
+		partida.setVictoria(false);
+		//partida.setNumMovimientos(100);
+		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
+		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
+		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
+		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
+		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
+		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
+		//player.setMinTiempoPartidaGanada(null);
+		//player.setMaxTiempoPartidaGanada(null);
+	}
+
+	public void establecerVictoriaPartida(Integer id){
+		Partida partida = findById(id);
+		partida.setMomentoFin(LocalDateTime.now());
+		partida.setVictoria(true);
+		//partida.setNumMovimientos(100);
+		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
+		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
+		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
+		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
+		player.setPartidasGanadas(player.getPartidasGanadas()+1);
+		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
+		//player.setMinTiempoPartidaGanada(null);
+		//player.setMaxTiempoPartidaGanada(null);
 	}
 }
