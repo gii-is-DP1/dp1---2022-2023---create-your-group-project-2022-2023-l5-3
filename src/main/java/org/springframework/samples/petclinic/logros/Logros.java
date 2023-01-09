@@ -38,9 +38,6 @@ public class Logros extends BaseEntity{
 	@Column(name="num_condicion")
 	private Integer numCondicion;
 
-	@Column(name="signo_condicion")
-	private String signoCondicion;
-
 	@OneToOne
     @JoinColumn(name="jugador_id")
     Jugador jugador;

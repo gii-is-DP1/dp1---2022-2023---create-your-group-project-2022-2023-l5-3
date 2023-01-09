@@ -18,13 +18,12 @@
 </br>
     <form:form modelAttribute="logro" class="form-horizontal " id="add-jugador-form">
         <div class="form-group has-feedback">
+            <petclinic:inputField label="Descripcion" name="description" />
             <petclinic:inputField label="Numero de condicion" name="numCondicion" />
-            <petclinic:inputField label="Signo de condicion" name="signoCondicion" />
-            <input type="hidden" name="logro.name" value="${logro.name}">
-            <input type="hidden" name="logro.description" value="${logro.description}">
-            <input type="hidden" name="logro.is_unlocked" value="${logro.is_unlocked}">
-            <input type="hidden" name="logro.image" value="${logro.image}">
-            <input type="hidden" name="logro.jugador" value="${logro.jugador}">
+            <input type="hidden" name="logros.name" value="${name}">
+            <input type="hidden" name="logros.is_unlocked" value="${is_unlocked}">
+            <input type="hidden" name="logros.image" value="${image}">
+            <input type="hidden" name="logros.jugador" value="${jugador}">
 
         </div>
 

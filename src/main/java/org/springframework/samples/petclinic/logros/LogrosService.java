@@ -35,6 +35,12 @@ public class LogrosService {
 	}
 
 	@Transactional
+	public Logros findByIdlOGRO (int id) throws DataAccessException{
+		return logrosRepository.findLogrosByIdLogro(id);
+	}
+
+
+	@Transactional
 	public void save(Logros logro) {
 		logrosRepository.save(logro);
 	}
@@ -55,29 +61,33 @@ public class LogrosService {
 	}
 
 	//HAY QUE EDITARLO
-	public void setLogrosDeCadaJugador(Integer idJugador) {
-		Jugador player = jugadorRepository.findJugadorById(idJugador);
-		List<Logros> logros = findById(player.getId());
-		Integer primerId = logros.get(0).getId();
+	public void setLogrosDeCadaJugador() {
+		List<Jugador> player = jugadorRepository.findAll();
 		
-		for (Logros logro: logros){
-
-			if (player.getPartidasJugadas() >= 5){
-				if(logro.getId().equals(primerId)){
-					logro.setIs_unlocked(true);
+		for (Jugador jugador : player){
+			List<Logros> logros = findById(jugador.getId());
+			Integer primerId = logros.get(0).getId();
+			
+			for (Logros logro: logros){
+	
+				if (jugador.getPartidasGanadas() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId)){
+						logro.setIs_unlocked(true);
+					}
 				}
+				if (jugador.getNumTotalPuntos() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId+1)){
+						logro.setIs_unlocked(true);
+					}
+				}
+				if (jugador.getNumTotalMovimientos() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId+2)){
+						logro.setIs_unlocked(true);
+					}
+				} 
 			}
-			if (player.getNumTotalPuntos() >= 100){
-				if(logro.getId().equals(primerId+1)){
-					logro.setIs_unlocked(true);
-				}
-			}
-			if (player.getNumTotalMovimientos() >= 200 ){
-				if(logro.getId().equals(primerId+2)){
-					logro.setIs_unlocked(true);
-				}
-			} 
 		}
+
 	}
 	
 }

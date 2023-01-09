@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.jugador.Jugador;
@@ -44,7 +45,7 @@ public class LogrosController {
 			logro.setJugador(jugador);
 		}
 		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
-		logrosService.setLogrosDeCadaJugador(jugador.getId());
+		logrosService.setLogrosDeCadaJugador();
 		model.put("logros",logrosDelUsuarioLogeado);
 		return VIEWS_LOGROS;
 	}
@@ -66,12 +67,10 @@ public class LogrosController {
 					}
 				if (credencial.equals("admin")) { 
 					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
-					logrosService.setLogrosDeCadaJugador(id);
+					logrosService.setLogrosDeCadaJugador();
 					model.put("logros",logrosDelUsuarioLogeado);
 					return VIEWS_LOGROS;
 				} else {
-					/*List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
-					model.put("logros",logrosDelUsuarioLogeado);*/
 					return "welcome";
 				}
 			}
@@ -84,8 +83,8 @@ public class LogrosController {
 
 	@GetMapping(value = "/jugador/logros/editar")
 	public String editarLogrosAdmin (Map<String, Object> model) {
-	List<Logros> logrosDelUsuarioLogeado = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
-		model.put("logros",logrosDelUsuarioLogeado);
+		List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+		model.put("logros",logrosDefinidos);
 		return "jugador/editarLogrosGeneral";
 	}
 
@@ -101,13 +100,14 @@ public class LogrosController {
 						for (GrantedAuthority usuarioR : usuario){
 						String credencial = usuarioR.getAuthority();
 							if(credencial.equals("admin")){
-								Logros logro = logrosService.findById(id).get(0);
+								Logros logro = logrosService.findByIdlOGRO(id);
 								Integer num = logro.getNumCondicion();
-								String signo = logro.getSignoCondicion();
-								
 								model.put("num", num);
-								model.put("signo", signo);
-								
+								model.put("name",logro.getName());
+								model.put("description",logro.getDescription());
+								model.put("image",logro.getImage());
+								model.put("is_unlocked",logro.getIs_unlocked());
+								model.put("jugador",logro.getJugador());
 								model.put("logro",logro);
 								return "jugador/editarLogro";
 							}else{
@@ -133,19 +133,25 @@ public class LogrosController {
 			if(result.hasErrors()){
 				return "jugador/editarLogro";
 			} else {
-						logro.setId(id);
-						String signo = logro.getSignoCondicion();
-						Integer num = logro.getNumCondicion();
-						this.logrosService.save(logro);
-						List<Logros> conjuntoLogros = logrosService.findLogrosByName(logro.getName());
+						//logro.setId(id);
+						//logro.setDescription(image);
+						Logros logrosToUpdate=this.logrosService.findByIdlOGRO(id);
+						BeanUtils.copyProperties(logro, logrosToUpdate, "id","name","image","is_unlocked","jugador"); 
+						this.logrosService.save(logrosToUpdate);
+						
+						List<Logros> conjuntoLogros = logrosService.findLogrosByName(logrosToUpdate.getName());
+						
 						for (Logros logroIt :conjuntoLogros){
-							logroIt.setNumCondicion(num);
-							logroIt.setSignoCondicion(signo);
+							logroIt.setNumCondicion(logrosToUpdate.getNumCondicion());
+							logroIt.setDescription(logrosToUpdate.getDescription());
 						}
-						//Aquí habría que llamar al método de asignar los logros como conseguidos
+						
+						logrosService.setLogrosDeCadaJugador();
 						model.put("message","Logro editado correctamente");
 						
-						return "jugador/editarLogro";
+						List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+						model.put("logros",logrosDefinidos);
+						return "redirect:/jugador/logros/editar";
 			}
 	}
 	
