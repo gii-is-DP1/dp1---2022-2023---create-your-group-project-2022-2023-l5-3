@@ -193,20 +193,20 @@ public class CartasPartidaService {
         List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestino, partidaId);
 
         
-        
+        List<Integer> mazosFinales = getMazosFinalIdSorted(partidaId);
 
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
         Collections.sort(cpDestino, new ComparadorCartasPartidaPorPosCartaMazo());
         Carta cartaMovida = cpOrigen.get(cpOrigen.size()-1).getCarta();
         
         if(cpDestino.size()==0){
-            if(mazoDestino==1 && cartaMovida.getPalo() == Palo.CORAZONES && cartaMovida.getValor()==1){
+            if(mazoDestino==mazosFinales.get(0) && cartaMovida.getPalo() == Palo.CORAZONES && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==2 && cartaMovida.getPalo() == Palo.PICAS && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(1) && cartaMovida.getPalo() == Palo.PICAS && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==3 && cartaMovida.getPalo() == Palo.DIAMANTES && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(2) && cartaMovida.getPalo() == Palo.DIAMANTES && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==4 && cartaMovida.getPalo() == Palo.TREBOLES && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(3) && cartaMovida.getPalo() == Palo.TREBOLES && cartaMovida.getValor()==1){
                 res = true;
             }else{
                 res = false;
@@ -237,14 +237,17 @@ public class CartasPartidaService {
         Collections.sort(cpDestino, new ComparadorCartasPartidaPorPosCartaMazo());
         Carta cartaMovida = cpOrigen.get(cpOrigen.size()-1).getCarta();
         
+        List<Integer> mazosFinales = getMazosFinalIdSorted(partidaId);
+
+
         if(cpDestino.size()==0){
-            if(mazoDestino==1 && cartaMovida.getPalo() == Palo.CORAZONES && cartaMovida.getValor()==1){
+            if(mazoDestino==mazosFinales.get(0) && cartaMovida.getPalo() == Palo.CORAZONES && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==2 && cartaMovida.getPalo() == Palo.PICAS && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(1) && cartaMovida.getPalo() == Palo.PICAS && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==3 && cartaMovida.getPalo() == Palo.DIAMANTES && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(2) && cartaMovida.getPalo() == Palo.DIAMANTES && cartaMovida.getValor()==1){
                 res = true;
-            }else if(mazoDestino==4 && cartaMovida.getPalo() == Palo.TREBOLES && cartaMovida.getValor()==1){
+            }else if(mazoDestino==mazosFinales.get(3) && cartaMovida.getPalo() == Palo.TREBOLES && cartaMovida.getValor()==1){
                 res = true;
             }else{
                 res = false;
@@ -265,6 +268,11 @@ public class CartasPartidaService {
 
     public Boolean validacionMovimiento(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
         Boolean res = true;
+        
+        if(mazoOrigenId==mazoDestinoId){
+            res=false;
+        }
+        
         if (partidaId > 1) {
 
             if (mazoOrigenId > 0) {
@@ -649,24 +657,24 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
             }
         }
     }
-
-
+    
+    
     @Transactional
     public void cambiaPosCartaMazoIni(int mazoIniId){
         List<CartasPartida> mazoInicial = cartasPartidaRepository.findCartasPartidaByMazoInicialIdAndPartidaId(mazoIniId, mazoIniId);
-
         for (CartasPartida cp : mazoInicial){
             cp.setPosCartaMazo(cp.getPosCartaMazo()+1);
             cartasPartidaRepository.save(cp);
         }
-
+        
         Collections.sort(mazoInicial, new ComparadorCartasPartidaPorPosCartaMazo());
         CartasPartida ultCarta = mazoInicial.get(mazoInicial.size()-1);
         ultCarta.setPosCartaMazo(1);
         cartasPartidaRepository.save(ultCarta);
+        Partida p = partidaService.findById(mazoIniId);
+        p.setNumMovimientos(p.getNumMovimientos()+1);
+        partidaService.save(p);
         
-
-
     }
     
 

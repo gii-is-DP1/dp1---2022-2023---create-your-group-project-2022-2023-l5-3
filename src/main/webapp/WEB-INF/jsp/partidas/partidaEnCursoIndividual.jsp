@@ -10,12 +10,21 @@
 
     <div class="m-0 row justify-content-center">
         <div class="col-auto text-center">
-            <h1 style="font-weight: bold;">TIENES UNA PARTIDA EN CURSO, FINALIZA LA PARTIDA PARA CREAR UNA NUEVA</h1>
+            <h1 style="font-weight: bold;">TIENES UNA PARTIDA EN CURSO</h1>
         </br>
-            <div class="mx-auto" style="justify-content: center; display: flex;">
+        <div class="row">
+        <div  style="justify-content: center; display: flex;">
+            <a href="/partidas/play/${id}" class="btn btn-danger"> Reanudar partida</a>
+
+        </div>
+    </br>
+
+    </div>
+        <div class="row">
+            <div  style="justify-content: center; display: flex;">
                 <a href="/partidas/derrota/${id}" class="btn btn-danger"> Finalizar partida en curso</a>
     
-            </div>
+            </div></div>
         </br>
     </br>
         

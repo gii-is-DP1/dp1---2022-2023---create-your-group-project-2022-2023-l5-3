@@ -527,12 +527,37 @@ public class PartidaController {
 		return "partidas/messagePartida";
 	}
 
+	//========================REANUDAR PARTIDA=================================
 	
-	
-	
-	//PARA ESTADÍSTICAS
-	//ESTO FUNCIONA PERO SI ELIMINAMOS LAS PARTIDAS DE LA BASE DE DATOS, NO SE ACTUALIZAN LOS VALOmazosInter
-	//DEBERÍAMOS PODER USAR ALGÚN TRIGGER QUE HAGA LA ACTUALIZACIÓN SOLA DE DATOS 
+	@GetMapping(value="/partidas/play/{partidaId}")
+	public String reanudarPartida(@PathVariable("partidaId") int partidaId,Map<String, Object> model) {
+		if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
+			List<CartasPartida> mazoIni = new ArrayList<>();
+			model.put("mazInicial", mazoIni);
+		}else{
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);				
+			model.put("mazInicial", mazoIni);
+		}
+		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
+		List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
+			
+		for(int i=0;i<listaMazos.size();i++){
+		List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
+		model.put("mazInt"+(i+1),cpm);
+		}	
+		
+
+		
+		
+		model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
+		model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
+		model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
+		model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
+		model.put("partidaId",partidaId);
+		return TABLERO;
+
+	}
+
 	
 }
 	
