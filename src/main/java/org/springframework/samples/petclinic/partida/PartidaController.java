@@ -441,7 +441,7 @@ public class PartidaController {
 	//===================================ESTABLECER RESULTADO DE LA PARTIDA===================================
 	
 	@GetMapping(path = "/partidas/derrota/{id}")
-	public ModelAndView finishPartida(@PathVariable("id") int id, ModelMap modelMap) {
+	public ModelAndView derrotaPartida(@PathVariable("id") int id, ModelMap modelMap) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -478,7 +478,7 @@ public class PartidaController {
 	}
 
 	@GetMapping(path = "/partidas/victoria/{id}")
-	public ModelAndView finishPartida2(@PathVariable("id") int id, ModelMap modelMap) {
+	public ModelAndView victoriaPartida(@PathVariable("id") int id, ModelMap modelMap) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();

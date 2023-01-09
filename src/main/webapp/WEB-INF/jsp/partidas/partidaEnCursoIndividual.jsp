@@ -13,7 +13,7 @@
             <h1 style="font-weight: bold;">TIENES UNA PARTIDA EN CURSO, FINALIZA LA PARTIDA PARA CREAR UNA NUEVA</h1>
         </br>
             <div class="mx-auto" style="justify-content: center; display: flex;">
-                <a href="/partidas/finish/${id}" class="btn btn-danger"> Finalizar partida en curso</a>
+                <a href="/partidas/derrota/${id}" class="btn btn-danger"> Finalizar partida en curso</a>
     
             </div>
         </br>
