@@ -66,6 +66,14 @@ public class CartasPartidaService {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalId(idMazo);
     }
 
+    public List<CartasPartida> findCartasPartidaByMazoIdAndPartidaId(Integer mazoId, Integer partidaId){
+        return cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoId, partidaId);
+    }
+
+    public List<CartasPartida> findCartasPartidaByMazoFinalIdAndPartidaId(Integer mazoId, Integer partidaId){
+        return cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoId, partidaId);
+    }
+
     @Transactional
     public void saveCartasPartida(CartasPartida cp) throws DataAccessException {
         cartasPartidaRepository.save(cp);
