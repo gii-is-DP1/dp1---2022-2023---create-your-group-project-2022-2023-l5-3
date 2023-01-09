@@ -505,8 +505,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
 
         // Obtiene lista de cartas partida de los mazos origen y destino
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestinoId, partidaId);
-
+        
 
         
         

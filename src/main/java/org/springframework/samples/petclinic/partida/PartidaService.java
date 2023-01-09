@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
-import org.springframework.samples.petclinic.cartasPartida.CartasPartidaRepository;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.stereotype.Service;
