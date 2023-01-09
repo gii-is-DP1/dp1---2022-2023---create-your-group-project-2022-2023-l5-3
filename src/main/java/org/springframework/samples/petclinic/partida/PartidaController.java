@@ -216,7 +216,9 @@ public class PartidaController {
 			}else if(cartasPartidaService.validacionMovimiento(mazoOrigen, mazoDestino, cantidad, partidaId)){
 				
 					if(cartasPartidaService.validarVictoria(partidaId)){
-						model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");	
+						model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
+						return "partidas/messagePartida";
+	
 					}else{
 						
 						model.put("message","Movimiento hecho");
