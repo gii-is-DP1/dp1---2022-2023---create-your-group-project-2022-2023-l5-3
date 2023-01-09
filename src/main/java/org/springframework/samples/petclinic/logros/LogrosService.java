@@ -25,6 +25,11 @@ public class LogrosService {
 	}
 
 	@Transactional
+	public List<Logros> findAll (){
+		return logrosRepository.findAllLogros();
+	}
+
+	@Transactional
 	public List<Logros> findById(int id) throws DataAccessException{
 		return logrosRepository.findLogrosByIdJugador(id);
 	}
@@ -44,7 +49,13 @@ public class LogrosService {
 		return logrosRepository.findByjugadorIsNull();
 	}
 
-	public void getLogrosDeCadaJugador(Integer idJugador) {
+	@Transactional
+	public List<Logros> findLogrosByName(String logroName){
+		return logrosRepository.findLogrosByName(logroName);
+	}
+
+	//HAY QUE EDITARLO
+	public void setLogrosDeCadaJugador(Integer idJugador) {
 		Jugador player = jugadorRepository.findJugadorById(idJugador);
 		List<Logros> logros = findById(player.getId());
 		Integer primerId = logros.get(0).getId();
