@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.partida;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -190,6 +190,20 @@ public class PartidaBuilder {
 			mI.setCartasPartida(aux);
 			mazoInicialRepository.save(mI);
 		}
+		/* 
+			Integer min = 1;
+			Integer max = cartasP.get;
+			
+			Integer x = (int) Math.floor(Math.random()*(max-min+1)+min);
+		CartasPartida pIni = cartasP.get(x);
+		pIni.setMazoInicial(mI);
+		pIni.setPosCartaMazo(1);
+		pIni.setIsShow(true);
+		cartasPartidaRepository.save(pIni);
+		cartasP.remove(pIni);
+*/
+			Collections.shuffle(cartasP);
+
 		for (int k = 1; k <= aux.size(); k++){
 			
 			int random = (int) (Math.random() * (cartasP.size() - 1));
