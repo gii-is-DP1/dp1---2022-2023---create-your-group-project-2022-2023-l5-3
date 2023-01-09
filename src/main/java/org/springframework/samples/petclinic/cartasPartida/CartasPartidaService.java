@@ -135,6 +135,49 @@ public class CartasPartidaService {
         return res;
     }
 
+    public Boolean ValidaSoloKEnMazoVacioInterInter (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
+    Boolean res = false;
+    
+    List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen, partidaId);
+    List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino, partidaId);
+
+    int startIndex = cpOrigen.size() - cantidad;
+
+    Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+    List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+
+    Carta CartaAbajo = cartasMovidas.get(0).getCarta();
+
+    if(CartaAbajo.getValor()!=13 && cpDestino.isEmpty() ){
+        res = false;
+    } else {
+        res = true;
+    }
+
+    return res;
+    }
+
+    public Boolean ValidaSoloKEnMazoVacioInicialInter (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
+        Boolean res = false;
+        
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino, partidaId);
+    
+        int startIndex = cpOrigen.size() - cantidad;
+    
+        Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
+        List<CartasPartida> cartasMovidas = cpOrigen.subList(startIndex, cpOrigen.size());
+    
+        Carta CartaAbajo = cartasMovidas.get(0).getCarta();
+    
+        if(!(CartaAbajo.getValor()==13) && cpDestino.isEmpty() ){
+            res = false;
+        } else {
+            res = true;
+        }
+    
+        return res;
+        }
 public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
         Tuple3 res = new Tuple3(null, null, null);
         if (partidaId > 1) {
@@ -240,7 +283,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                 mazoOrigenId = mazoOrigenId + ((partidaId - 1) * 7);
                 if (mazoDestinoId <= 7) {
                     mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
-                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId) && ValidaSoloKEnMazoVacioInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
@@ -259,7 +302,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                 if (mazoDestinoId <= 7) {
                     mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
                     mazoOrigenId = partidaId;
-                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId) && ValidaSoloKEnMazoVacioInicialInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
@@ -284,7 +327,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
             if (mazoOrigenId > 0) {
 
                 if (mazoDestinoId <= 7) {
-                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId) && ValidaSoloKEnMazoVacioInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
@@ -303,7 +346,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                 if (mazoDestinoId <= 7) {
                     mazoOrigenId = partidaId;
                     mazoOrigenId = partidaId;
-                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
+                    res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId) && ValidaSoloKEnMazoVacioInicialInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
@@ -397,6 +440,8 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
             i++;
             cartasPartidaRepository.save(cp);
         }
+        
+        setCartaVisibleIntermedio(mazoOrigenId, partidaId);
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
