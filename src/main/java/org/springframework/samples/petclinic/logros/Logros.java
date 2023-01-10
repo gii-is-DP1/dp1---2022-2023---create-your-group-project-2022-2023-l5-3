@@ -21,18 +21,10 @@ import lombok.Setter;
 @Table(name = "logros")
 public class Logros extends BaseEntity{
 	
-	/*public Logros(String name, String deString, Boolean unlock, String image, Jugador jugador){
-		this.name=name;
-		this.description=deString;
-		this.is_unlocked=unlock;
-		this.image=image;
-		this.jugador=jugador;
-	}*/
 	
 	
 	@Column(name="name")
 	private String name;
-	
 	
 	@Column(name="description")
 	private String description;
@@ -43,6 +35,9 @@ public class Logros extends BaseEntity{
 	@Column(name="image")
 	private String image;
 	
+	@Column(name="num_condicion")
+	private Integer numCondicion;
+
 	@OneToOne
     @JoinColumn(name="jugador_id")
     Jugador jugador;

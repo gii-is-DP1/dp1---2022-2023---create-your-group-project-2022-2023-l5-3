@@ -14,10 +14,15 @@
    
 	<div class="container text-center">
 		<h1><b>Logros</b></h1>
-	</br>
+		</br>
+		<sec:authorize access="hasAuthority('admin')">
+			<a href="/jugador/logros/editar" class ="btn btn-default" style="font-size: 1em;">EDITAR LOGROS</a>
+		</br>
+		</br>
+		</br>	
+		</sec:authorize>
 	</div>
 	
-</br>
 	<div class="container" style="width: 1600px;">
 
 		<div class="row" style="display: flex; justify-content: space-between; padding-right: 460px;">
