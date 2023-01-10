@@ -136,14 +136,15 @@ public class LogrosController {
 						//logro.setId(id);
 						//logro.setDescription(image);
 						Logros logrosToUpdate=this.logrosService.findByIdlOGRO(id);
-						BeanUtils.copyProperties(logro, logrosToUpdate, "id","name","image","is_unlocked","jugador"); 
+						BeanUtils.copyProperties(logro, logrosToUpdate, "id","image","is_unlocked","jugador"); 
 						this.logrosService.save(logrosToUpdate);
 						
-						List<Logros> conjuntoLogros = logrosService.findLogrosByName(logrosToUpdate.getName());
+						List<Logros> conjuntoLogros = logrosService.findAll();
 						
-						for (Logros logroIt :conjuntoLogros){
-							logroIt.setNumCondicion(logrosToUpdate.getNumCondicion());
-							logroIt.setDescription(logrosToUpdate.getDescription());
+						for(int i=id-1;i<conjuntoLogros.size();i=i+3){
+							conjuntoLogros.get(i).setNumCondicion(logrosToUpdate.getNumCondicion());
+							conjuntoLogros.get(i).setDescription(logrosToUpdate.getDescription());
+							conjuntoLogros.get(i).setName(logrosToUpdate.getName());
 						}
 						
 						logrosService.setLogrosDeCadaJugador();
