@@ -534,7 +534,13 @@ public class PartidaController {
 	}
 
 
-	
+	@GetMapping(value="/partidas/gana")
+	public String ganaPartida (Map<String, Object> model){
+		model.put("message", "HAS GANADO LA PARTIDA");
+		return "partidas/messagePartida";
+	}
+
+
 
 	@GetMapping(value="/partidas/pierde")
 	public String pierdePartida (Map<String, Object> model){

@@ -67,8 +67,8 @@ public class Jugador extends AuditableEntity{
         this.numTotalPuntos = 0;
         this.numMaxMovimientosPartidaGanada=(long) 0;
         this.numMinMovimientosPartidaGanada=(long) 0;
-        this.maxTiempoPartidaGanada="";
-        this.minTiempoPartidaGanada="";
+        this.maxTiempoPartidaGanada="0 minutos y 0 segundos";
+        this.minTiempoPartidaGanada="0 minutos y 0 segundos";
 	}
     
 

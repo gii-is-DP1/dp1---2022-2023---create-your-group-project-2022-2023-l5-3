@@ -50,7 +50,7 @@
                     <c:out value="${partida.duracion()}"/>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar</a>
+                    <a href="http://localhost:8080/partidas/derrota/${partida.id}" class="btn btn-danger"> Finalizar</a>
                 </td>
                 
                 
