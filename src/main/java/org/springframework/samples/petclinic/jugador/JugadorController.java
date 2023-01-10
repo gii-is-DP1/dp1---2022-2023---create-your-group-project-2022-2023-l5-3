@@ -1,8 +1,10 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -11,54 +13,59 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.dao.DataIntegrityViolationException;
-
-import org.springframework.samples.petclinic.jugador.Exceptions.UsernameExceptions;
-import org.springframework.samples.petclinic.partida.Partida;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.logros.Logros;
+import org.springframework.samples.petclinic.logros.LogrosService;
 import org.springframework.samples.petclinic.partida.PartidaService;
-import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
-
+import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.user.UserServicePageable;
 import org.springframework.security.core.Authentication;
 
-import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class JugadorController {
 
     private static final String VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM = "jugador/createOrUpdateJugadorForm";
-	private static final String VIEW_JUGADORES = "users/UsersList";
 
 
     private final JugadorService jugadorService;
-	private final AuthoritiesService authoritiesService;
-	private final PartidaService partidaService;
+	private final LogrosService logrosService;
+	private final UserServicePageable pageUser;
     
 	@Autowired
-    public JugadorController(JugadorService jugadorService, AuthoritiesService authoritiesService, PartidaService partidaService){
+    public JugadorController(JugadorService jugadorService, UserService userService, LogrosService logrosService, PartidaService partidaService,UserServicePageable pageUser){
         this.jugadorService= jugadorService;
-		this.authoritiesService=authoritiesService;
-		this.partidaService=partidaService;
+		this.logrosService=logrosService;
+		this.pageUser=pageUser;
     }
 
+
+	@InitBinder
+	public void setAllowedFields(WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
+	
     @GetMapping(value = "/jugador/new")
 	public String initCreationForm(Map<String, Object> model) {
 		Jugador jugador = new Jugador();
@@ -66,7 +73,40 @@ public class JugadorController {
 		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 	}
 
+	@GetMapping(value = "/jugador/new/admin")
+	public String initCreationFormADMIN(Map<String, Object> model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			if(auth.isAuthenticated()){
+				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				try{
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(credencial.equals("admin")){
+							Jugador jugador = new Jugador();
+							model.put("jugador", jugador); 
+							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
+					}
+				} catch (DataIntegrityViolationException ex){
+					
+					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+				}
+				
+				
+			}
+			
+			return "welcome";
+		} else {
+			return "welcome";
+		}
+	
+	}
 
+	
 
     @PostMapping(value = "/jugador/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
@@ -83,13 +123,35 @@ public class JugadorController {
 
 			if(violations.isEmpty()){
 				try{
-
-
 					UsernamePasswordAuthenticationToken authReq= new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
 					
 					SecurityContextHolder.getContext().setAuthentication(authReq);
-						
-					
+					jugador.setAllStats0();
+					Logros logro1 = new Logros();
+					Logros logro2 = new Logros();
+					Logros logro3 = new Logros();
+					List<Logros> lista = new ArrayList<>();
+					lista.add(logro1);
+					lista.add(logro2);
+					lista.add(logro3);
+					for(Logros logro:lista){
+						if(lista.get(0).equals(logro)){
+							logro.setName("Máquina de jugar");
+							logro.setDescription("Has jugado 5 partidas");
+						} else if(lista.get(1).equals(logro)){
+							logro.setName("No se te da nada mal");
+							logro.setDescription("Has alcanzado los 100 puntos");
+						} else {
+							logro.setName("¡Estás on fire!");
+							logro.setDescription("Has alcanzado los 200 movimientos");
+						}
+						logro.setIs_unlocked(false);
+						logro.setImage("");
+						logro.setJugador(jugador);	
+					}
+					logrosService.save(lista.get(0));
+					logrosService.save(lista.get(1));
+					logrosService.save(lista.get(2));
 					this.jugadorService.saveJugador(jugador);
 					
 					return "redirect:/";
@@ -109,41 +171,49 @@ public class JugadorController {
 		}
 	}
 
+	//SI SE LE DA DOS VECES A ACTUALIZAR DATOS SEGUIDAS SIN DARLE A VOLVER, SALTA ERROR
 	//Editar jugador
-	@GetMapping(value = "/jugador/{id}/edit")
+	@GetMapping(value = "/jugador/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			if(auth.isAuthenticated()){
 				org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-				String usuario = currentUser.getUsername();
+				String user = currentUser.getUsername();
 				try{
-					Jugador player = jugadorService.findJugadorByUsername(usuario);
-					if(player.getId()==id){
-						Jugador jugador = jugadorService.findJugadorById(id);
-						String username = jugador.getUser().getUsername();
-						String pass = jugador.getUser().getPassword();
-						model.addAttribute("pass", pass);
-						model.addAttribute("username", username);
-						model.addAttribute(jugador);
-						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-					}else{
-						return "welcome";
+					Jugador player = jugadorService.findJugadorByUsername(user);
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+					String credencial = usuarioR.getAuthority();
+						if(player.getId()==id || credencial.equals("admin")){
+							Jugador jugador = jugadorService.findJugadorById(id);
+							String username = jugador.getUser().getUsername();
+							String pass = jugador.getUser().getPassword();
+							
+							model.addAttribute("pass", pass);
+							model.addAttribute("username", username);
+							
+							model.addAttribute(jugador);
+							return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+						}else{
+							return "welcome";
+						}
 					}
-				}catch (DataIntegrityViolationException ex){
+				} catch (DataIntegrityViolationException ex){
 					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
-				//Jugador player = jugadorService.findJugadorByUsername(usuario);
+				
 				
 			}return "welcome";
 		}
-		return "welome";
+		return "welcome";
 	
 	}
-
-	@PostMapping(value = "/jugador/{id}/edit")
-	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id){
+	
+	
+	@PostMapping(value = "/jugador/edit/{id}")
+	public String processEditForm(@Valid Jugador jugador, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
 		if(result.hasErrors()){
 			return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 		}
@@ -157,16 +227,24 @@ public class JugadorController {
 
 			if(violations.isEmpty()){
 				try{
+					//SI SE EDITA UN JUGADOR, SE PIERDEN LAS STATS Y LOS LOGROS : REGLA DE NEGOCIO
 					jugador.setId(id);
+					jugador.setAllStats0();
 					this.jugadorService.saveJugador(jugador);
+					List<Logros> conjunto = logrosService.findLogrosJugadorNull();
+					for (Logros logro:conjunto){
+						logro.setJugador(jugador);
+					}
+					jugadorService.setCreatorYCreatedDate(jugador);
+					model.put("message","Jugador editado correctamente");
+					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 				}
-			}
-
-			else{
+			}else{
 				for(ConstraintViolation<User> v : violations){
 					result.rejectValue("user."+ v.getPropertyPath(),v.getMessage(),v.getMessage());
 				}
@@ -191,52 +269,74 @@ public class JugadorController {
 			}
 			return "welcome";
 		}
-		return "welome";
+		return "welcome";
 	
 	}
 
-	@GetMapping(value = "/jugador/{id}/estadisticas")
-	public ModelAndView mostrarEstadisticas(@PathVariable("id") int id){
-		ModelAndView mav = new ModelAndView("jugador/estadisticasJugador");
-		mav.addObject(this.jugadorService.findJugadorById(id));
-		return mav;
-	}
-	
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
-	/*@GetMapping("/users/all")
-    public ModelAndView showUsersList(){
-        ModelAndView result=new ModelAndView("users/UsersList");
-        result.addObject("users", authoritiesService.findAllUsers());
-        return result;
-    }*/
-
-	
-
-	//HAY QUE CONTROLAR SI TIENE ESE USUARIO UNA PARTIDA JUGADA, PODER ELIMINARLO TAMBIÉN
-	@GetMapping(path = "/jugador/delete/{id}")
-	public ModelAndView deleteGame(@PathVariable("id") int id, ModelMap modelMap) {
-		Jugador jugador = jugadorService.findJugadorById(id);
-		Collection<Partida> partidas = jugadorService.findPartidasByUserId(jugador.getId());
-		
-		if(partidas.size() == 0){
-			jugadorService.deleteJugador(jugador);
-			ModelAndView result = new ModelAndView("users/UsersList");
-			result.addObject("users", authoritiesService.findAllUsers());
-			return result;
+	@GetMapping(value = "/jugador/perfil/{id}")
+	public String verPerfilJugadorADMIN(@PathVariable("id") int id,Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {
+					Jugador jugador = jugadorService.findJugadorById(id);
+					model.addAttribute("id", jugador.getId());
+					model.addAttribute(jugador);
+					return "jugador/showJugadorByIdADMIN";
+				} else {
+					return "welcome";
+				}
+			}	
 		} else {
-			for (Partida partida : partidas){
-				partidaService.deletePartida(partida); //Eliminamos cada partida
-			}
-			jugadorService.deleteJugador(jugador);
-			ModelAndView result = new ModelAndView("users/UsersList");
-			result.addObject("users", authoritiesService.findAllUsers());
-			return result;
+		return "welcome";
 		}
-		
+	return "exception";
+	}
+	
+
+	
+	@GetMapping(path = "/jugador/delete/{id}")
+	public String deleteJugador(@PathVariable("id") int id, Map<String, Object> model,@RequestParam(defaultValue="0") int page) {
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	if(auth != null){
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+		for (GrantedAuthority usuarioR : usuario){
+			String credencial = usuarioR.getAuthority();
+			if (credencial.equals("admin")) {
+				Jugador jugador = jugadorService.findJugadorById(id);
+				if(jugador.getUser().getUsername().equals(currentUser.getUsername())){ //para que el admin no pueda eliminarse a sí mismo
+					Pageable pageable = PageRequest.of(page,4);
+					Page<User> users = pageUser.findAllUsers(pageable);
+					model.put("users", users);
+					model.put("message","Un administrador no puede eliminarse a sí mismo");
+					return "users/UsersList";
+				} else {
+					List<Logros> listaLogros = logrosService.findById(jugador.getId());
+					for(Logros logro : listaLogros){
+						logrosService.delete(logro);
+					}
+					jugadorService.deleteJugador(jugador);
+					Pageable pageable = PageRequest.of(page,4);
+					Page<User> users = pageUser.findAllUsers(pageable);
+					model.put("users", users);
+					model.put("message","Jugador eliminado correctamente");
+					return "users/UsersList";
+				}
+				
+			}
+		}
+		 
+	}else{
+		return "exception";
+	}
+	return "exception";
 	}
 
+
+	
 
 }

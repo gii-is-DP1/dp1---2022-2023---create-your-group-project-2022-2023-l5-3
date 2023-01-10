@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.mazoInicial;
 
-
-import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

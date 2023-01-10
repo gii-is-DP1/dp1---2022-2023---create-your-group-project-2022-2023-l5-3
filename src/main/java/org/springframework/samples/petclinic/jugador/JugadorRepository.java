@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.jugador;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JugadorRepository extends CrudRepository<Jugador, Integer> {
-
 
     @Query("select j from Jugador j where j.user.username = ?1")
     public Jugador findByUsername(String username);
@@ -23,5 +23,7 @@ public interface JugadorRepository extends CrudRepository<Jugador, Integer> {
     @Query("SELECT j FROM Partida j WHERE j.jugador.id =?1")
 	public Collection<Partida> findPartidasByJugador(Integer userId);
     
+    
+    public List<Jugador> findAll();
 
 }

@@ -17,15 +17,17 @@
         <div class="form-group has-feedback">
             <petclinic:inputField label="Nombre" name="firstName"/>
             <petclinic:inputField label="Apellido" name="lastName"/>
-            
+            <petclinic:inputField label="URL Image" name="image"/>
             <c:choose>
                     <c:when test="${jugador['new']}">
                         <petclinic:inputField label="Password" name="user.password"/>
                         <petclinic:inputField  label="Nombre de usuario" name="user.username"/>
+                        
                     </c:when>
                     <c:otherwise>
                         <input type="hidden" name="user.password" value="${pass}">
                         <input type="hidden" name="user.username" value="${username}">
+                        
                     </c:otherwise>
                 </c:choose>
             
@@ -39,7 +41,9 @@
                     </c:when>
                     <c:otherwise>
                         <button class="btn btn-default" type="submit">Actualizar datos</button>
-                        <spring:url value="/jugador/perfil" var="editUrl"></spring:url>
+                        <spring:url value="/jugador/perfil/" var="editUrl">
+                            <spring:param name="id" value="${id}"/>
+                        </spring:url>
                         <a href="${editUrl}" class="btn btn-default">Volver</a>
                     </c:otherwise>
                 </c:choose>

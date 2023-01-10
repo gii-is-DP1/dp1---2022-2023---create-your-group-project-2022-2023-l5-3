@@ -1,7 +1,12 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+
+import java.util.List;
+
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -16,7 +21,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class JugadorService {
 
+	@Autowired
     private JugadorRepository jugadorRepository;
+
 
     @Autowired
 	private UserService userService;
@@ -24,7 +31,7 @@ public class JugadorService {
 	@Autowired
 	private AuthoritiesService authoritiesService;
 
-    @Autowired
+	@Autowired
     public JugadorService(JugadorRepository jugadorRepository){
         this.jugadorRepository = jugadorRepository;
     }
@@ -61,8 +68,18 @@ public class JugadorService {
 
 
 	@Transactional
-	public Collection<Partida> findPartidasByUserId(int id ) throws DataAccessException{
+	public Collection<Partida> findPartidasByJugadorId(int id ) throws DataAccessException{
 		return jugadorRepository.findPartidasByJugador(id);
+	}
+
+	public List<Jugador> findAllPlayer() {
+		return jugadorRepository.findAll();
+	}
+
+	public void setCreatorYCreatedDate(Jugador jugador) {
+		jugador.setCreatedDate(LocalDateTime.of(2023, 1, 7, 0, 0));
+		jugador.setCreator("admin1");;
+		saveJugador(jugador);
 	}
 
 }

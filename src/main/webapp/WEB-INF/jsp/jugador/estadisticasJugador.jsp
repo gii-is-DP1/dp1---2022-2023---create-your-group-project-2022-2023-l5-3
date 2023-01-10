@@ -8,36 +8,100 @@
 <%@page pageEncoding="UTF-8"%>
 
 
+<petclinic:layout pageName="stats">
 
-<petclinic:layout pageName="estadisticasJugador" >
+</br>
+</br>
+    <div class="row">
 
+        <div class="col-md-5" style="font-size: 1.5em;">
+            <div class="container" style="background-color:#cbc9c9;border-radius: 5%;border-color: black;border-width: 5px; width: 650px; height: 500px;">
+            </br>
+                <div class="row" align="center" style="font-size: 1.75em">
+                    <strong>Estadísticas individuales</strong>
+                </div>
+            </br>
+                    <div class="row" align="center">Partidas Jugadas:
+                        <c:out value="${jugador.getPartidasJugadas()}" />
+                    </div>
 
+                    <div class="row" align="center">Partidas Ganadas:
+                        <c:out value="${jugador.partidasGanadas}" />
+                    </div>
 
-<div class="container" style="background-color:#717973;border-radius: 5%;border-color: black;border-width: 5px;">
-    <div class="row border border-dark" style="font-size: 4.5rem;" align="center"><strong>Estadísticas</strong></div>
-    <div class="container" style="font-size: 3rem;">
+                    <div class="row" align="center">Partidas Perdidas:
+                        <c:out value="${jugador.partidasNoGanadas}" />
+                    </div>
 
-        <div class="row" align="center">Partidas Jugadas:<c:out value="${jugador.partidasGanadas}"/></div>
+                    <div class="row" align="center">Tiempo total jugado:
+                        <c:out value="${jugador.totalTiempoJugado}" />
+                    </div>
 
-        <div class="row" align="center">Partidas Ganadas: <c:out value="${jugador.partidasGanadas}"/></div>
-        
-        <div class="row" align="center">Partidas Perdidas: <c:out value="${jugador.partidasNoGanadas}"/></div>
-        
-        <div class="row" align="center">Tiempo total jugado: <c:out value="${jugador.totalTiempoJugado}"/></div>
-        
-        <div class="row" align="center">Número total de movimientos: <c:out value="${jugador.numTotalMovimientos}"/></div>
-        
-        <div class="row" align="center">Número total de puntos: <c:out value="${jugador.numTotalPuntos}"/></div>
-        
-        <div class="row" align="center">Máximo número de movimientos: <c:out value="${jugador.numMaxMovimientosPartidaGanada}"/></div>
-        
-        <div class="row" align="center">Mínimo número de movimientos: <c:out value="${jugador.numMinMovimientosPartidaGanada}"/></div>
-        
-        <div class="row" align="center">Máximo tiempo en obtener una victoría: <c:out value="${jugador.maxTiempoPartidaGanada}"/></div>
-        
-        <div class="row" align="center">Mínimo tiempo en obtener una victoría: <c:out value="${jugador.minTiempoPartidaGanada}"/></div>
+                    <div class="row" align="center">Número total de movimientos:
+                        <c:out value="${jugador.numTotalMovimientos}" />
+                    </div>
+
+                    <div class="row" align="center">Número total de puntos:
+                        <c:out value="${jugador.numTotalPuntos}" />
+                    </div>
+
+                    <div class="row" align="center">Número máximo de movimientos en partida ganada:
+                        <c:out value="${jugador.numMaxMovimientosPartidaGanada}" />
+                    </div>
+
+                    <div class="row" align="center">Número mínimo de movimientos en partida ganada:
+                        <c:out value="${jugador.numMinMovimientosPartidaGanada}" />
+                    </div>
+
+                    <div class="row" align="center">Tiempo máximo en partida ganada:
+                        <c:out value="${jugador.maxTiempoPartidaGanada}" />
+                    </div>
+
+                    <div class="row" align="center">Tiempo mínimo en partida ganada:
+                        <c:out value="${jugador.minTiempoPartidaGanada}" />
+                    </div>
+                
+            </div>
+        </div>
+
+        <div class="col-md-5" style="font-size: 1.5em; padding-left: 200px;">
+            <div class="container" style="background-color:#cbc9c9;border-radius: 5%;border-color: black; border-width: 5px; width: 600px; height: 500px;">
+            </br>
+                <div class="row" align="center" style="font-size: 1.75em;">
+                    <strong>Estadísticas generales</strong>
+                </div>
+            </br>
+                    <div class="row" align="center">Partidas Jugadas:
+                        <c:out value="${partidasTotalesJugadas}" />
+                    </div>
+
+                    <div class="row" align="center">Partidas Ganadas:
+                        <c:out value="${partidasGanadasTotales}" />
+                    </div>
+
+                    <div class="row" align="center">Partidas Perdidas:
+                        <c:out value="${partidasPerdidasTotales}" />
+                    </div>
+
+                    <div class="row" align="center">Puntos promedio:
+                        <c:out value="${puntosPromedio}" />
+                    </div>
+ 
+                    <div class="row" align="center">Movimientos promedio:
+                        <c:out value="${movimientosPromedio}" />
+                    </div>
+                    <div class="row" align="center">Tiempo total jugado:
+                        <c:out value="${horas}"/> horas, <c:out value="${minutos}"/> minutos y <c:out value="${segundos}"/> segundos.
+                    </div>
+                    <div class="row" align="center">Tiempo promedio por partida:
+                        <c:out value="${horasPromedio}"/> horas, <c:out value="${minutosPromedio}"/> minutos y <c:out value="${segundosPromedio}"/> segundos.
+                    </div>
+                </div>
+            
+        </div>
+
     </div>
-</div>
+
 
 
 </petclinic:layout>

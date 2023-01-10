@@ -1,45 +1,62 @@
 -- One admin user, named admin1 with password 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
-INSERT INTO jugador VALUES(7,'admin','admin','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','admin1');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(1,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','admin','admin','',0,0,'00:00:00',0,0,0,0,'','','admin1');
 
--- One owner user, named mario with passwor mario
+-- One jugador user, named mario with passwor mario
 INSERT INTO users(username,password,enabled) VALUES ('marsannar2','mario',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (8,'marsannar2','owner');
-INSERT INTO jugador VALUES(1,'mario','sanchez','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','marsannar2');
+INSERT INTO authorities(id,username,authority) VALUES (8,'marsannar2','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(2,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','mario','sanchez','',0,0,'00:00:00',0,0,0,0,'','','marsannar2');
 
-
-INSERT INTO users (username,password,enabled) VALUES ('aaa','aaa',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (10,'aaa','jugador');
-INSERT INTO jugador VALUES(2,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','aaa');
-
--- One owner jorsilman, named jorge with password jorge
+-- -- One jugador jorsilman, named jorge with password jorge
 INSERT INTO users(username,password,enabled) VALUES ('jorge','jorge',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','owner');
-INSERT INTO jugador VALUES(3,'jorge','sillero','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','jorge');
+INSERT INTO authorities(id,username,authority) VALUES (4,'jorge','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(3,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','jorge','sillero','',0,0,'00:00:00',0,0,0,0,'','','jorge');
 
--- One owner barbaat, named barba with password barba
+-- -- One jugador barbaat, named barba with password barba
 INSERT INTO users(username,password,enabled) VALUES ('barba','barba',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'barba','owner');
-INSERT INTO jugador VALUES(4,'barba','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','barba');
+INSERT INTO authorities(id,username,authority) VALUES (5,'barba','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(4,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','barba','barba','',0,0,'00:00:00',0,0,0,0,'','','barba');
 
--- One owner fracaralb, named fran with passwor fran
+-- -- One jugador fracaralb, named fran with passwor fran
 INSERT INTO users(username,password,enabled) VALUES ('fran','fran',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'fran','owner');
-INSERT INTO jugador VALUES(5,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','fran');
+INSERT INTO authorities(id,username,authority) VALUES (6,'fran','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(5,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','fran','fran','',0,0,'00:00:00',0,0,0,0,'','','fran');
 
--- One owner albgalhue, named gallego with password gallego
+-- -- One jugador albgalhue, named gallego with password gallego
 INSERT INTO users(username,password,enabled) VALUES ('gallego','gallego',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','owner');
-INSERT INTO jugador VALUES(6,'aaa','aaa','00:05:00','00:05:00',2,3,6,7,5,7,'23:00:53','gallego');
+INSERT INTO authorities(id,username,authority) VALUES (7,'gallego','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(6,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','gallego','gallego','',0,0,'00:00:00',0,0,0,0,'','','gallego');
 
--- One owner alvnavriv, named alvaro with password alvaro
+-- -- One jugador alvnavriv, named alvaro with password alvaro
 INSERT INTO users(username,password,enabled) VALUES ('alvaro','alvaro',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','owner');
+INSERT INTO authorities(id,username,authority) VALUES (11,'alvaro','jugador');
+INSERT INTO jugador (id,created_date,creator,last_modified_date,modifier,first_name,last_name,image,win,lost,time,mov,points,max_movs,min_movs,max_time,min_time,username)VALUES(7,'2023-1-7 00:00:00','admin1','2023-1-7 00:00:00','admin1','alvaro','alvaro','',0,0,'00:00:00',0,0,0,0,'','','alvaro');
 
-INSERT INTO cartas(id, valor, palo) VALUES (1, 1, 'PICAS');
-INSERT INTO cartas(id, valor, palo) VALUES (2, 3, 'PICAS');
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (1, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,1);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (2, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 1);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (3, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200, 1);
 
-INSERT INTO partidas(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (1,'2022-11-28 19:36:30','2022-11-28 19:40:00',0,true,7);
-INSERT INTO partidas(id,momento_inicio,momento_fin,num_movimientos,victoria,jugador_id) VALUES (3,'2022-11-28 19:36:30','2022-11-28 20:10:00',100,true,4);
-INSERT INTO partidas(id,momento_inicio,num_movimientos,victoria,jugador_id) VALUES (2,'2022-11-28 19:36:30',0,true,6);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (4, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,2);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (5, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100,2);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (6, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200, 2);
+
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (7, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,3);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (8, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 3);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (9, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200, 3);
+
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (10, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,4);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (11, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 4);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (12, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200,4);
+
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (13, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,5);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (14, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 5);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (15, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200,5);
+
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (16, 'Máquina de jugar','Has ganado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,6);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (17, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 6);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (18, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200,6);
+
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (19, 'Máquina de jugar','Has jugado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',5,7);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (20, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 7);
+INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (21, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200, 7);

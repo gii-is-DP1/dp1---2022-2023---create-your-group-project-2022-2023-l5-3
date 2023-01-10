@@ -6,25 +6,29 @@
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <petclinic:layout pageName="home">
-    <div class="row">
-        <div class="row-md-12">
-            <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="logoUS"/>
-            <img class="img-responsive" src="${logoUS}"/>
-        </div>
-        <div class="row-md-12">    
-            <h2>${title}</h2>
+
+    <div class="m-0 row justify-content-center">
+        <div class="col-auto text-center">
+            <h1 style="font-size: 3em; font-weight: bold;">${title}</h1>
+        </br>
+            <div class="mx-auto" style="justify-content: center; display: flex;">
+                <spring:url value="/resources/images/gif-inicial.gif" htmlEscape="true" var="videoCartas" />
+                <img id="f2" class="img-responsive" src="${videoCartas}" width="420" height="420" />
+    
+            </div>
+        </br>
+    </br>
             <p><h2>Group ${group}</h2></p>
             <p>
                 <ul>   
                     <c:forEach items="${persons}" var="person">
-                        <li>${person.firstName} <br>${person.lastName}</li>
+                       ${person.firstName}    ${person.lastName}
+                        </br>
                     </c:forEach>
                 </ul>
             </p>
         </div>
+    
     </div>
-        <div class="row">
-            <h2 class = "justify-content-center">BIENVENIDO</h2>
-        </div>
-    </div>
+
 </petclinic:layout>

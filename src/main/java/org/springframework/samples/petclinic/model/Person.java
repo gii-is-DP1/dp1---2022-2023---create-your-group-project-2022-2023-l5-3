@@ -39,6 +39,17 @@ public class Person extends BaseEntity {
 	@NotEmpty
 	protected String lastName;
 
+	@Column(name = "image")
+	protected String image;
+
+	public String getImage() {
+		return this.image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public String getFirstName() {
 		return this.firstName;
 	}
