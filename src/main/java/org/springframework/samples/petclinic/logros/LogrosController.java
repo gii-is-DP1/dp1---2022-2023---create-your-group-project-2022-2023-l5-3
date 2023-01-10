@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -13,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +27,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LogrosController {
-	
-	private static final String VIEWS_LOGROS = "jugador/logrosJugador";
-	
+
+	private static final String VIEWS_LOGROS = "logros/logrosJugador";
+
 	private final LogrosService logrosService;
 	private final JugadorService jugadorService;
 
@@ -34,126 +37,125 @@ public class LogrosController {
 	public LogrosController(LogrosService logrosService, JugadorService jugadorService) {
 		this.logrosService = logrosService;
 		this.jugadorService = jugadorService;
-	} 
+	}
 
 	@GetMapping(value = "/jugador/logros")
 	public String logrosUsuarioLogeado(Map<String, Object> model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
 		List<Logros> conjunto = logrosService.findLogrosJugadorNull();
-		for (Logros logro:conjunto){
+		for (Logros logro : conjunto) {
 			logro.setJugador(jugador);
 		}
 		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
 		logrosService.setLogrosDeCadaJugador();
-		model.put("logros",logrosDelUsuarioLogeado);
+		model.put("logros", logrosDelUsuarioLogeado);
 		return VIEWS_LOGROS;
 	}
 
-	//SOLO LOS ADMIN PUEDEN VER LOS LOGROS DE LOS DEMÁS USUARIOS
+	// SOLO LOS ADMIN PUEDEN VER LOS LOGROS DE LOS DEMÁS USUARIOS
 	@GetMapping(value = "/jugador/logros/{id}")
 	public String logrosDeCualquierUsuario(Map<String, Object> model, @PathVariable("id") int id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth != null){
-			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-			for (GrantedAuthority usuarioR : usuario){
-				String credencial = usuarioR.getAuthority();
-				Jugador jugador = jugadorService.findJugadorById(id);
-				List<Logros> conjunto = logrosService.findLogrosJugadorNull();
-					
-					for (Logros logro:conjunto){
-						logro.setJugador(jugador);
-					}
-				if (credencial.equals("admin")) { 
-					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
-					logrosService.setLogrosDeCadaJugador();
-					model.put("logros",logrosDelUsuarioLogeado);
-					return VIEWS_LOGROS;
-				} else {
-					return "welcome";
-				}
-			}
-		} else {
-			return "exception";
-		}
-		return "exception";
-	}
+		Jugador jugador = jugadorService.findJugadorById(id);
+		List<Logros> conjunto = logrosService.findLogrosJugadorNull();
 
+		for (Logros logro : conjunto) {
+			logro.setJugador(jugador);
+		}
+		User currentUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+		String credencial = List.copyOf(usuario).get(0).getAuthority();
+		if (credencial.equals("admin")) {
+			List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
+			logrosService.setLogrosDeCadaJugador();
+			model.put("logros", logrosDelUsuarioLogeado);
+			return VIEWS_LOGROS;
+		} else {
+			return "welcome";
+		}
+	}
 
 	@GetMapping(value = "/jugador/logros/editar")
-	public String editarLogrosAdmin (Map<String, Object> model) {
-		List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
-		model.put("logros",logrosDefinidos);
-		return "jugador/editarLogrosGeneral";
+	public String editarLogrosAdmin(Map<String, Object> model) {
+		User currentUser = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+		String credencial = List.copyOf(usuario).get(0).getAuthority();
+		if (credencial.equals("admin")) {
+			List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+			model.put("logros", logrosDefinidos);
+			return "logros/editarLogrosGeneral";
+		} else {
+			return "redirect:/";
+		}
 	}
-
 
 	@GetMapping(value = "/jugador/logros/editar/{id}")
-	public String editarLogroAdmin (Map<String, Object> model, @PathVariable("id") int id) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth != null){
-				if(auth.isAuthenticated()){
-					org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-					try {
-						Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-						for (GrantedAuthority usuarioR : usuario){
+	public String editarLogroAdmin(Map<String, Object> model, @PathVariable("id") int id) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			if (auth.isAuthenticated()) {
+				org.springframework.security.core.userdetails.User currentUser = (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+				try {
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario) {
 						String credencial = usuarioR.getAuthority();
-							if(credencial.equals("admin")){
-								Logros logro = logrosService.findByIdlOGRO(id);
-								Integer num = logro.getNumCondicion();
-								model.put("num", num);
-								model.put("name",logro.getName());
-								model.put("description",logro.getDescription());
-								model.put("image",logro.getImage());
-								model.put("is_unlocked",logro.getIs_unlocked());
-								model.put("jugador",logro.getJugador());
-								model.put("logro",logro);
-								return "jugador/editarLogro";
-							}else{
-								return "welcome";
-							}
+						if (credencial.equals("admin")) {
+							Logros logro = logrosService.findByIdlOGRO(id);
+							Integer num = logro.getNumCondicion();
+							model.put("num", num);
+							model.put("name", logro.getName());
+							model.put("description", logro.getDescription());
+							model.put("image", logro.getImage());
+							model.put("is_unlocked", logro.getIs_unlocked());
+							model.put("jugador", logro.getJugador());
+							model.put("logro", logro);
+							return "logros/editarLogro";
+						} else {
+							return "welcome";
 						}
-					} catch (DataIntegrityViolationException ex){
-						
-						return "jugador/editarLogro";
 					}
-					
-					
-				}return "welcome";
+				} catch (DataIntegrityViolationException ex) {
+
+					return "logros/editarLogro";
+				}
+
 			}
 			return "welcome";
-		
 		}
+		return "welcome";
 
-
-		@PostMapping(value = "/jugador/logros/editar/{id}")
-		public String processEditForm(@Valid Logros logro, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
-			
-			if(result.hasErrors()){
-				return "jugador/editarLogro";
-			} else {
-						//logro.setId(id);
-						//logro.setDescription(image);
-						Logros logrosToUpdate=this.logrosService.findByIdlOGRO(id);
-						BeanUtils.copyProperties(logro, logrosToUpdate, "id","image","is_unlocked","jugador"); 
-						this.logrosService.save(logrosToUpdate);
-						
-						List<Logros> conjuntoLogros = logrosService.findAll();
-						
-						for(int i=id-1;i<conjuntoLogros.size();i=i+3){
-							conjuntoLogros.get(i).setNumCondicion(logrosToUpdate.getNumCondicion());
-							conjuntoLogros.get(i).setDescription(logrosToUpdate.getDescription());
-							conjuntoLogros.get(i).setName(logrosToUpdate.getName());
-						}
-						
-						logrosService.setLogrosDeCadaJugador();
-						model.put("message","Logro editado correctamente");
-						
-						List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
-						model.put("logros",logrosDefinidos);
-						return "redirect:/jugador/logros/editar";
-			}
 	}
-	
+
+	@PostMapping(value = "/jugador/logros/editar/{id}")
+	public String processEditForm(@Valid Logros logro, BindingResult result, @PathVariable("id") int id,
+			Map<String, Object> model) {
+
+		if (result.hasErrors()) {
+			return "logros/editarLogro";
+		} else {
+			// logro.setId(id);
+			// logro.setDescription(image);
+			Logros logrosToUpdate = this.logrosService.findByIdlOGRO(id);
+			BeanUtils.copyProperties(logro, logrosToUpdate, "id", "image", "is_unlocked", "jugador");
+			this.logrosService.save(logrosToUpdate);
+
+			List<Logros> conjuntoLogros = logrosService.findAll();
+
+			for (int i = id - 1; i < conjuntoLogros.size(); i = i + 3) {
+				conjuntoLogros.get(i).setNumCondicion(logrosToUpdate.getNumCondicion());
+				conjuntoLogros.get(i).setDescription(logrosToUpdate.getDescription());
+				conjuntoLogros.get(i).setName(logrosToUpdate.getName());
+			}
+
+			logrosService.setLogrosDeCadaJugador();
+			model.put("message", "Logro editado correctamente");
+
+			List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+			model.put("logros", logrosDefinidos);
+			return "redirect:/jugador/logros/editar";
+		}
+	}
+
 }

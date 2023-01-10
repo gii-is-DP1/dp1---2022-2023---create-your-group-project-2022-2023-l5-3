@@ -50,7 +50,7 @@ public class EstadisticasController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+					ModelAndView result = new ModelAndView("estadisticas/estadisticasJugador");
 					Jugador jugador = jugadorService.findJugadorById(id);
 					estadisticasService.setEstadisticasJugador(jugador);
 					estadisticasService.setEstadisticasGenerales(result,jugador);
@@ -69,7 +69,7 @@ public class EstadisticasController {
 
 	@GetMapping(value = "/jugador/estadisticas")
 	public ModelAndView mostrarEstadisticasUsuario(){
-		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+		ModelAndView result = new ModelAndView("estadisticas/estadisticasJugador");
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
 		estadisticasService.setEstadisticasJugador(jugador);
