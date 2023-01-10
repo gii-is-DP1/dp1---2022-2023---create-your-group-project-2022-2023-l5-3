@@ -71,6 +71,7 @@ public class JugadorService {
 		return jugadorRepository.findPartidasByJugador(id);
 	}
 
+	@Transactional
 	public List<Jugador> findAllPlayer() {
 		return jugadorRepository.findAll();
 	}
