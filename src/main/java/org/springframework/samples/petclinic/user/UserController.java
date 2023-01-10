@@ -55,12 +55,14 @@ public class UserController {
 	private final JugadorService jugadorService;
 	private final LogrosService logrosService;
 	private final UserServicePageable pageUser;
+	private final AuthoritiesService authoritiesService;
 	
 	@Autowired
-	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up) {
+	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up, AuthoritiesService authoritiesService) {
 		this.jugadorService = jugadorService;
 		this.logrosService = logrosService;
 		this.pageUser=up;
+		this.authoritiesService=authoritiesService;
 	}
 
 	@InitBinder
@@ -139,11 +141,12 @@ public class UserController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					//List<Authorities> usuarios = authoritiesservice.findAllUsers();
+					List<Authorities> usuarios = authoritiesService.findAllUsers();
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
 					
 					model.put("users", users);
+					model.put("usersTest",usuarios);
 					return "users/UsersList";
 				} else {
 					return "welcome";
