@@ -10,9 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.samples.petclinic.logros.Logros;
-import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.model.AuditableEntity;
 import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.user.User;
 
@@ -22,7 +24,21 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Jugador extends Person{
+public class Jugador extends AuditableEntity{
+
+
+	@Column(name = "first_name")
+	@Length(min = 3, max = 20)
+	@NotEmpty
+	protected String firstName;
+
+	@Column(name = "last_name")
+	@Length(min = 3, max = 20)
+	@NotEmpty
+	protected String lastName;
+
+	@Column(name = "image")
+	protected String image;
 
     @Column(name = "win")
     private Integer partidasGanadas;
