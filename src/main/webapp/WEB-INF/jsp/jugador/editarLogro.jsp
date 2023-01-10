@@ -18,9 +18,9 @@
 </br>
     <form:form modelAttribute="logro" class="form-horizontal " id="add-jugador-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Descripcion" name="description" />
+            <petclinic:inputField label="Nombre del logro" name="name" />
+            <petclinic:inputField label="Descripcion del logro" name="description" />
             <petclinic:inputField label="Numero de condicion" name="numCondicion" />
-            <input type="hidden" name="logros.name" value="${name}">
             <input type="hidden" name="logros.is_unlocked" value="${is_unlocked}">
             <input type="hidden" name="logros.image" value="${image}">
             <input type="hidden" name="logros.jugador" value="${jugador}">
