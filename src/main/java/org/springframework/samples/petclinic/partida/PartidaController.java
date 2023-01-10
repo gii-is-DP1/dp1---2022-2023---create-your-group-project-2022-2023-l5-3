@@ -184,16 +184,20 @@ public class PartidaController {
 			List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
 			model.put("mazInt"+(i+1),cpm);
 		}
+		List<CartasPartida> corazones = cartasPartidaService.findCartasPartidaByMazoFinalIdAndPartidaId(listaMazosFinales.get(0), partidaId);
+		List<CartasPartida> picas = cartasPartidaService.findCartasPartidaByMazoFinalIdAndPartidaId(listaMazosFinales.get(1), partidaId);
+		List<CartasPartida> diamantes = cartasPartidaService.findCartasPartidaByMazoFinalIdAndPartidaId(listaMazosFinales.get(2), partidaId);
+		List<CartasPartida> treboles = cartasPartidaService.findCartasPartidaByMazoFinalIdAndPartidaId(listaMazosFinales.get(3), partidaId);
 
-		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)), new ComparadorCartasPartidaPorPosCartaMazo());
-		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)), new ComparadorCartasPartidaPorPosCartaMazo());
-		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)), new ComparadorCartasPartidaPorPosCartaMazo());
-		Collections.sort(cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)), new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(corazones, new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(picas, new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(diamantes, new ComparadorCartasPartidaPorPosCartaMazo());
+		Collections.sort(treboles, new ComparadorCartasPartidaPorPosCartaMazo());
 
-		model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
-		model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
-		model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
-		model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
+		model.put("mazoFinalCorazones",corazones);
+		model.put("mazoFinalPicas",picas);	
+		model.put("mazoFinalDiamantes",diamantes);
+		model.put("mazoFinalTreboles",treboles);	
 		model.put("partidaId",partidaId);
 		return TABLERO;
 	}
