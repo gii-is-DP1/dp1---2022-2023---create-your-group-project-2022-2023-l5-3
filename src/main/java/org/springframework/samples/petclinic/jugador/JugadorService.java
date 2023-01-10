@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.jugador;
 
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 import java.util.List;
@@ -73,6 +74,12 @@ public class JugadorService {
 
 	public List<Jugador> findAllPlayer() {
 		return jugadorRepository.findAll();
+	}
+
+	public void setCreatorYCreatedDate(Jugador jugador) {
+		jugador.setCreatedDate(LocalDateTime.of(2023, 1, 7, 0, 0));
+		jugador.setCreator("admin1");;
+		saveJugador(jugador);
 	}
 
 }
