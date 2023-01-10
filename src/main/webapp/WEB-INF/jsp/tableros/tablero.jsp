@@ -271,7 +271,7 @@
                 </select>
                 Cantidad
                 <select name="cantidad">
-                    <c:forEach var="i" begin="1" end="10" step="1">
+                    <c:forEach var="i" begin="1" end="13" step="1">
                         <option value="${i}">${i}</option>    
                      </c:forEach>
                     </select>

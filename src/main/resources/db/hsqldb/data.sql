@@ -57,10 +57,6 @@ INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jug
 INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (17, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',100, 6);
 INSERT INTO logros(id, name, description, is_unlocked, image, num_condicion, jugador_id) VALUES (18, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png',200,6);
 
-INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (16, 'Máquina de jugar','Has jugado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 6);
-INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (17, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 6);
-INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (18, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 6);
-
 INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (19, 'Máquina de jugar','Has jugado 5 partidas', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 7);
 INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (20, 'No se te da nada mal','Has alcanzado los 100 puntos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 7);
 INSERT INTO logros(id, name, description, is_unlocked, image, jugador_id) VALUES (21, '¡Estás on fire!','Has alcanzado los 200 movimientos', false, 'https://cdn-icons-png.flaticon.com/512/4319/4319081.png', 7);
