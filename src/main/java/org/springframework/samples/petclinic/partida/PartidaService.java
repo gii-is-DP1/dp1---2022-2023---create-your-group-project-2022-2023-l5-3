@@ -88,16 +88,6 @@ public class PartidaService {
 		partidaRepository.delete(partida);
 	}
 
-	@Transactional
-	public Boolean noExisteMovimientoPosible (Integer idPartida){
-		Boolean res = false;
-		List<CartasPartida> cartasQueSePuedenMover = cpserv.findCartasPartidaByPartidaId(idPartida).stream().filter(x -> x.getIsShow() == true).collect(Collectors.toList());
-		//AQUÍ IRÍAN LAS VALIDACIONES DE LOS MOVIMIENTOS
-		if (cartasQueSePuedenMover.size() == 0){
-			res = true;
-		}
-		return res;
-	}
 
 	public void establecerDerrotaPartida(Integer id){
 		Partida partida = findById(id);

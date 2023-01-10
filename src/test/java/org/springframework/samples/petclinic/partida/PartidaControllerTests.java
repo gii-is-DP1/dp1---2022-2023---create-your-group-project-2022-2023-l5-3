@@ -18,6 +18,7 @@ import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.user.UserServicePageable;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -44,6 +45,9 @@ public class PartidaControllerTests {
 
 	@MockBean
 	private CartasPartidaService cartasPartidaService;
+
+	@MockBean
+	private UserServicePageable userServicePageable;
 
 	@Autowired
 	private MockMvc mockMvc;
