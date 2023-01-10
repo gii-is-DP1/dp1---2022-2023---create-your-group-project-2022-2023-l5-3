@@ -89,5 +89,28 @@ public class LogrosService {
 		}
 
 	}
+
+	public List<Logros> setLogrosJugadorCreado (List<Logros> lista, Jugador jugador){
+		for (Logros logro : lista) {
+			if (lista.get(0).equals(logro)) {
+				logro.setName("Máquina de jugar");
+				logro.setDescription("Has ganado 5 partidas");
+				logro.setNumCondicion(5);
+			} else if (lista.get(1).equals(logro)) {
+				logro.setName("No se te da nada mal");
+				logro.setDescription("Has alcanzado los 100 puntos");
+				logro.setNumCondicion(100);
+
+			} else {
+				logro.setName("¡Estás on fire!");
+				logro.setDescription("Has alcanzado los 200 movimientos");
+				logro.setNumCondicion(200);
+			}
+			logro.setIs_unlocked(false);
+			logro.setImage("https://cdn-icons-png.flaticon.com/512/4319/4319081.png");
+			logro.setJugador(jugador);	
+		}
+		return lista;
+	}
 	
 }
