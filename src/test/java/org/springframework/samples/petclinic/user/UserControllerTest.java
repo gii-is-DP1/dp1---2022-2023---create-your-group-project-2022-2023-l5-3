@@ -65,6 +65,9 @@ public class UserControllerTest {
 	@MockBean
 	private LogrosService logrosService;
 
+	@MockBean
+	private UserServicePageable userServicePageable;
+
     @BeforeEach
     void setup(){
         Jugador player = new Jugador();
@@ -80,12 +83,12 @@ public class UserControllerTest {
     }
 
 
-    @WithMockUser(value = "spring", username = "NuevoJugadorTest", authorities = "admin")
+    @WithMockUser(value = "spring", username = "admin1", authorities = "admin")
 	@Test
 	public void testShowListaDeUsuariosPositive() throws Exception {
 		mockMvc.perform(get("/users/all"))
 				.andExpect(status().isOk())
-				.andExpect(model().attributeExists("users"))
+				.andExpect(model().attributeExists("usersTest"))
 				.andExpect(view().name("users/UsersList"));
 	}
 
@@ -94,7 +97,7 @@ public class UserControllerTest {
 	 void testShowListaDeUsuariosNegative() throws Exception {
 	 	mockMvc.perform(get("/users/all"))
 	 			.andExpect(status().isOk())
-	 			.andExpect(model().attributeDoesNotExist("users"))
+	 			.andExpect(model().attributeDoesNotExist("usersTest"))
 	 			.andExpect(view().name("welcome"));
 	 }
 }

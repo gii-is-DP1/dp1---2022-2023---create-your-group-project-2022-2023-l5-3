@@ -148,7 +148,7 @@ public class PartidaController {
 			List<CartasPartida> mazoIni = new ArrayList<>();
 			model.put("mazInicial", mazoIni);
 		}else{
-			cartasPartidaService.cambiaPosCartaMazoIni(partidaId);
+			cartasPartidaService.cambiaPosCartaMazoIni(partidaId,model);
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);				
 			model.put("mazInicial", mazoIni);
 		}
@@ -534,7 +534,13 @@ public class PartidaController {
 	}
 
 
-	
+	@GetMapping(value="/partidas/gana")
+	public String ganaPartida (Map<String, Object> model){
+		model.put("message", "HAS GANADO LA PARTIDA");
+		return "partidas/messagePartida";
+	}
+
+
 
 	@GetMapping(value="/partidas/pierde")
 	public String pierdePartida (Map<String, Object> model){

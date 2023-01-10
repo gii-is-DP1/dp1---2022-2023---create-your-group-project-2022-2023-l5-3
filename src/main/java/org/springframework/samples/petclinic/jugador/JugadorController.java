@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.jugador;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -233,6 +235,7 @@ public class JugadorController {
 					for (Logros logro:conjunto){
 						logro.setJugador(jugador);
 					}
+					jugadorService.setCreatorYCreatedDate(jugador);
 					model.put("message","Jugador editado correctamente");
 					
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;

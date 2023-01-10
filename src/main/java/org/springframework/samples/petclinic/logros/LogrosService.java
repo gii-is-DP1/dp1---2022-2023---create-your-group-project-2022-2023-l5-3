@@ -25,9 +25,20 @@ public class LogrosService {
 	}
 
 	@Transactional
+	public List<Logros> findAll (){
+		return logrosRepository.findAllLogros();
+	}
+
+	@Transactional
 	public List<Logros> findById(int id) throws DataAccessException{
 		return logrosRepository.findLogrosByIdJugador(id);
 	}
+
+	@Transactional
+	public Logros findByIdlOGRO (int id) throws DataAccessException{
+		return logrosRepository.findLogrosByIdLogro(id);
+	}
+
 
 	@Transactional
 	public void save(Logros logro) {
@@ -44,29 +55,39 @@ public class LogrosService {
 		return logrosRepository.findByjugadorIsNull();
 	}
 
-	public void getLogrosDeCadaJugador(Integer idJugador) {
-		Jugador player = jugadorRepository.findJugadorById(idJugador);
-		List<Logros> logros = findById(player.getId());
-		Integer primerId = logros.get(0).getId();
-		
-		for (Logros logro: logros){
+	@Transactional
+	public List<Logros> findLogrosByName(String logroName){
+		return logrosRepository.findLogrosByName(logroName);
+	}
 
-			if (player.getPartidasJugadas() >= 5){
-				if(logro.getId().equals(primerId)){
-					logro.setIs_unlocked(true);
+	//HAY QUE EDITARLO
+	public void setLogrosDeCadaJugador() {
+		List<Jugador> player = jugadorRepository.findAll();
+		
+		for (Jugador jugador : player){
+			List<Logros> logros = findById(jugador.getId());
+			Integer primerId = logros.get(0).getId();
+			
+			for (Logros logro: logros){
+	
+				if (jugador.getPartidasGanadas() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId)){
+						logro.setIs_unlocked(true);
+					}
 				}
+				if (jugador.getNumTotalPuntos() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId+1)){
+						logro.setIs_unlocked(true);
+					}
+				}
+				if (jugador.getNumTotalMovimientos() >= logro.getNumCondicion()){
+					if(logro.getId().equals(primerId+2)){
+						logro.setIs_unlocked(true);
+					}
+				} 
 			}
-			if (player.getNumTotalPuntos() >= 100){
-				if(logro.getId().equals(primerId+1)){
-					logro.setIs_unlocked(true);
-				}
-			}
-			if (player.getNumTotalMovimientos() >= 200 ){
-				if(logro.getId().equals(primerId+2)){
-					logro.setIs_unlocked(true);
-				}
-			} 
 		}
+
 	}
 	
 }
