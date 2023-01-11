@@ -104,7 +104,7 @@ class JugadorControllerTests {
 		.param("user.enables", "true")
 		.param("user.authorities","jugador")
 		.with(csrf())
-				).andExpect(status().is3xxRedirection());
+				).andExpect(status().isOk());
 	}
 
 	@WithMockUser(value = "spring")

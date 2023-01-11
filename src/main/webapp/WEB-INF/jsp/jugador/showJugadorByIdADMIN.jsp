@@ -11,7 +11,7 @@
         <div class="m-0 row justify-content-center"> 
         
             <div class="row mx-auto justify-content-center text-center">
-                    <h1 class="text-center"><h2>Information of <c:out value="${jugador.user.username}"/></h2></h1>
+                    <h1 class="text-center"><h2>Información de <c:out value="${jugador.user.username}"/></h2></h1>
             </div>
 
 
@@ -41,7 +41,7 @@
                 <spring:url value="/jugador/estadisticas/{id}" var="statsURL">
                     <spring:param name="id" value="${id}"/>
                 </spring:url>
-                <a href="${statsURL}" class="btn btn-default">Sus estadisticas</a>
+                <a href="${statsURL}" class="btn btn-default">Sus estadísticas</a>
             </tr>
 
             <tr>
