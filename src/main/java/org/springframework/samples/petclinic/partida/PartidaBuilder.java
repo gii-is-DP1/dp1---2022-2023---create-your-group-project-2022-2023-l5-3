@@ -20,8 +20,9 @@ import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicial;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicialRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class PartidaBuilder {
 
 	
