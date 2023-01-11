@@ -52,7 +52,7 @@ public class LogrosController {
 
 	//SOLO LOS ADMIN PUEDEN VER LOS LOGROS DE LOS DEMÁS USUARIOS
 	@GetMapping(value = "/jugador/logros/{id}")
-	public String logrosDeCualquierUsuario(Map<String, Object> model, @PathVariable("id") int id) {
+	public String logrosAdmin(Map<String, Object> model, @PathVariable("id") int id) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth != null){
 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
@@ -71,7 +71,7 @@ public class LogrosController {
 					model.put("logros",logrosDelUsuarioLogeado);
 					return VIEWS_LOGROS;
 				} else {
-					return "welcome";
+					return "redirect:/";
 				}
 			}
 		} else {
@@ -83,19 +83,28 @@ public class LogrosController {
 
 	@GetMapping(value = "/jugador/logros/editar")
 	public String editarLogrosAdmin (Map<String, Object> model) {
-		List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
-		model.put("logros",logrosDefinidos);
-		return "jugador/editarLogrosGeneral";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+		Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+		for (GrantedAuthority usuarioR : usuario){
+			String credencial = usuarioR.getAuthority();
+			if(credencial.equals("admin")){
+				List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+				model.put("logros",logrosDefinidos);
+				return "jugador/editarLogrosGeneral";
+			}else{
+				return "redirect:/";
+			}
+		}
+		return "welcome";
 	}
 
 
 	@GetMapping(value = "/jugador/logros/editar/{id}")
 	public String editarLogroAdmin (Map<String, Object> model, @PathVariable("id") int id) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth != null){
-				if(auth.isAuthenticated()){
-					org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-					try {
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			try {
 						Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
 						for (GrantedAuthority usuarioR : usuario){
 						String credencial = usuarioR.getAuthority();
@@ -114,13 +123,9 @@ public class LogrosController {
 								return "welcome";
 							}
 						}
-					} catch (DataIntegrityViolationException ex){
+			} catch (DataIntegrityViolationException ex){
 						
 						return "jugador/editarLogro";
-					}
-					
-					
-				}return "welcome";
 			}
 			return "welcome";
 		
