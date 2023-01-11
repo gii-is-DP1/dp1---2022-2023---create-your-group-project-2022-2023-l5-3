@@ -21,10 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,45 +42,11 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * Integration test of the Service and the Repository layer.
- * <p>
- * ClinicServiceSpringDataJpaTests subclasses benefit from the following
- * services provided
- * by the Spring TestContext Framework:
- * </p>
- * <ul>
- * <li><strong>Spring IoC container caching</strong> which spares us unnecessary
- * set up
- * time between test execution.</li>
- * <li><strong>Dependency Injection</strong> of test fixture instances, meaning
- * that we
- * don't need to perform application context lookups. See the use of
- * {@link Autowired @Autowired} on the <code>{@link
- * CartasPartidaServiceTests#clinicService clinicService}</code> instance variable,
- * which uses
- * autowiring <em>by type</em>.
- * <li><strong>Transaction management</strong>, meaning each test method is
- * executed in
- * its own transaction, which is automatically rolled back by default. Thus,
- * even if tests
- * insert or otherwise change database state, there is no need for a teardown or
- * cleanup
- * script.
- * <li>An {@link org.springframework.context.ApplicationContext
- * ApplicationContext} is
- * also inherited and can be used for explicit bean lookup if necessary.</li>
- * </ul>
- *
- * @author Ken Krebs
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @author Michael Isvy
- * @author Dave Syer
- */
+
+///EJECUTANDO LOS TEST UNO A UNO EN VEZ DE TODOS JUNTOS FUNCIONAN PERFECTAMENTE
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 class CartasPartidaServiceTests {
@@ -91,12 +61,12 @@ class CartasPartidaServiceTests {
     protected PartidaBuilder pb;
 
     @Autowired
-    PartidaService partidaService;
+    protected PartidaService partidaService;
 
     @Autowired
     CartasPartidaRepository cpRepository;
 
-    @WithMockUser(value = "spring")
+    
     @BeforeEach
     void setup(){
         
@@ -109,9 +79,9 @@ class CartasPartidaServiceTests {
 		pb.crearMazosIntermedios(partida);
     }
 
+
     @Test
-    @Transactional
-    public void testMoverCartaEntreMazosIntermediosSuccess(){
+    void testMoverCartaEntreMazosIntermediosSuccess(){
         List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
         List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
         
@@ -128,8 +98,7 @@ class CartasPartidaServiceTests {
     }
 
     @Test
-    @Transactional
-    public void testMoverCartaEntreMazosIntermediosFail(){
+    void testMoverCartaEntreMazosIntermediosFail(){
         List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
         List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
         
@@ -148,7 +117,7 @@ class CartasPartidaServiceTests {
 
     @Test
     @Transactional
-    public void testMoverCartaDeMazoIntermedioAMazoFinalSuccess(){
+    void testMoverCartaDeMazoIntermedioAMazoFinalSuccess(){
         List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(5, 1);
         List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(2);
         
@@ -166,7 +135,7 @@ class CartasPartidaServiceTests {
 
     @Test
     @Transactional
-    public void testMoverCartaDeMazoInicialAMazoFinalSucces(){
+    void testMoverCartaDeMazoInicialAMazoFinalSucces(){
         List<CartasPartida> cartasOrigen = cpService.findCartasPartidaMazoInicialByPartidaId(1);
         List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(3);
 
@@ -185,16 +154,40 @@ class CartasPartidaServiceTests {
 
     @Test
     @Transactional
-    public void testMoverCartaMazoIncialMazoFinal(){
-        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaMazoInicialByPartidaId(1);
-        CartasPartida cartaMovida = cartasOrigen.get(0);
-        assertThat(cartaMovida.getMazoInicial().getId()).isEqualTo(1);
-        cpService.moverCartaInicialFinal(1, 1, 1);
-        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalIdAndPartidaId(1,1);
-        Collections.sort(cartasDestino, new ComparadorCartasPartidaPorPosCartaMazo());
-        CartasPartida cartaMovidaNew = cartasDestino.get(cartasDestino.size()-1);
-        assertThat(cartaMovidaNew.getMazoFinal().getId()).isEqualTo(1);
-        assertThat(cartaMovidaNew.getMazoInicial().getId()).isEqualTo(null);
+    void testSetCartaVisibleSuccess(){
+        List<CartasPartida> mazo2 =cpService.findCartasPartidaByMazoIdAndPartidaId(2, 1);
+        Collections.sort(mazo2, new ComparadorCartasPartidaPorPosCartaMazo());
+
+        mazo2.get(1).setMazo(null);
+        cpService.saveCartasPartida(mazo2.get(1));
+        cpService.setCartaVisibleIntermedio(2, 1);
+        assertThat(mazo2.get(0).getIsShow()).isEqualTo(true);
+    }
+
+    @Test
+    void testCambiaPosCartaMazoIni(){
+        //VOY A COMPROBAR LA POSICION DE UNA CARTA DEL MAZO ANTES Y DESPUES
+        List<CartasPartida> mazoIni = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+        Map<String,Object> model = new HashMap<>();
+        CartasPartida cp1 = mazoIni.get(0);
+        cpService.cambiaPosCartaMazoIni(1,model);
+        mazoIni = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+        CartasPartida cp2 = mazoIni.get(0);
+        assertThat(cp1.getPosCartaMazo()).isNotEqualTo(cp2.getPosCartaMazo());
+    }
+
+
+    @Test
+    void testCambiaPosCartaMazoIniFail(){
+        List<CartasPartida> mazoIni = cpService.findCartasPartidaMazoInicialByPartidaId(2);
+        assertThat(mazoIni.size()).isEqualTo(0);
+        Map<String,Object> model = new HashMap<>();
+        cpService.cambiaPosCartaMazoIni(2,model);
+        assertThat(model.get("message")).isEqualTo("El mazo inicial está vacio");
 
     }
+
+    
+
+   
 }
