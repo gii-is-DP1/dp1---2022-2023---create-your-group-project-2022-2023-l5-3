@@ -109,22 +109,10 @@ public class PartidaController {
 			}
 
 			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(p.getId());			
-			List<CartasPartida> cp = cartasPartidaService.findCartasPartidaByPartidaId(p.getId());
 			
-			cp.removeAll(mazoIni);
 
 
-			//Bucle para mostrar solo las cartas en posición final de su mazo al iniciar partida
-			for(CartasPartida carta:cp){
-				if (carta.getPosCartaMazo() == dicc.get(carta.getMazo().getId()).size()){
-					carta.setIsShow(true);
-					cartasPartidaService.saveCartasPartida(carta);
-
-				} else {
-					carta.setIsShow(false);
-					cartasPartidaService.saveCartasPartida(carta);
-				}
-			}
+			
 			
 			model.put("mazInt1",dicc.get(mazos.get(0)));
 			model.put("mazInt2",dicc.get(mazos.get(1)));

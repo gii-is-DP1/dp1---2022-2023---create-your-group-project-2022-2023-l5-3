@@ -66,10 +66,6 @@ public class CartasPartidaService {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalId(idMazo);
     }
 
-    public List<CartasPartida> findCartasPartidaByMazoIdAndPartidaId(Integer mazoId, Integer partidaId){
-        return cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoId, partidaId);
-    }
-
     public List<CartasPartida> findCartasPartidaByMazoFinalIdAndPartidaId(Integer idMazo, Integer partidaId) {
         return cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(idMazo, partidaId);
     }
@@ -89,6 +85,9 @@ public class CartasPartidaService {
         return res;
     }
 
+    public List<CartasPartida> findCartasPartidaByMazoIdAndPartidaId(Integer mazoId, Integer partidaId){
+        return cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoId,partidaId);
+    }
 
 
 
@@ -330,15 +329,6 @@ public class CartasPartidaService {
             }
     }
 
-    public Boolean validaCantidaDeCartas(int mazoOrigenId, int cantidadCartas, int partidaId){
-        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigenId,partidaId);
-        if(cpOrigen.size() < cantidadCartas){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     public Boolean validacionMovimiento(int mazoOrigenId, int mazoDestinoId, int cantidadCartas, int partidaId) {
         Boolean res = true;
         
@@ -352,45 +342,20 @@ public class CartasPartidaService {
                 mazoOrigenId = mazoOrigenId + ((partidaId - 1) * 7);
                 if (mazoDestinoId <= 7) {
                     mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
                     mazoDestinoId = 2 + ((partidaId - 1) * 4);
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 10) {
                     mazoDestinoId = 3 + ((partidaId - 1) * 4);
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 11) {
                     mazoDestinoId = 4 + ((partidaId - 1) * 4);
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
             } else {
                 if (mazoDestinoId <= 7) {
@@ -421,42 +386,20 @@ public class CartasPartidaService {
             if (mazoOrigenId > 0) {
 
                 if (mazoDestinoId <= 7) {
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
                 if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
-                    
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
                     mazoDestinoId = 2;
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 10) {
                     mazoDestinoId = 3;
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 11) {
                     mazoDestinoId = 4;
-                    if(validaCantidaDeCartas(mazoOrigenId, cantidadCartas, partidaId)){
-                        res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
-                    }else{
-                        res = false;
-                    }
+                    res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
             } else {
                 if (mazoDestinoId <= 7) {
@@ -774,7 +717,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
         Collections.sort(mazo, new ComparadorCartasPartidaPorPosCartaMazo());
         if (mazo.size() != 0) {
             CartasPartida ultCarta = mazo.get(mazo.size() - 1);
-            if (!ultCarta.getIsShow()) {
+            if (!ultCarta.getIsShow() || ultCarta.getIsShow() == null) {
                 ultCarta.setIsShow(true);
                 cartasPartidaRepository.save(ultCarta);
             }

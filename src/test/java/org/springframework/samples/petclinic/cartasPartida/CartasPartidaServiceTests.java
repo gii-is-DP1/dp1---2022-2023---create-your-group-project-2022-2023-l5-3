@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.cartasPartida;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -92,6 +93,9 @@ class CartasPartidaServiceTests {
     @Autowired
     PartidaService partidaService;
 
+    @Autowired
+    CartasPartidaRepository cpRepository;
+
     @WithMockUser(value = "spring")
     @BeforeEach
     void setup(){
@@ -107,29 +111,77 @@ class CartasPartidaServiceTests {
 
     @Test
     @Transactional
-    public void testMoverCartaEntreMazosIntermedios(){
-        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(1, 1);
-        CartasPartida cartaMovida = cartasOrigen.get(0);
-        assertThat(cartaMovida.getMazo().getId()).isEqualTo(1);
-        cpService.moverCartaInterInter(1, 2, 1, 1);
-        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(1, 2);
-        Collections.sort(cartasDestino, new ComparadorCartasPartidaPorPosCartaMazo());
-        CartasPartida cartaMovidaNew = cartasDestino.get(cartasDestino.size()-1);
-        assertThat(cartaMovidaNew.getMazo().getId()).isEqualTo(2);
+    public void testMoverCartaEntreMazosIntermediosSuccess(){
+        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
+        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
+        
+        assertThat(cartasOrigen.size()).isEqualTo(3);
+        assertThat(cartasDestino.size()).isEqualTo(4);
+        
+        cpService.moverCartaInterInter(3, 4, 1, 1);
+            
+        cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
+        cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
+        
+        assertThat(cartasOrigen.size()).isEqualTo(2);
+        assertThat(cartasDestino.size()).isEqualTo(5);
     }
 
     @Test
     @Transactional
-    public void testMoverCartaDeMazoIntermedioAMazoFinal(){
-        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(1, 1);
-        CartasPartida cartaMovida = cartasOrigen.get(0);
-        assertThat(cartaMovida.getMazo().getId()).isEqualTo(1);
-        cpService.moverCartaInterFin(1, 1, 1);
-        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalIdAndPartidaId(1,1);
-        Collections.sort(cartasDestino, new ComparadorCartasPartidaPorPosCartaMazo());
-        CartasPartida cartaMovidaNew = cartasDestino.get(cartasDestino.size()-1);
-        assertThat(cartaMovidaNew.getMazoFinal().getId()).isEqualTo(1);
-        assertThat(cartaMovidaNew.getMazo().getId()).isEqualTo(null);
+    public void testMoverCartaEntreMazosIntermediosFail(){
+        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
+        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
+        
+        assertThat(cartasOrigen.size()).isEqualTo(3);
+        assertThat(cartasDestino.size()).isEqualTo(4);
+        
+        //AL INTENTAR MOVER CARTAS PERO INDICANDO CANTIDAD 0 NO SE MUEVE NADA
+        cpService.moverCartaInterInter(3, 4, 0, 1);
+        cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(3, 1);
+        cartasDestino = cpService.findCartasPartidaByMazoIdAndPartidaId(4, 1);
+        assertThat(cartasOrigen.size()).isEqualTo(3);
+        assertThat(cartasDestino.size()).isEqualTo(4);
+    }
+        
+
+
+    @Test
+    @Transactional
+    public void testMoverCartaDeMazoIntermedioAMazoFinalSuccess(){
+        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(5, 1);
+        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(2);
+        
+        assertThat(cartasOrigen.size()).isEqualTo(5);
+        assertThat(cartasDestino.size()).isEqualTo(0);
+
+        cpService.moverCartaInterFin(5, 2, 1);
+
+        cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(5, 1);
+        cartasDestino = cpService.findCartasPartidaByMazoFinalId(2);
+        assertThat(cartasOrigen.size()).isEqualTo(4);
+        assertThat(cartasDestino.size()).isEqualTo(1);
+
+    }
+
+    @Test
+    @Transactional
+    public void testMoverCartaDeMazoIntermedioAMazoFinalFail(){
+        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(5, 1);
+        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(6);
+        
+        assertThat(cartasOrigen.size()).isEqualTo(5);
+        assertThat(cartasDestino.size()).isEqualTo(0);
+        try{
+            assertThat(cpService.moverCartaInterFin(5, 6, 1)).isNull();
+            fail("Incorrecto");
+        }catch(NullPointerException npe){
+            fail("Correcto");
+
+        }
+        //cpService.moverCartaInterFin(5, 6, 1);
+
+
     }
 
     @Test
