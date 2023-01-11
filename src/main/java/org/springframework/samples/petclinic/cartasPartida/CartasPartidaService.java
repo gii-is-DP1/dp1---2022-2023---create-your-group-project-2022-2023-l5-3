@@ -162,8 +162,8 @@ public class CartasPartidaService {
     public Boolean validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio (int mazoOrigen, int mazoDestino, int cantidad, int partidaId){
         
         Boolean res = false;
-        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoId(mazoOrigen);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoId(mazoDestino);
         List<CartasPartida> cartasVisibles= new ArrayList<>();
         for(CartasPartida cp:cpOrigen){
             if(cp.getIsShow()==true){
@@ -208,7 +208,7 @@ public class CartasPartidaService {
         
         Boolean res = false;
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoId(mazoDestino);
         
             if(cpOrigen.size()==0 || cpDestino==null ){
                 return false;
@@ -246,8 +246,8 @@ public class CartasPartidaService {
         
 
         // Obtiene lista de cartas partida de los mazos origen y destino
-        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestino, partidaId);
+        List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoId(mazoOrigen);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalId(mazoDestino);
         if(cpOrigen.size()==0 || cpDestino==null){
             return false;
         }else{
@@ -290,7 +290,7 @@ public class CartasPartidaService {
 
         // Obtiene lista de cartas partida de los mazos origen y destino
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
-        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoDestino, partidaId);
+        List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoFinalId(mazoDestino);
         if(cpOrigen.size()==0 || cpDestino==null){
                 return false;
             }else{
@@ -344,7 +344,7 @@ public class CartasPartidaService {
                     mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
                     res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
                     res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
@@ -363,7 +363,7 @@ public class CartasPartidaService {
                     mazoOrigenId = partidaId;
                     res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
                     mazoOrigenId = partidaId;
                     res = res && validaMovimientoInicialMazoFinal(mazoOrigenId, mazoDestinoId, partidaId);
@@ -388,7 +388,7 @@ public class CartasPartidaService {
                 if (mazoDestinoId <= 7) {
                     res = res && validaColorYEscaleraDesdeMazoIntermedioAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
                     res = res && validaMovimientoIntermedioMazoFinal(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 } else if (mazoDestinoId == 9) {
@@ -407,7 +407,7 @@ public class CartasPartidaService {
                     mazoOrigenId = partidaId;
                     res = res && validaColorYEscaleraDesdeMazoInicialAMazoIntermedio(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
                     mazoOrigenId = partidaId;
                     res = res && validaMovimientoInicialMazoFinal(mazoOrigenId, mazoDestinoId, partidaId);
@@ -441,7 +441,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                     mazoDestinoId = mazoDestinoId + ((partidaId - 1) * 7);
                     res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
                     res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
                 } else if (mazoDestinoId == 9) {
@@ -460,7 +460,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                     mazoOrigenId = partidaId;
                     res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1 + ((partidaId - 1) * 4);
                     mazoOrigenId = partidaId;
                     res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
@@ -485,7 +485,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                 if (mazoDestinoId <= 7) {
                     res = moverCartaInterInter(mazoOrigenId, mazoDestinoId, cantidadCartas, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
                     res = moverCartaInterFin(mazoOrigenId, mazoDestinoId, partidaId);
                 } else if (mazoDestinoId == 9) {
@@ -504,7 +504,7 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
                     mazoOrigenId = partidaId;
                     res = moverCartaInicialInter(mazoOrigenId, mazoDestinoId, partidaId);
                 }
-                if (mazoDestinoId == 8) {
+                else if (mazoDestinoId == 8) {
                     mazoDestinoId = 1;
                     mazoOrigenId = partidaId;
                     res = moverCartaInicialFinal(mazoOrigenId, mazoDestinoId, partidaId);
