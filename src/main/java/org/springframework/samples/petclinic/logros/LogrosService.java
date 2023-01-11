@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.logros;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -90,7 +91,16 @@ public class LogrosService {
 
 	}
 
-	public List<Logros> setLogrosJugadorCreado (List<Logros> lista, Jugador jugador){
+	public List<Logros> setLogrosJugadorCreado (Jugador jugador){
+
+		Logros logro1 = new Logros();
+		Logros logro2 = new Logros();
+		Logros logro3 = new Logros();
+		List<Logros> lista = new ArrayList<>();
+		lista.add(logro1);
+		lista.add(logro2);
+		lista.add(logro3);
+		
 		for (Logros logro : lista) {
 			if (lista.get(0).equals(logro)) {
 				logro.setName("Máquina de jugar");
@@ -112,5 +122,6 @@ public class LogrosService {
 		}
 		return lista;
 	}
+
 	
 }
