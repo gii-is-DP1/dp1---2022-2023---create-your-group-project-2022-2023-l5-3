@@ -52,8 +52,14 @@ public class Partida extends BaseEntity {
 		if(numMovimientos==0) {
 			return 0;
 		}else {
-			long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
-			return diffInSeconds/numMovimientos;
+			if(momentoFin == null){
+				long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, LocalDateTime.now());
+				return numMovimientos*10/diffInSeconds;
+			} else {
+				long diffInSeconds = ChronoUnit.SECONDS.between(momentoInicio, momentoFin);
+				return numMovimientos*10/diffInSeconds;
+			}
+			
 		}
 	}
 	
