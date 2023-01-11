@@ -170,7 +170,7 @@ public class CartasPartidaService {
                 cartasVisibles.add(cp);
             }
         }     
-        if(cpOrigen.size()==0 || cpDestino==null || cartasVisibles.size()<=cantidad){
+        if(cpOrigen.size()==0 || cpDestino==null || cartasVisibles.size()<cantidad){
             return false;
         }else{
 
