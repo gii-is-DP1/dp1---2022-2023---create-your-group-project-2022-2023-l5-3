@@ -147,8 +147,6 @@ public class JugadorController {
 			}
 		}
 	}
-
-	//SI SE LE DA DOS VECES A ACTUALIZAR DATOS SEGUIDAS SIN DARLE A VOLVER, SALTA ERROR
 	//Editar jugador
 	@GetMapping(value = "/jugador/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
@@ -215,7 +213,7 @@ public class JugadorController {
 					jugadorService.setCreatorYCreatedDate(jugador);
 					model.put("message","Jugador editado correctamente");
 					
-					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+					return "jugador/showJugador";
 
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
