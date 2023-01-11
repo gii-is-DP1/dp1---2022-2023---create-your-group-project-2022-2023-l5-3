@@ -166,22 +166,21 @@ class CartasPartidaServiceTests {
 
     @Test
     @Transactional
-    public void testMoverCartaDeMazoIntermedioAMazoFinalFail(){
-        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaByMazoIdAndPartidaId(5, 1);
-        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(6);
-        
-        assertThat(cartasOrigen.size()).isEqualTo(5);
+    public void testMoverCartaDeMazoInicialAMazoFinalSucces(){
+        List<CartasPartida> cartasOrigen = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+        List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoFinalId(3);
+
+        assertThat(cartasOrigen.size()).isEqualTo(24);
         assertThat(cartasDestino.size()).isEqualTo(0);
-        try{
-            assertThat(cpService.moverCartaInterFin(5, 6, 1)).isNull();
-            fail("Incorrecto");
-        }catch(NullPointerException npe){
-            fail("Correcto");
+        
+        
+        cpService.moverCartaInicialFinal(1, 3, 1);
+        cartasOrigen = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+        cartasDestino = cpService.findCartasPartidaByMazoFinalId(3);
 
-        }
-        //cpService.moverCartaInterFin(5, 6, 1);
-
-
+        assertThat(cartasOrigen.size()).isEqualTo(23);
+        assertThat(cartasDestino.size()).isEqualTo(1);
+        
     }
 
     @Test

@@ -74,10 +74,8 @@ public class PartidaBuilder {
 			cp.setCarta(c);
 			cp.setPartida(p);
 			cp.setPosCartaMazo(0);
-
-			//cartasPartidaRepository.save(cp);
 			res.add(cp);
-
+			
 		}
 		return res;
 	}
