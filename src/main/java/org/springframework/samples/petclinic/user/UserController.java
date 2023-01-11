@@ -55,12 +55,14 @@ public class UserController {
 	private final JugadorService jugadorService;
 	private final LogrosService logrosService;
 	private final UserServicePageable pageUser;
+	private final AuthoritiesService authoritiesService;
 	
 	@Autowired
-	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up) {
+	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up, AuthoritiesService authoritiesService) {
 		this.jugadorService = jugadorService;
 		this.logrosService = logrosService;
 		this.pageUser=up;
+		this.authoritiesService=authoritiesService;
 	}
 
 	@InitBinder
@@ -98,32 +100,12 @@ public class UserController {
 		else {
 			jugador.setImage("");		
 			jugador.setAllStats0();
-					Logros logro1 = new Logros();
-					Logros logro2 = new Logros();
-					Logros logro3 = new Logros();
-					List<Logros> lista = new ArrayList<>();
-					lista.add(logro1);
-					lista.add(logro2);
-					lista.add(logro3);
-					for(Logros logro:lista){
-						if(lista.get(0).equals(logro)){
-							logro.setName("Máquina de jugar");
-							logro.setDescription("Has jugado 5 partidas");
-						} else if(lista.get(1).equals(logro)){
-							logro.setName("No se te da nada mal");
-							logro.setDescription("Has alcanzado los 100 puntos");
-						} else {
-							logro.setName("¡Estás on fire!");
-							logro.setDescription("Has alcanzado los 200 movimientos");
-						}
-						logro.setIs_unlocked(false);
-						logro.setImage("");
-						logro.setJugador(jugador);	
-					}
+			this.jugadorService.saveJugador(jugador);
+			List<Logros> lista = logrosService.setLogrosJugadorCreado(jugador);
 					logrosService.save(lista.get(0));
 					logrosService.save(lista.get(1));
 					logrosService.save(lista.get(2));
-					this.jugadorService.saveJugador(jugador);
+					
 			
 					return "jugador/showJugador";
 		}
@@ -139,11 +121,12 @@ public class UserController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					//List<Authorities> usuarios = authoritiesservice.findAllUsers();
+					List<Authorities> usuarios = authoritiesService.findAllUsers();
 					Pageable pageable = PageRequest.of(page,4);
 					Page<User> users = pageUser.findAllUsers(pageable);
 					
 					model.put("users", users);
+					model.put("usersTest",usuarios);
 					return "users/UsersList";
 				} else {
 					return "welcome";

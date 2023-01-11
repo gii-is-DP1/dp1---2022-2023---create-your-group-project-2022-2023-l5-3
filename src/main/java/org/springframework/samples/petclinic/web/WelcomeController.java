@@ -32,7 +32,7 @@ public class WelcomeController {
 		Alberto.setLastName("Gallego Huerta");
 		Person Francisco = new Person();
 		Francisco.setFirstName("Francisco Andres ");
-		Francisco.setLastName("Caro Huerta");
+		Francisco.setLastName("Caro Albarrán");
 		persons.add(Mario);
 		persons.add(Jorge);
 		persons.add(FranciscoJavier);

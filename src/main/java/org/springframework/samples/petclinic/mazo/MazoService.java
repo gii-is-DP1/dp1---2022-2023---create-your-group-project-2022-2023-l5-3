@@ -1,7 +1,6 @@
 package org.springframework.samples.petclinic.mazo;
 
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -20,8 +19,8 @@ public class MazoService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Mazo> findMazoById(Integer id) throws DataAccessException{
-        return mazoRepository.findById(id);
+    public Mazo findMazoById(Integer id) throws DataAccessException{
+        return mazoRepository.findMazoById(id);
     }
 
 

@@ -37,7 +37,8 @@
                 	<c:out value="${partida.momentoFinString()}"/>
                 </td>
                 <td>
-                	<c:out value="${partida.victoria}"/>
+                	<c:if test="${partida.victoria == true}"><a class="btn btn-success btn-sm">VICTORIA</a></c:if>
+                    <c:if test="${partida.victoria == false}"><a class="btn btn-danger btn-sm">DERROTA</a></c:if>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>

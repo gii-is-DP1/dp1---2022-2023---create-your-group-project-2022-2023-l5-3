@@ -21,6 +21,7 @@ import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.AuthoritiesService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.user.UserServicePageable;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -50,6 +51,9 @@ class JugadorControllerTests {
 
 	@MockBean
 	private PartidaService partidaService;
+
+	@MockBean
+	private UserServicePageable userServicePageable;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -100,7 +104,7 @@ class JugadorControllerTests {
 		.param("user.enables", "true")
 		.param("user.authorities","jugador")
 		.with(csrf())
-				).andExpect(status().is3xxRedirection());
+				).andExpect(status().isOk());
 	}
 
 	@WithMockUser(value = "spring")

@@ -1,9 +1,11 @@
 package org.springframework.samples.petclinic.partida;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -13,6 +15,7 @@ import org.springframework.samples.petclinic.carta.CartaRepository;
 import org.springframework.samples.petclinic.carta.Palo;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartidaRepository;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoRepository;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
@@ -20,17 +23,12 @@ import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicial;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicialRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class PartidaBuilder {
 
-	/*
-	 * CartasPartida cartasPartida = new CartasPartida();
-	 * cartasPartida.setPartida(p);
-	 * for (Carta inicializar_cartas : inicializar_cartas()) {
-	 * cartasPartida.setCarta(inicializar_cartas);
-	 * }
-	 */
+	
 
 	public List<Carta> inicializarCartas() {
 		List<Carta> res = new ArrayList<>();
@@ -76,9 +74,8 @@ public class PartidaBuilder {
 			cp.setCarta(c);
 			cp.setPartida(p);
 			cp.setPosCartaMazo(0);
-			//cartasPartidaRepository.save(cp);
 			res.add(cp);
-
+			
 		}
 		return res;
 	}
@@ -129,6 +126,9 @@ public class PartidaBuilder {
 	@Autowired
 	private CartasPartidaRepository cartasPartidaRepository;
 
+	@Autowired
+	private CartasPartidaService cartasPartidaService;
+
 	// Añade cartas a los mazos intermedios, cada una a una posición
 	public void crearMazosIntermedios(Partida p) {
 
@@ -162,6 +162,13 @@ public class PartidaBuilder {
 
 				// Asigno la posición actual al mazo
 				cp.setPosCartaMazo(k);
+				
+				if(k==mact.getPosicion()){
+					cp.setIsShow(true);
+				}else{
+					cp.setIsShow(false);
+				}
+			
 				// Indico la cantidad de cartas que hay ahora en el mazo
 				mact.setCantidad(k);
 
@@ -173,12 +180,11 @@ public class PartidaBuilder {
 				auxCP.add(cp);
 				setAux.add(cp);
 				
-				// cartasPartidaRepository.save(cp);
 				// Borro la carta de la lista para que no se repita
 				cartasP.remove(random);
 				
 			}
-			//mact.setCartasPartida(setAux);
+			
 			
 		}
 		
@@ -188,16 +194,26 @@ public class PartidaBuilder {
 			mI.setCartasPartida(aux);
 			mazoInicialRepository.save(mI);
 		}
+
+			Collections.shuffle(cartasP);
+
 		for (int k = 1; k <= aux.size(); k++){
 			
 			int random = (int) (Math.random() * (cartasP.size() - 1));
 			CartasPartida cp = cartasP.get(random);
 			cp.setMazoInicial(mI);
 			cp.setPosCartaMazo(k);
+			cp.setIsShow(true);
 			cartasPartidaRepository.save(cp);
 			cartasP.remove(cp);
 		}
+
+
+		
 			
 	}
+
+
+	
 
 }
