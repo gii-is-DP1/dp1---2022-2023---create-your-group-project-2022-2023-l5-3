@@ -144,18 +144,14 @@ public class PartidaController {
 	//================MOVER CARTAS================
 	@PostMapping(value="/partidas/moverCartaIni/{partidaId}")
 	public String procesMoveCardIniForm(@PathVariable("partidaId") int partidaId,Map<String, Object> model) {
+		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
+		List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
+		
 		if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
 			List<CartasPartida> mazoIni = new ArrayList<>();
 			model.put("mazInicial", mazoIni);
-		}else{
-			cartasPartidaService.cambiaPosCartaMazoIni(partidaId,model);
-			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);				
-			model.put("mazInicial", mazoIni);
-		}
-		List<Integer> listaMazos = cartasPartidaService.getMazosIdSorted(partidaId);
-		List<Integer> listaMazosFinales = cartasPartidaService.getMazosFinalIdSorted(partidaId);
-			
-		for(int i=0;i<listaMazos.size();i++){
+
+			for(int i=0;i<listaMazos.size();i++){
 		List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
 		model.put("mazInt"+(i+1),cpm);
 		}	
@@ -169,6 +165,29 @@ public class PartidaController {
 		model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
 		model.put("partidaId",partidaId);
 		return TABLERO;
+		}else{
+			cartasPartidaService.cambiaPosCartaMazoIni(partidaId,model);
+			List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);				
+			model.put("mazInicial", mazoIni);
+
+			for(int i=0;i<listaMazos.size();i++){
+				List<CartasPartida>cpm =cartasPartidaService.findCartasPartidaByMazoId(listaMazos.get(i));
+				model.put("mazInt"+(i+1),cpm);
+				}	
+				
+		
+				
+				
+				model.put("mazoFinalCorazones",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(0)));
+				model.put("mazoFinalPicas",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(1)));	
+				model.put("mazoFinalDiamantes",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(2)));
+				model.put("mazoFinalTreboles",cartasPartidaService.findCartasPartidaByMazoFinalId(listaMazosFinales.get(3)));	
+				model.put("partidaId",partidaId);
+				return TABLERO;
+		}
+		
+			
+		
 
 	}
 	//METODO AUXILIAR PARA MOSTRAR LAS CARTAS EN EL ESTADO ACTUAL	

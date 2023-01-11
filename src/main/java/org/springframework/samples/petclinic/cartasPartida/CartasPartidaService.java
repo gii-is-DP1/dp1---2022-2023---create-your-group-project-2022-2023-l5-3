@@ -157,8 +157,13 @@ public class CartasPartidaService {
         Boolean res = false;
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoOrigen,partidaId);
         List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
-
-        if(cpOrigen.size()==0 || cpDestino==null){
+        List<CartasPartida> cartasVisibles= new ArrayList<>();
+        for(CartasPartida cp:cpOrigen){
+            if(cp.getIsShow()==true){
+                cartasVisibles.add(cp);
+            }
+        }     
+        if(cpOrigen.size()==0 || cpDestino==null || cartasVisibles.size()<=cantidad){
             return false;
         }else{
 
@@ -197,9 +202,10 @@ public class CartasPartidaService {
         Boolean res = false;
         List<CartasPartida> cpOrigen = cartasPartidaRepository.findCartasPartidaMazoInicial(partidaId);
         List<CartasPartida> cpDestino = cartasPartidaRepository.findCartasPartidaByMazoIdAndPartidaId(mazoDestino,partidaId);
-        if(cpOrigen.size()==0 || cpDestino==null){
-            return false;
-        }else{
+        
+            if(cpOrigen.size()==0 || cpDestino==null ){
+                return false;
+            }else{
 
 
             int startIndex = cpOrigen.size() - 1;
