@@ -79,7 +79,7 @@ class LogrosControllerTests {
 		barba.setFirstName("barba");
 		barba.setLastName("Franklin");
 		barba.setId(10);
-		List<Logros> lista = logrosService.setLogrosJugadorCreadoTest(barba);
+		List<Logros> lista = logrosService.setLogrosJugadorCreado(barba);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(barba);
 		given(this.logrosService.setLogrosJugadorCreado(barba)).willReturn(lista);
 	}
