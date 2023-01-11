@@ -100,32 +100,12 @@ public class UserController {
 		else {
 			jugador.setImage("");		
 			jugador.setAllStats0();
-					Logros logro1 = new Logros();
-					Logros logro2 = new Logros();
-					Logros logro3 = new Logros();
-					List<Logros> lista = new ArrayList<>();
-					lista.add(logro1);
-					lista.add(logro2);
-					lista.add(logro3);
-					for(Logros logro:lista){
-						if(lista.get(0).equals(logro)){
-							logro.setName("Máquina de jugar");
-							logro.setDescription("Has jugado 5 partidas");
-						} else if(lista.get(1).equals(logro)){
-							logro.setName("No se te da nada mal");
-							logro.setDescription("Has alcanzado los 100 puntos");
-						} else {
-							logro.setName("¡Estás on fire!");
-							logro.setDescription("Has alcanzado los 200 movimientos");
-						}
-						logro.setIs_unlocked(false);
-						logro.setImage("");
-						logro.setJugador(jugador);	
-					}
+			this.jugadorService.saveJugador(jugador);
+			List<Logros> lista = logrosService.setLogrosJugadorCreado(jugador);
 					logrosService.save(lista.get(0));
 					logrosService.save(lista.get(1));
 					logrosService.save(lista.get(2));
-					this.jugadorService.saveJugador(jugador);
+					
 			
 					return "jugador/showJugador";
 		}
