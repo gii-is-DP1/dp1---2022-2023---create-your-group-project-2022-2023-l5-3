@@ -150,10 +150,29 @@ public class CartasPartidaService {
         if(mazoId<8){
             return false;
         }else{
-        MazoFinal mazoFinal = mazoFinalService.findMazoFinalById((mazoId-7) +((partidaId-1)*4));
-        boolean res = mazoFinal.getCantidad() == 13;
-        return res;
+            MazoFinal mazoFinal = mazoFinalService.findMazoFinalById((mazoId-7) +((partidaId-1)*4));
+            boolean res = mazoFinal.getCantidad() == 13;
+            return res;
         }
+    }
+
+    public boolean mazosCompletos(Integer partidaId){
+        boolean res = true;
+        int primerMazoFinalId = 1+((partidaId-1)*4);
+        List<Integer> mazoFinalIds = new ArrayList<>();
+        mazoFinalIds.add(primerMazoFinalId);
+        mazoFinalIds.add(primerMazoFinalId+1);
+        mazoFinalIds.add(primerMazoFinalId+2);
+        mazoFinalIds.add(primerMazoFinalId+3);
+        for(Integer mazoFinalId: mazoFinalIds){
+            List<CartasPartida> mazoFinal = cartasPartidaRepository.findCartasPartidaByMazoFinalIdAndPartidaId(mazoFinalId, partidaId);
+            if(mazoFinal.size()==13){
+                res = res && true;
+            }else{
+                res = res && false;
+            }
+        } 
+        return res;
     }
 
 

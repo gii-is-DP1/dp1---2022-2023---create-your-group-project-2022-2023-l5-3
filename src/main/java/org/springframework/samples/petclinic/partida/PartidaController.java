@@ -221,7 +221,8 @@ public class PartidaController {
 			if(cartasPartidaService.validacionMovimiento(mazoOrigen, mazoDestino, cantidad, partidaId)){
 				Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
 
-				if(cartasPartidaService.validarVictoria(partidaId)){
+				if(cartasPartidaService.mazosCompletos(partidaId)){
+					partidaService.establecerVictoriaPartida(partidaId);
 					model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
 					return "partidas/messagePartida";
 
@@ -268,70 +269,7 @@ public class PartidaController {
 				return cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
 				
 
-			}
-			
-			/*if(cartasPartidaService.mazoFinalCompleto(mazoDestino, partidaId) == true){
-				model.put("message", "EL MAZO FINAL YA ESTÁ COMPLETADO");
-				return cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
-				
-
-				
-			}else if(cartasPartidaService.validacionMovimiento(mazoOrigen, mazoDestino, cantidad, partidaId)){
-				
-					if(cartasPartidaService.validarVictoria(partidaId)){
-						model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
-						return "partidas/messagePartida";
-	
-					}else{
-						
-						model.put("message","Movimiento hecho");
-					}
-
-					Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
-				
-					if(cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId)==null){
-						List<CartasPartida> mazoIni = new ArrayList<>();
-						model.put("mazInicial", mazoIni);
-					}else{
-						List<CartasPartida> mazoIni = cartasPartidaService.findCartasPartidaMazoInicialByPartidaId(partidaId);			
-						model.put("mazInicial", mazoIni);
-					}
-
-				
-					model.put("mazInt1",mazos.getFirst().get(listaMazos.get(0)));
-					model.put("mazInt2",mazos.getFirst().get(listaMazos.get(1)));
-					model.put("mazInt3",mazos.getFirst().get(listaMazos.get(2)));
-					model.put("mazInt4",mazos.getFirst().get(listaMazos.get(3)));
-					model.put("mazInt5",mazos.getFirst().get(listaMazos.get(4)));
-					model.put("mazInt6",mazos.getFirst().get(listaMazos.get(5)));
-					model.put("mazInt7",mazos.getFirst().get(listaMazos.get(6)));
-					
-					Collections.sort(mazos.getSecond().get(listaMazosFinales.get(0)), new ComparadorCartasPartidaPorPosCartaMazo());
-					Collections.sort(mazos.getSecond().get(listaMazosFinales.get(1)), new ComparadorCartasPartidaPorPosCartaMazo());
-					Collections.sort(mazos.getSecond().get(listaMazosFinales.get(2)), new ComparadorCartasPartidaPorPosCartaMazo());
-					Collections.sort(mazos.getSecond().get(listaMazosFinales.get(3)), new ComparadorCartasPartidaPorPosCartaMazo());
-
-					model.put("mazoFinalCorazones",mazos.getSecond().get(listaMazosFinales.get(0)));
-					model.put("mazoFinalPicas",mazos.getSecond().get(listaMazosFinales.get(1)));	
-					model.put("mazoFinalDiamantes",mazos.getSecond().get(listaMazosFinales.get(2)));
-					model.put("mazoFinalTreboles",mazos.getSecond().get(listaMazosFinales.get(3)));
-
-					model.put("partidaId",partidaId);
-				
-					return TABLERO;
-				}
-			else {
-				
-				model.put("message","No se puede realizar ese movimiento.");
-
-				return cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
-				
-
-			}*/
-			
-			
-
-			
+			}		
 			
 			
 
@@ -543,6 +481,51 @@ public class PartidaController {
 						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
+					} else {
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
+						mazosInterult.addObject("message", "No puedes finalizar esta partida");
+						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return mazosInterult;
+					}
+					
+				}
+			}
+			
+		} else {
+			return new ModelAndView("exception");
+		}
+		return new ModelAndView("exception");
+	}
+
+	@GetMapping(path = "/partidas/fin/{id}")
+	public ModelAndView finPartida(@PathVariable("id") int id, ModelMap modelMap) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+					partidaService.establecerDerrotaPartida(id);
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
+					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
+					return mazosInterult;
+					
+				} else { //SI EmazosInter JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
+					Partida partida = partidaService.findById(id);
+					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
+						if(cartasPartidaService.mazosCompletos(id)){
+							partidaService.establecerVictoriaPartida(id);
+							ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
+							mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+							return mazosInterult;
+						}else{
+							partidaService.establecerDerrotaPartida(id);
+							ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
+							mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+							return mazosInterult;
+						}
+						
 					} else {
 						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
