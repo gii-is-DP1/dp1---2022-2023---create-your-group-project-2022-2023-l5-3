@@ -19,8 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +50,9 @@ class LogrosServiceTests {
 	@Autowired
 	protected JugadorService jugadorService;
 
+	@Autowired
+	protected LogrosService logrosService;
+
 	@BeforeEach
 	void setup() {
 
@@ -56,38 +61,70 @@ class LogrosServiceTests {
 		Authorities rol = new Authorities();
 		rol.setAuthority("jugador");
 		user.setEnabled(true);
-		user.setUsername("Test");
+		user.setUsername("barba");
 		user.setPassword("123");
 		george.setFirstName("George");
 		george.setLastName("Davis");
 
+
+		Logros logro = new Logros();
+		logro.setId(1);
+		logro.setName("Máquina de jugar");
+		logro.setDescription("Has ganado 5 partidas");
+		logro.setNumCondicion(5);
+		logro.setIs_unlocked(false);
+		logro.setImage("/resources/images/logro-img.png");
+		logro.setJugador(george);
+		List<Logros> lista = new ArrayList<>();
+		lista.add(logro);
+	}
+ 
+	@Test
+	void debeObtenerUnLogro() {
+		Logros logro = this.logrosService.findByIdlOGRO(1);
+		assertThat(logro.getName().equals("Máquina de jugar"));
 	}
 
 	@Test
-	public void shouldSetEstadisticasIndividualesJugadorSinPartidas(){
+	public void debeObtenerLosLogrosDeUnUsuario(){
 		Jugador jugador = this.jugadorService.findJugadorByUsername("barba");
-		assertThat(jugador.getUser().getUsername().equals("barba"));
-		estadisticasService.setEstadisticasJugador(jugador);
-		assertThat(jugador.getPartidasJugadas().equals(0));
+		List<Logros> res = this.logrosService.findById(jugador.getId());
+		Logros logro = this.logrosService.findByIdlOGRO(1);
+		List<Logros> aux = new ArrayList<>();
+		aux.add(logro);
+		assertThat(res.equals(aux));
+	}
+
+	@Test
+	public void debeObtenerTodosLosLogros(){
+		List<Logros> listaLogros = this.logrosService.findAll();
+		Jugador jugador = this.jugadorService.findJugadorByUsername("barba");
+		List<Logros> res = this.logrosService.findById(jugador.getId());
+		assertThat(listaLogros.equals(res));
 	}
 	
 	@Test
-	public void shouldSetEstadisticasIndividualesJugadorConPartidasJugadas(){
-		Jugador jugador = this.jugadorService.findJugadorByUsername("barba");
-		assertThat(jugador.getUser().getUsername().equals("barba"));
-		Partida p = new Partida();
-		p.setJugador(jugadorService.findJugadorByUsername("barba"));
-		p.setMomentoInicio(LocalDateTime.now().minusMinutes(15));
-		p.setMomentoFin(LocalDateTime.now());
-		p.setNumMovimientos(0);
-		p.setVictoria(false);
-		long tiempoJugado = p.getDuracionMaxMin();
-		LocalTime totalJugado = LocalTime.of(0, 0, 0);
-		estadisticasService.setEstadisticasJugador(jugador);
-		assertThat(jugador.getPartidasJugadas().equals(1));
-		assertThat(jugador.getPartidasGanadas().equals(0));
-		assertThat(jugador.getPartidasNoGanadas().equals(1));
-		assertThat(jugador.getTotalTiempoJugado().equals(totalJugado.plusSeconds(tiempoJugado)));
+	void debeActualizarseElLogro() {
+		Logros logro = this.logrosService.findByIdlOGRO(1);
+		String oldName = logro.getName();
+		String newName = oldName + "new";
+
+		logro.setName(newName);
+		this.logrosService.save(logro);
+
+		// retrieving new name from database
+		logro = this.logrosService.findByIdlOGRO(1);
+		assertThat(logro.getName().equals(newName));
+	}
+
+	@Test
+	public void debeEliminarseLogro() {
+		Logros logro = this.logrosService.findByIdlOGRO(1);
+		List<Logros> listaLogros = new ArrayList<>();
+		listaLogros.add(logro);
+		
+		this.logrosService.delete(logro);
+		assertThat(listaLogros.size()==0);
 	}
 
 
