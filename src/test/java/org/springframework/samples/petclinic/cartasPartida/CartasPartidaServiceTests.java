@@ -16,19 +16,13 @@
 package org.springframework.samples.petclinic.cartasPartida;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +32,7 @@ import org.springframework.samples.petclinic.mazo.MazoService;
 import org.springframework.samples.petclinic.partida.Partida;
 import org.springframework.samples.petclinic.partida.PartidaBuilder;
 import org.springframework.samples.petclinic.partida.PartidaService;
-import org.springframework.samples.petclinic.user.Authorities;
-import org.springframework.samples.petclinic.user.User;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.event.annotation.BeforeTestExecution;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -78,6 +68,7 @@ class CartasPartidaServiceTests {
         partidaService.save(partida);
 		pb.crearMazosIntermedios(partida);
     }
+
 
 
     @Test

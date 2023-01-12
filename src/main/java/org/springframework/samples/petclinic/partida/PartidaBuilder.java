@@ -13,7 +13,6 @@ import org.springframework.samples.petclinic.carta.CartaRepository;
 import org.springframework.samples.petclinic.carta.Palo;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
 import org.springframework.samples.petclinic.cartasPartida.CartasPartidaRepository;
-import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.mazo.Mazo;
 import org.springframework.samples.petclinic.mazo.MazoRepository;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
