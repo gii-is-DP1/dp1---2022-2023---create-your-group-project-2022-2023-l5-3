@@ -9,7 +9,7 @@
 <petclinic:layout pageName="partidasNueva">
     
     <jsp:body>
-   		<div class="container" style="background-color:#51C967;">
+   		<div class="container">
    		<br>
    		<br>
         <div class="row" align="center" >
