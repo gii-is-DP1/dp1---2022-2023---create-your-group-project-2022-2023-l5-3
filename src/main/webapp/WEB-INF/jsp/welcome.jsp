@@ -8,10 +8,16 @@
 <petclinic:layout pageName="home">
 
     <div class="m-0 row justify-content-center">
-        <div class="col-auto p-5 text-center">
-            <spring:url value="/resources/images/logowelcome.png" htmlEscape="true" var="logoUS"/>
-            <img class="img-responsive mx-auto d-block" width="300" height="300" src="${logoUS}"/>  
-            <h2>${title}</h2>
+        <div class="col-auto text-center">
+            <h1 style="font-size: 3em; font-weight: bold;">${title}</h1>
+        </br>
+            <div class="mx-auto" style="justify-content: center; display: flex;">
+                <spring:url value="/resources/images/gif-inicial.gif" htmlEscape="true" var="videoCartas" />
+                <img id="f2" class="img-responsive" src="${videoCartas}" width="420" height="420" />
+    
+            </div>
+        </br>
+    </br>
             <p><h2>Group ${group}</h2></p>
             <p>
                 <ul>   

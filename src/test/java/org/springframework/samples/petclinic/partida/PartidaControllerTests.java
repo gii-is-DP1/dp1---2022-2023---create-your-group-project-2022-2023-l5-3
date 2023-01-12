@@ -11,12 +11,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.user.Authorities;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.samples.petclinic.user.UserServicePageable;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -40,6 +42,12 @@ public class PartidaControllerTests {
 
 	@MockBean
 	private PartidaBuilder pb;
+
+	@MockBean
+	private CartasPartidaService cartasPartidaService;
+
+	@MockBean
+	private UserServicePageable userServicePageable;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -97,13 +105,13 @@ public class PartidaControllerTests {
 				.andExpect(view().name("partidas/partidaListEnCurso"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "spring", username = "barba", authorities = "jugador")
 	@Test
 	void testShowPartidasListEnCursoNegative() throws Exception {
 		mockMvc.perform(get("/partidas/enCurso"))
-				.andExpect(status().isOk())
+				.andExpect(status().is(302))
 				.andExpect(model().attributeDoesNotExist("partidas"))
-				.andExpect(view().name("welcome"));
+				.andExpect(view().name("redirect:/"));
 	}
 
 	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
@@ -119,9 +127,9 @@ public class PartidaControllerTests {
 	@Test
 	void testShowPartidasListFinalizadasNegative() throws Exception {
 		mockMvc.perform(get("/partidas/finalizadas"))
-				.andExpect(status().isOk())
-				.andExpect(model().attributeDoesNotExist("partidas"))
-				.andExpect(view().name("welcome"));
+		.andExpect(status().is(302))
+		.andExpect(model().attributeDoesNotExist("partidas"))
+		.andExpect(view().name("redirect:/"));
 	}
 
 

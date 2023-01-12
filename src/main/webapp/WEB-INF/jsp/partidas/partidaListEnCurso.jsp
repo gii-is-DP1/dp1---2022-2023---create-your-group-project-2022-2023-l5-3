@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="partidasCurso">
     <h2>Partidas en curso</h2>
-    <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
+    <a class="btn btn-default" href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear partida nueva</a>
     <br></br>
 
     <table id="partidasTable" class="table table-striped">
@@ -38,8 +38,7 @@
                 	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.momentoFinString()}"/></c:if>
                 </td>
                 <td>
-                    <c:if test="${partida.momentoFin == null}"><c:out value="En curso"/></c:if>
-                	<c:if test="${partida.momentoFin != null}"><c:out value="${partida.victoria}"/></c:if>
+                    <c:if test="${partida.momentoFin == null}"><a class="btn btn-primary btn-sm">En curso</a></c:if>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>
@@ -51,7 +50,7 @@
                     <c:out value="${partida.duracion()}"/>
                 </td>
                 <td>
-                    <a href="http://localhost:8080/partidas/finish/${partida.id}" class="btn btn-danger"> Finalizar</a>
+                    <a href="http://localhost:8080/partidas/derrota/${partida.id}" class="btn btn-danger"> Finalizar</a>
                 </td>
                 
                 

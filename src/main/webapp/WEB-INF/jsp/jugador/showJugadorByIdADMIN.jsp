@@ -11,13 +11,13 @@
         <div class="m-0 row justify-content-center"> 
         
             <div class="row mx-auto justify-content-center text-center">
-                    <h1 class="text-center"><h2>Information of <c:out value="${jugador.user.username}"/></h2></h1>
+                    <h1 class="text-center"><h2>Información de <c:out value="${jugador.user.username}"/></h2></h1>
             </div>
 
 
     <div class="col-auto p-5 text-center"> 
-        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="https://i.ibb.co/DVxmpCC/logo.png" width="200" height="200"></c:if>
-        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="200" height="200"></c:if>
+        <c:if test="${jugador.image == ''}"><img class="rounded d-block" src="/resources/images/defecto.png" width="250" height="250"></c:if>
+        <c:if test="${jugador.image != ''}"><img class="rounded d-block" src="${jugador.image}" width="250" height="250"></c:if>
         
 </br>
 </br>
@@ -41,7 +41,7 @@
                 <spring:url value="/jugador/estadisticas/{id}" var="statsURL">
                     <spring:param name="id" value="${id}"/>
                 </spring:url>
-                <a href="${statsURL}" class="btn btn-default">Sus estadisticas</a>
+                <a href="${statsURL}" class="btn btn-default">Sus estadísticas</a>
             </tr>
 
             <tr>

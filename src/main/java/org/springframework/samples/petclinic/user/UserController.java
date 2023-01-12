@@ -15,16 +15,16 @@
  */
 package org.springframework.samples.petclinic.user;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.samples.petclinic.jugador.JugadorService;
 import org.springframework.samples.petclinic.logros.Logros;
@@ -38,6 +38,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author Juergen Hoeller
@@ -51,14 +52,16 @@ public class UserController {
 	private static final String VIEWS_JUGADOR_CREATE_FORM = "users/createJugadoresForm";
 
 	private final JugadorService jugadorService;
-	private final UserService userService;
 	private final LogrosService logrosService;
+	private final UserServicePageable pageUser;
+	private final AuthoritiesService authoritiesService;
 	
 	@Autowired
-	public UserController(JugadorService jugadorService,UserService userService, LogrosService logrosService) {
+	public UserController(JugadorService jugadorService, LogrosService logrosService, UserServicePageable up, AuthoritiesService authoritiesService) {
 		this.jugadorService = jugadorService;
-		this.userService = userService;
 		this.logrosService = logrosService;
+		this.pageUser=up;
+		this.authoritiesService=authoritiesService;
 	}
 
 	@InitBinder
@@ -96,39 +99,19 @@ public class UserController {
 		else {
 			jugador.setImage("");		
 			jugador.setAllStats0();
-					Logros logro1 = new Logros();
-					Logros logro2 = new Logros();
-					Logros logro3 = new Logros();
-					List<Logros> lista = new ArrayList<>();
-					lista.add(logro1);
-					lista.add(logro2);
-					lista.add(logro3);
-					for(Logros logro:lista){
-						if(lista.get(0).equals(logro)){
-							logro.setName("Máquina de jugar");
-							logro.setDescription("Has jugado 5 partidas");
-						} else if(lista.get(1).equals(logro)){
-							logro.setName("No se te da nada mal");
-							logro.setDescription("Has alcanzado los 100 puntos");
-						} else {
-							logro.setName("¡Estás on fire!");
-							logro.setDescription("Has alcanzado los 200 movimientos");
-						}
-						logro.setIs_unlocked(false);
-						logro.setImage("");
-						logro.setJugador(jugador);	
-					}
+			this.jugadorService.saveJugador(jugador);
+			List<Logros> lista = logrosService.setLogrosJugadorCreado(jugador);
 					logrosService.save(lista.get(0));
 					logrosService.save(lista.get(1));
 					logrosService.save(lista.get(2));
-					this.jugadorService.saveJugador(jugador);
+					
 			
 					return "jugador/showJugador";
 		}
 	}
 	
 	@GetMapping("/users/all")
-    public String showUsersList(Map<String, Object> model){
+    public String showUsersList(Map<String, Object> model, @RequestParam(defaultValue="0") int page){
         
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null){
@@ -137,11 +120,12 @@ public class UserController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					//List<Authorities> usuarios = authoritiesservice.findAllUsers();
-					List<User> usuarios = userService.findAllUsers();
-					Comparator<User> comparador= Comparator.comparing(User::getJugadorId);
-					List<User> listaOrdenada = usuarios.stream().sorted(comparador).collect(Collectors.toList());
-					model.put("users", listaOrdenada);
+					List<Authorities> usuarios = authoritiesService.findAllUsers();
+					Pageable pageable = PageRequest.of(page,4);
+					Page<User> users = pageUser.findAllUsers(pageable);
+					
+					model.put("users", users);
+					model.put("usersTest",usuarios);
 					return "users/UsersList";
 				} else {
 					return "welcome";
@@ -155,23 +139,5 @@ public class UserController {
 		return "welcome";
 	}
 
-	@GetMapping("/ranking")
-    public String showRanking(Map<String, Object> model){
-        
-			List<Jugador> jugadores = jugadorService.findAllPlayer();
-			
-			Comparator<Jugador> comparador= Comparator.comparing(Jugador::getPartidasGanadas);
-			Comparator<Jugador> comparador2= Comparator.comparing(Jugador::getNumTotalPuntos);
-			Comparator<Jugador> comparador3= Comparator.comparing(Jugador::getNumTotalMovimientos);
-			
-			List<Jugador> ranking1 = jugadores.stream().sorted(comparador.reversed()).collect(Collectors.toList());
-			List<Jugador> ranking2 = jugadores.stream().sorted(comparador2.reversed()).collect(Collectors.toList());
-			List<Jugador> ranking3 = jugadores.stream().sorted(comparador3.reversed()).collect(Collectors.toList());
-
-			model.put("jugadoresWIN", ranking1);
-			model.put("jugadoresPTN", ranking2);
-			model.put("jugadoresMOV", ranking3);
-			
-			return "ranking/rankingGeneral";
-	}
+	
 }

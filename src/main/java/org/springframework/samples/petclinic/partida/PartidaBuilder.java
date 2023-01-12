@@ -1,7 +1,7 @@
 package org.springframework.samples.petclinic.partida;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,42 +19,41 @@ import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicial;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicialRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class PartidaBuilder {
 
-	/*
-	 * CartasPartida cartasPartida = new CartasPartida();
-	 * cartasPartida.setPartida(p);
-	 * for (Carta inicializar_cartas : inicializar_cartas()) {
-	 * cartasPartida.setCarta(inicializar_cartas);
-	 * }
-	 */
+	
 
 	public List<Carta> inicializarCartas() {
 		List<Carta> res = new ArrayList<>();
-
+		String rutaCarta = "/resources/images/cards/";
 		for (int palo = 1; palo <= 4; palo++) {
 			for (int valor = 1; valor <= 13; valor++) {
 				Carta carta = new Carta();
 				carta.setValor(valor);
 				if (palo == 1) {
 
-					carta.setPalo(Palo.CORAZONES);
+					carta.setPalo(Palo.PICAS);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 2) {
 
-					carta.setPalo(Palo.DIAMANTES);
+					carta.setPalo(Palo.TREBOLES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 3) {
 
-					carta.setPalo(Palo.PICAS);
+					carta.setPalo(Palo.DIAMANTES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
 				if (palo == 4) {
 
-					carta.setPalo(Palo.TREBOLES);
+					carta.setPalo(Palo.CORAZONES);
+					carta.setImagen(rutaCarta+String.valueOf(valor)+String.valueOf(palo)+".png");
 				}
+
 				res.add(carta);
 
 			}
@@ -71,9 +70,8 @@ public class PartidaBuilder {
 			cp.setCarta(c);
 			cp.setPartida(p);
 			cp.setPosCartaMazo(0);
-			//cartasPartidaRepository.save(cp);
 			res.add(cp);
-
+			
 		}
 		return res;
 	}
@@ -157,6 +155,13 @@ public class PartidaBuilder {
 
 				// Asigno la posición actual al mazo
 				cp.setPosCartaMazo(k);
+				
+				if(k==mact.getPosicion()){
+					cp.setIsShow(true);
+				}else{
+					cp.setIsShow(false);
+				}
+			
 				// Indico la cantidad de cartas que hay ahora en el mazo
 				mact.setCantidad(k);
 
@@ -168,12 +173,11 @@ public class PartidaBuilder {
 				auxCP.add(cp);
 				setAux.add(cp);
 				
-				// cartasPartidaRepository.save(cp);
 				// Borro la carta de la lista para que no se repita
 				cartasP.remove(random);
 				
 			}
-			//mact.setCartasPartida(setAux);
+			
 			
 		}
 		
@@ -183,16 +187,26 @@ public class PartidaBuilder {
 			mI.setCartasPartida(aux);
 			mazoInicialRepository.save(mI);
 		}
+
+			Collections.shuffle(cartasP);
+
 		for (int k = 1; k <= aux.size(); k++){
 			
 			int random = (int) (Math.random() * (cartasP.size() - 1));
 			CartasPartida cp = cartasP.get(random);
 			cp.setMazoInicial(mI);
 			cp.setPosCartaMazo(k);
+			cp.setIsShow(true);
 			cartasPartidaRepository.save(cp);
 			cartasP.remove(cp);
 		}
+
+
+		
 			
 	}
+
+
+	
 
 }

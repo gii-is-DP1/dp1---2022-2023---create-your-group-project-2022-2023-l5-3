@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.cartasPartida;
 
 
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -58,6 +57,6 @@ public class CartasPartida extends BaseEntity {
     @JoinColumn(name="cartaId")
     private Carta carta;
 
-
+    private Boolean isShow;
     
 }

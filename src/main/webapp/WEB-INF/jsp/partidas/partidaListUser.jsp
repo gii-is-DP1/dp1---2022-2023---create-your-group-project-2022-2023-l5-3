@@ -7,7 +7,7 @@
 <%@page pageEncoding="UTF-8"%>
 
 <petclinic:layout pageName="partidasFinalizadasUsuario">
-    <h2>Mis partidas finalizadas</h2>
+    <h2>Partidas finalizadas de ${jugador.user.username}</h2>
     
     <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
     <br></br>
@@ -37,7 +37,8 @@
                     <c:out value="${partida.momentoFinString()}"/>
                 </td>
                 <td>
-                	<c:out value="${partida.victoria}"/>
+                	<c:if test="${partida.victoria == true}"><a class="btn btn-success btn-sm">VICTORIA</a></c:if>
+                    <c:if test="${partida.victoria == false}"><a class="btn btn-danger btn-sm">DERROTA</a></c:if>
                 </td>
                 <td>
                     <c:out value="${partida.numMovimientos}"/>
