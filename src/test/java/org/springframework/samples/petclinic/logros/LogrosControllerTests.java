@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = LogrosController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class LogrosControllerTests {
 
-	private static final int TEST_Logro_ID = 2;
+	private static final int TEST_Logro_ID = 1;
 
 	@MockBean
 	private JugadorService jugadorService;
@@ -79,9 +80,21 @@ class LogrosControllerTests {
 		barba.setFirstName("barba");
 		barba.setLastName("Franklin");
 		barba.setId(10);
-		List<Logros> lista = logrosService.setLogrosJugadorCreado(barba);
+
+		Logros logro = new Logros();
+		logro.setId(1);
+		logro.setName("Máquina de jugar");
+		logro.setDescription("Has ganado 5 partidas");
+		logro.setNumCondicion(5);
+		logro.setIs_unlocked(false);
+		logro.setImage("/resources/images/logro-img.png");
+		logro.setJugador(barba);
+		List<Logros> lista = new ArrayList<>();
+		lista.add(logro);
+
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(barba);
 		given(this.logrosService.setLogrosJugadorCreado(barba)).willReturn(lista);
+		given(this.logrosService.findByIdlOGRO(1)).willReturn(lista.get(0));
 	}
 
 
@@ -90,7 +103,7 @@ class LogrosControllerTests {
 	void testMostrarLogrosAdminPositivo() throws Exception {
 		mockMvc.perform(get("/jugador/logros/{id}",TEST_Logro_ID))
 				.andExpect(status().isOk())
-				.andExpect(view().name("jugador/logrosJugador"));
+				.andExpect(view().name("logros/logrosJugador"));
 	}
 	
 	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
@@ -106,7 +119,7 @@ class LogrosControllerTests {
 	void testMostrarLogros() throws Exception {
 		mockMvc.perform(get("/jugador/logros"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("jugador/logrosJugador"));
+				.andExpect(view().name("logros/logrosJugador"));
 	}
 
 
@@ -115,7 +128,7 @@ class LogrosControllerTests {
 	void testEditarListaLogrosPositivo() throws Exception {
 		mockMvc.perform(get("/jugador/logros/editar"))
 				.andExpect(status().isOk())
-				.andExpect(view().name("jugador/editarLogrosGeneral"));
+				.andExpect(view().name("logros/editarLogrosGeneral"));
 	}
 
 	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
@@ -126,28 +139,28 @@ class LogrosControllerTests {
 				.andExpect(view().name("redirect:/"));
 	}
 	
-	// @WithMockUser(value = "spring", username = "admin1", authorities = "admin")
-	// @Test
-	// void testEditarLogroIniciar() throws Exception {
-	// 	mockMvc.perform(get("/jugador/logros/editar/{id}",TEST_Logro_ID))
-	// 			.andExpect(status().isOk())
-	// 			.andExpect(model().attributeExists("logro"))
-	// 			.andExpect(view().name("jugador/editarLogro"));
-	// }
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testEditarLogroIniciar() throws Exception {
+		mockMvc.perform(get("/jugador/logros/editar/{id}",TEST_Logro_ID))
+				.andExpect(status().isOk())
+				.andExpect(model().attributeExists("logro"))
+				.andExpect(view().name("logros/editarLogro"));
+	}
 
-	// @WithMockUser(value = "spring", username = "admin1", authorities = "admin")
-	// @Test
-	// void testEditarLogroProcesar() throws Exception {
-	// 	mockMvc.perform(post("/jugador/logros/editar/{id}")
-	// 	.param("firstName", "Joe")
-	// 	.param("lastName", "Bloggs")
-	// 	.param("user.username","aaa")
-	// 	.param("user.password","123")
-	// 	.param("user.enables", "true")
-	// 	.param("user.authorities","jugador")
-	// 	.with(csrf())
-	// 			).andExpect(status().is3xxRedirection())
-	// 			.andExpect(view().name("welcome"));
-	// }
+	@WithMockUser(value = "spring", username = "admin1", authorities = "admin")
+	@Test
+	void testEditarLogroProcesar() throws Exception {
+		mockMvc.perform(post("/jugador/logros/editar/{id}",TEST_Logro_ID)
+		.param("name", "Máquina de jugar")
+		.param("description", "Has ganado 5 partidas")
+		.param("numCondicion","5")
+		.param("logros.is_unlocked","false")
+		.param("logros.image", "/resources/images/logro-img.png")
+		//.param("logros.jugador","jugador")
+		.with(csrf())
+				).andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/jugador/logros/editar"));
+	}
 
 }
