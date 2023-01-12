@@ -276,7 +276,6 @@ public class CartasPartidaService {
         List<Integer> mazosFinales = getMazosFinalIdSorted(partidaId);
 
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
-        Collections.sort(cpDestino, new ComparadorCartasPartidaPorPosCartaMazo());
         Carta cartaMovida = cpOrigen.get(cpOrigen.size()-1).getCarta();
         
         if(cpDestino.size()==0){
