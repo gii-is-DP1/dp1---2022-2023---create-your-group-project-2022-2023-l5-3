@@ -2,10 +2,8 @@ package org.springframework.samples.petclinic.partida;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -22,7 +20,6 @@ import org.springframework.samples.petclinic.mazoFinal.MazoFinal;
 import org.springframework.samples.petclinic.mazoFinal.MazoFinalRepository;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicial;
 import org.springframework.samples.petclinic.mazoInicial.MazoInicialRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -74,10 +71,8 @@ public class PartidaBuilder {
 			cp.setCarta(c);
 			cp.setPartida(p);
 			cp.setPosCartaMazo(0);
-
-			//cartasPartidaRepository.save(cp);
 			res.add(cp);
-
+			
 		}
 		return res;
 	}

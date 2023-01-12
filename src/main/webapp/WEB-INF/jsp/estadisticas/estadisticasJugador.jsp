@@ -10,9 +10,13 @@
 
 <petclinic:layout pageName="stats">
 
-</br>
-</br>
-    <div class="row">
+
+<div class="container text-center" style="padding-left: 15%;">
+    <h1 style="font-size: 2em;"><p>Usuario: <b>${jugador.user.username}</b></p></h1>
+    </br>
+</div>
+
+<div class="row">
 
         <div class="col-md-5" style="font-size: 1.5em;">
             <div class="container" style="background-color:#cbc9c9;border-radius: 5%;border-color: black;border-width: 5px; width: 650px; height: 500px;">

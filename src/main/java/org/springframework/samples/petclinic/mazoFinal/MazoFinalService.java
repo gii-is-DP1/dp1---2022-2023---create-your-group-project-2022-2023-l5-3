@@ -26,5 +26,9 @@ public class MazoFinalService {
     public MazoFinal findMazoFinalById(Integer id) throws DataAccessException{
         return mazofinalRepository.findMazoFinalById(id);
     }
-    
+
+    public void save(MazoFinal mf){
+        mazofinalRepository.save(mf);
+    }
+
 }

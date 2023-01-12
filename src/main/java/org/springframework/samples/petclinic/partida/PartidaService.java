@@ -6,15 +6,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.samples.petclinic.cartasPartida.CartasPartida;
-import org.springframework.samples.petclinic.cartasPartida.CartasPartidaService;
 import org.springframework.samples.petclinic.jugador.Jugador;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class PartidaService {
 	
 	private PartidaRepository partidaRepository;
-	private CartasPartidaService cpserv; 
 
 	@Autowired
-	public PartidaService(PartidaRepository partidaRepository, CartasPartidaService cpserv) {
+	public PartidaService(PartidaRepository partidaRepository) {
 		this.partidaRepository = partidaRepository;
-		this.cpserv=cpserv;
 	}
 	
 	@Transactional
@@ -93,29 +88,22 @@ public class PartidaService {
 		Partida partida = findById(id);
 		partida.setMomentoFin(LocalDateTime.now());
 		partida.setVictoria(false);
-		//partida.setNumMovimientos(100);
 		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
-		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
-		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
+		Jugador player = partida.getJugador();
 		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
 		player.setPartidasNoGanadas(player.getPartidasNoGanadas()+1);
 		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
-		//player.setMinTiempoPartidaGanada(null);
-		//player.setMaxTiempoPartidaGanada(null);
 	}
 
 	public void establecerVictoriaPartida(Integer id){
 		Partida partida = findById(id);
 		partida.setMomentoFin(LocalDateTime.now());
 		partida.setVictoria(true);
-		//partida.setNumMovimientos(100);
 		long diffInSeconds = ChronoUnit.SECONDS.between(partida.getMomentoInicio(), partida.getMomentoFin());
-		Jugador player = partida.getJugador();//ESTO no tiene que actualizarse aqui, si no en el transcurso de la partida
+		Jugador player = partida.getJugador();
 		player.setNumTotalMovimientos(player.getNumTotalMovimientos()+(int) partida.getNumMovimientos());
 		player.setNumTotalPuntos(player.getNumTotalPuntos()+(int) partida.puntos());
 		player.setPartidasGanadas(player.getPartidasGanadas()+1);
 		player.setTotalTiempoJugado(player.getTotalTiempoJugado().plusSeconds(diffInSeconds));
-		//player.setMinTiempoPartidaGanada(null);
-		//player.setMaxTiempoPartidaGanada(null);
 	}
 }

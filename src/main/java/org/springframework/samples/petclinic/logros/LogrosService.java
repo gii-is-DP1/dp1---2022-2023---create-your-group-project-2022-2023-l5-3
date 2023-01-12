@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.logros;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -26,12 +28,12 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findAll (){
-		return logrosRepository.findAllLogros();
+		return (logrosRepository.findAllLogros());
 	}
 
 	@Transactional
 	public List<Logros> findById(int id) throws DataAccessException{
-		return logrosRepository.findLogrosByIdJugador(id);
+		return (logrosRepository.findLogrosByIdJugador(id));
 	}
 
 	@Transactional
@@ -52,19 +54,20 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findLogrosJugadorNull(){
-		return logrosRepository.findByjugadorIsNull();
+		return (logrosRepository.findByjugadorIsNull());
 	}
 
 	@Transactional
 	public List<Logros> findLogrosByName(String logroName){
-		return logrosRepository.findLogrosByName(logroName);
+		return (logrosRepository.findLogrosByName(logroName));
 	}
+
 
 	//HAY QUE EDITARLO
 	public void setLogrosDeCadaJugador() {
-		List<Jugador> player = jugadorRepository.findAll();
+		List<Jugador> players = jugadorRepository.findAll();
 		
-		for (Jugador jugador : player){
+		for (Jugador jugador : players){
 			List<Logros> logros = findById(jugador.getId());
 			Integer primerId = logros.get(0).getId();
 			
@@ -85,12 +88,22 @@ public class LogrosService {
 						logro.setIs_unlocked(true);
 					}
 				} 
+				logro.setImage("/resources/images/logro-img.png");
 			}
 		}
 
 	}
 
-	public List<Logros> setLogrosJugadorCreado (List<Logros> lista, Jugador jugador){
+	public List<Logros> setLogrosJugadorCreado (Jugador jugador){
+
+		Logros logro1 = new Logros();
+		Logros logro2 = new Logros();
+		Logros logro3 = new Logros();
+		List<Logros> lista = new ArrayList<>();
+		lista.add(logro1);
+		lista.add(logro2);
+		lista.add(logro3);
+		
 		for (Logros logro : lista) {
 			if (lista.get(0).equals(logro)) {
 				logro.setName("Máquina de jugar");
@@ -107,10 +120,11 @@ public class LogrosService {
 				logro.setNumCondicion(200);
 			}
 			logro.setIs_unlocked(false);
-			logro.setImage("https://cdn-icons-png.flaticon.com/512/4319/4319081.png");
+			logro.setImage("/resources/images/logro-img.png");
 			logro.setJugador(jugador);	
 		}
 		return lista;
 	}
+
 	
 }

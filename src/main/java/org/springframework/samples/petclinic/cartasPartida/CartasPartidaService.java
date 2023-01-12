@@ -3,9 +3,11 @@ package org.springframework.samples.petclinic.cartasPartida;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -679,16 +681,17 @@ public Tuple3 moverCartas(int mazoOrigenId, int mazoDestinoId, int cantidadCarta
         
 
         Collections.sort(cpOrigen, new ComparadorCartasPartidaPorPosCartaMazo());
-        CartasPartida cpMovida = cpOrigen.get(cpOrigen.size()-1);
-        cpMovida.setMazoInicial(null);
-        cpMovida.setMazoFinal(mazoDest);
+        Set<CartasPartida> cpMovida = new HashSet<>();
+        cpMovida.add(cpOrigen.get(cpOrigen.size()-1));
+        cpOrigen.get(cpOrigen.size()-1).setMazoInicial(null);
+        cpOrigen.get(cpOrigen.size()-1).setMazoFinal(mazoDest);
+        mazoDest.setCartasPartida(cpMovida);
         // cp.getMazoFinal().setCantidad(i);
-        cpMovida.setPosCartaMazo(mazoDest.getCartasPartida().size() + 1);
-        cartasPartidaRepository.save(cpMovida);
-
-
-
+        cpOrigen.get(cpOrigen.size()-1).setPosCartaMazo(mazoDest.getCartasPartida().size() + 1);
+        mazoFinalService.save(mazoDest);
+        cartasPartidaRepository.save(cpOrigen.get(cpOrigen.size()-1));
         
+
 
         List<Integer> listaMazos = getMazosIdSorted(partidaId);
         List<Integer> listaMazosFinales = getMazosFinalIdSorted(partidaId);
