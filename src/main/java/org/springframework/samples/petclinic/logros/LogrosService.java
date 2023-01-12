@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.logros;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -27,12 +28,12 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findAll (){
-		return logrosRepository.findAllLogros();
+		return setImageLogro(logrosRepository.findAllLogros());
 	}
 
 	@Transactional
 	public List<Logros> findById(int id) throws DataAccessException{
-		return logrosRepository.findLogrosByIdJugador(id);
+		return setImageLogro(logrosRepository.findLogrosByIdJugador(id));
 	}
 
 	@Transactional
@@ -53,12 +54,19 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findLogrosJugadorNull(){
-		return logrosRepository.findByjugadorIsNull();
+		return setImageLogro(logrosRepository.findByjugadorIsNull());
 	}
 
 	@Transactional
 	public List<Logros> findLogrosByName(String logroName){
-		return logrosRepository.findLogrosByName(logroName);
+		return setImageLogro(logrosRepository.findLogrosByName(logroName));
+	}
+
+	public List<Logros> setImageLogro (List<Logros> aux){
+			for (Logros logro : aux){
+				logro.setImage("/resources/images/logro-img.png");
+			}
+			return aux;
 	}
 
 	//HAY QUE EDITARLO
