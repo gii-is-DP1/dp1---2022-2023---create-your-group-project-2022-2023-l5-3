@@ -221,7 +221,8 @@ public class PartidaController {
 			if(cartasPartidaService.validacionMovimiento(mazoOrigen, mazoDestino, cantidad, partidaId)){
 				Tuple3 mazos = cartasPartidaService.moverCartas(mazoOrigen, mazoDestino, cantidad, partidaId);
 
-				if(cartasPartidaService.validarVictoria(partidaId)){
+				if(cartasPartidaService.mazosCompletos(partidaId)){
+					partidaService.establecerVictoriaPartida(partidaId);
 					model.put("message", "ENHORABUENA, ¡HAS GANADO LA PARTIDA!");
 					return "partidas/messagePartida";
 
@@ -267,8 +268,11 @@ public class PartidaController {
 
 				return cartaEnEstadoActual(model, partidaId, listaMazos, listaMazosFinales);
 				
-			}
+
+			}		
 			
+			
+
 			}
 	
 	
@@ -474,6 +478,51 @@ public class PartidaController {
 						ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
 						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
 						return mazosInterult;
+					} else {
+						ModelAndView mazosInterult = new ModelAndView("redirect:/");
+						mazosInterult.addObject("message", "No puedes finalizar esta partida");
+						mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+						return mazosInterult;
+					}
+					
+				}
+			}
+			
+		} else {
+			return new ModelAndView("exception");
+		}
+		return new ModelAndView("exception");
+	}
+
+	@GetMapping(path = "/partidas/fin/{id}")
+	public ModelAndView finPartida(@PathVariable("id") int id, ModelMap modelMap) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth != null){
+			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+			Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+			for (GrantedAuthority usuarioR : usuario){
+				String credencial = usuarioR.getAuthority();
+				if (credencial.equals("admin")) {  //SI EmazosInter ADMIN PUEDES FINALIZAR CUALQUIER PARTIDA	
+					partidaService.establecerDerrotaPartida(id);
+					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
+					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasEnCurso());
+					return mazosInterult;
+					
+				} else { //SI EmazosInter JUGADOR PUEDES FINALIZAR SOLO TU PARTIDA	
+					Partida partida = partidaService.findById(id);
+					if(partida.getJugador().getUser().getUsername().equals(currentUser.getUsername())){
+						if(cartasPartidaService.mazosCompletos(id)){
+							partidaService.establecerVictoriaPartida(id);
+							ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/gana");
+							mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+							return mazosInterult;
+						}else{
+							partidaService.establecerDerrotaPartida(id);
+							ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/pierde");
+							mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());
+							return mazosInterult;
+						}
+						
 					} else {
 						ModelAndView mazosInterult = new ModelAndView("redirect:/");
 						mazosInterult.addObject("message", "No puedes finalizar esta partida");
