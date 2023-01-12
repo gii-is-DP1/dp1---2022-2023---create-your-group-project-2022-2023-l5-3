@@ -198,4 +198,23 @@ class CartasPartidaServiceTests {
         assertThat(cartaMovidaNew.getMazoInicial().getId()).isEqualTo(null);
 
     }
+
+    @Test
+    @Transactional
+    public void testMoverCartaMazoInicialMazoIntermedioSuccess(){
+            List<CartasPartida> cartasOrigen = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+            CartasPartida cartaMovida = cartasOrigen.get(0);
+            assertThat(cartasOrigen.size()).isEqualTo(24);
+            assertThat(cartaMovida.getMazoInicial().getId()).isEqualTo(1);
+
+            cpService.moverCartaInicialInter(1, 3, 1);
+
+            List<CartasPartida> cartasOrigen2 = cpService.findCartasPartidaMazoInicialByPartidaId(1);
+            List<CartasPartida> cartasDestino = cpService.findCartasPartidaByMazoId(3);
+            assertThat(cartasOrigen2.size()).isEqualTo(23);
+            assertThat(cartasDestino.size()).isEqualTo(4);
+    }
+
+    
+
 }
