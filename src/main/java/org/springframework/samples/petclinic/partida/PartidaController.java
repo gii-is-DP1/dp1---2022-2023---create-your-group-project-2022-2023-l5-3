@@ -431,11 +431,6 @@ public class PartidaController {
 						jugador.setNumTotalMovimientos(jugador.getNumTotalMovimientos()- (int) partida.getNumMovimientos());
 						jugador.setTotalTiempoJugado(jugador.getTotalTiempoJugado().minusSeconds(diffInSeconds));
 					}
-					/*List<Logros> logrosLista = logrosService.findById(jugador.getId());
-					System.out.println(logrosLista);
-					for(Logros logro : logrosLista){
-						logrosService.delete(logro);
-					}*/
 					partidaService.deletePartida(partida);
 					ModelAndView mazosInterult = new ModelAndView("redirect:/partidas/finalizadas");
 					mazosInterult.addObject("partidas", (List<Partida>) partidaService.findPartidasFinalizadas());

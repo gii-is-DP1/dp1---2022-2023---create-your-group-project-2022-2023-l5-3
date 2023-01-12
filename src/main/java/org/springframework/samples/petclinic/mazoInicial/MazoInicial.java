@@ -26,7 +26,6 @@ public class MazoInicial extends BaseEntity{
     @Column(name = "cantidad")
     @NotNull
     private Integer cantidad = 24;
-    //la baraja inicial contiene 24 cartas al inicio del juego
 
     @OneToMany(mappedBy = "mazoInicial")
 	private Set<CartasPartida> cartasPartida;
