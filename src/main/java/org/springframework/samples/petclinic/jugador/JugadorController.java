@@ -73,37 +73,6 @@ public class JugadorController {
 		return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
 	}
 
-	// @GetMapping(value = "/jugador/new/admin")
-	// public String initCreationFormADMIN(Map<String, Object> model) {
-	// 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	// 	if(auth != null){
-	// 		if(auth.isAuthenticated()){
-	// 			org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
-	// 			try{
-	// 				Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
-	// 				for (GrantedAuthority usuarioR : usuario){
-	// 				String credencial = usuarioR.getAuthority();
-	// 					if(credencial.equals("admin")){
-	// 						Jugador jugador = new Jugador();
-	// 						model.put("jugador", jugador); 
-	// 						return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-	// 					}else{
-	// 						return "welcome";
-	// 					}
-	// 				}
-	// 			} catch (DataIntegrityViolationException ex){
-					
-	// 				return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
-	// 			}
-				
-				
-	// 		}
-			
-	// 		return "welcome";
-	// 	} else {
-	// 		return "welcome";
-	// 	}
-	// }
 
     @PostMapping(value = "/jugador/new")
 	public String processCreationForm(@Valid Jugador jugador, BindingResult result) {
@@ -147,8 +116,6 @@ public class JugadorController {
 			}
 		}
 	}
-
-	//SI SE LE DA DOS VECES A ACTUALIZAR DATOS SEGUIDAS SIN DARLE A VOLVER, SALTA ERROR
 	//Editar jugador
 	@GetMapping(value = "/jugador/edit/{id}")
 	public String initEditForm(Model model, @PathVariable("id") int id) {
@@ -215,7 +182,7 @@ public class JugadorController {
 					jugadorService.setCreatorYCreatedDate(jugador);
 					model.put("message","Jugador editado correctamente");
 					
-					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
+					return "jugador/showJugador";
 
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
@@ -244,9 +211,9 @@ public class JugadorController {
 				model.addAttribute(jugador);
 				return "jugador/showJugador";
 			}
-			return "welcome";
+			return "redirect:/";
 		}
-		return "welcome";
+		return "redirect:/";
 	
 	}
 
@@ -268,9 +235,9 @@ public class JugadorController {
 				}
 			}	
 		} else {
-		return "welcome";
+		return "redirect:/";
 		}
-	return "exception";
+		return "exception";
 	}
 	
 

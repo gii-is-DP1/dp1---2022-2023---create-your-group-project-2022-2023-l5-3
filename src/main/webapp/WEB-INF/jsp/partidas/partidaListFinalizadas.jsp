@@ -8,7 +8,7 @@
 
 <petclinic:layout pageName="partidasFin">
     <h2>Partidas finalizadas</h2>
-    <a href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear Partida Nueva</a>
+    <a class="btn btn-default" href="/partidas/create"><span class="glyphicon glyphicon-plus sucess" aria-hidden="true"></span>Crear partida nueva</a>
     <br></br>
 
     <table id="partidasTable" class="table table-striped">

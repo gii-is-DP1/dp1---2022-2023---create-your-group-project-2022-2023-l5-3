@@ -77,6 +77,7 @@ class EstadisticasControllerTests {
 		george.setLastName("Franklin");
 		george.setId(10);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
+		given(this.jugadorService.findJugadorById(10)).willReturn(george);
 	}
 
 
@@ -85,15 +86,15 @@ class EstadisticasControllerTests {
 	void testMostrarEstadisticasAdminPositivo() throws Exception {
 		mockMvc.perform(get("/jugador/estadisticas/{id}",TEST_Jugador_ID))
 				.andExpect(status().isOk())
-				.andExpect(view().name("jugador/estadisticasJugador"));
+				.andExpect(view().name("estadisticas/estadisticasJugador"));
 	}
 	
 	@WithMockUser(value = "spring", username = "test", authorities = "jugador")
 	@Test
 	void testMostrarEstadisticasAdminNegativo() throws Exception {
 		mockMvc.perform(get("/jugador/estadisticas/{id}",TEST_Jugador_ID))
-				.andExpect(status().isOk())
-				.andExpect(view().name("welcome"));
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/"));
 	}
 
 
@@ -103,7 +104,7 @@ class EstadisticasControllerTests {
 		mockMvc.perform(get("/jugador/estadisticas"))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("partidasTotalesJugadas"))
-				.andExpect(view().name("jugador/estadisticasJugador"));
+				.andExpect(view().name("estadisticas/estadisticasJugador"));
 	}
 
 

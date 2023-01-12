@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class EstadisticasController {
     
+	private static final String VIEWS_ESTADISTICAS_JUGADOR = "estadisticas/estadisticasJugador";
+		private static final String VIEWS_RANKINGS = "ranking/rankingGeneral";
 
     private final EstadisticasService estadisticasService;
 	private final JugadorService jugadorService;
@@ -48,18 +50,18 @@ public class EstadisticasController {
 			for (GrantedAuthority usuarioR : usuario){
 				String credencial = usuarioR.getAuthority();
 				if (credencial.equals("admin")) {
-					ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+					ModelAndView result = new ModelAndView(VIEWS_ESTADISTICAS_JUGADOR);
 					Jugador jugador = jugadorService.findJugadorById(id);
 					estadisticasService.setEstadisticasJugador(jugador);
 					setEstadisticasGenerales(result,jugador);
 					return result;
 				} else {
-					ModelAndView result = new ModelAndView("welcome");
+					ModelAndView result = new ModelAndView("redirect:/");
 					return result;
 				}
 			}
 		} else {
-			ModelAndView result = new ModelAndView("welcome");
+			ModelAndView result = new ModelAndView("redirect:/");
 			return result;
 		}
 		return new ModelAndView("exception");
@@ -67,7 +69,7 @@ public class EstadisticasController {
 
 	@GetMapping(value = "/jugador/estadisticas")
 	public ModelAndView mostrarEstadisticasUsuario(){
-		ModelAndView result = new ModelAndView("jugador/estadisticasJugador");
+		ModelAndView result = new ModelAndView(VIEWS_ESTADISTICAS_JUGADOR);
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Jugador jugador = jugadorService.findJugadorByUsername(username);
 		estadisticasService.setEstadisticasJugador(jugador);
@@ -92,7 +94,7 @@ public class EstadisticasController {
 			model.put("jugadoresPTN", ranking2);
 			model.put("jugadoresMOV", ranking3);
 			
-			return "ranking/rankingGeneral";
+			return VIEWS_RANKINGS;
 	}
 
 	public void setEstadisticasGenerales(ModelAndView result,Jugador jugador){

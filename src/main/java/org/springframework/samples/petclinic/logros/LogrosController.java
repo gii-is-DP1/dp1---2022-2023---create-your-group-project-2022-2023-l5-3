@@ -25,7 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class LogrosController {
 	
-	private static final String VIEWS_LOGROS = "jugador/logrosJugador";
+	private static final String VIEWS_LOGROS_JUGADOR = "logros/logrosJugador";
+	private static final String VIEWS_LOGROS_EDITAR= "logros/editarLogrosGeneral";
+	private static final String VIEWS_LOGROS_EDITAR_LOGROS= "logros/editarLogro";
 	
 	private final LogrosService logrosService;
 	private final JugadorService jugadorService;
@@ -47,7 +49,7 @@ public class LogrosController {
 		List<Logros> logrosDelUsuarioLogeado = logrosService.findById(jugador.getId());
 		logrosService.setLogrosDeCadaJugador();
 		model.put("logros",logrosDelUsuarioLogeado);
-		return VIEWS_LOGROS;
+		return VIEWS_LOGROS_JUGADOR;
 	}
 
 	//SOLO LOS ADMIN PUEDEN VER LOS LOGROS DE LOS DEMÁS USUARIOS
@@ -69,7 +71,7 @@ public class LogrosController {
 					List<Logros> logrosDelUsuarioLogeado = logrosService.findById(id);
 					logrosService.setLogrosDeCadaJugador();
 					model.put("logros",logrosDelUsuarioLogeado);
-					return VIEWS_LOGROS;
+					return VIEWS_LOGROS_JUGADOR;
 				} else {
 					return "redirect:/";
 				}
@@ -90,13 +92,14 @@ public class LogrosController {
 			String credencial = usuarioR.getAuthority();
 			if(credencial.equals("admin")){
 				List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+				logrosService.setLogrosDeCadaJugador();
 				model.put("logros",logrosDefinidos);
-				return "jugador/editarLogrosGeneral";
+				return VIEWS_LOGROS_EDITAR;
 			}else{
 				return "redirect:/";
 			}
 		}
-		return "welcome";
+		return "redirect:/";
 	}
 
 
@@ -118,16 +121,16 @@ public class LogrosController {
 								model.put("is_unlocked",logro.getIs_unlocked());
 								model.put("jugador",logro.getJugador());
 								model.put("logro",logro);
-								return "jugador/editarLogro";
+								return VIEWS_LOGROS_EDITAR_LOGROS;
 							}else{
-								return "welcome";
+								return "redirect:/";
 							}
 						}
 			} catch (DataIntegrityViolationException ex){
 						
-						return "jugador/editarLogro";
+						return VIEWS_LOGROS_EDITAR_LOGROS;
 			}
-			return "welcome";
+			return "redirect:/";
 		
 		}
 
@@ -136,10 +139,8 @@ public class LogrosController {
 		public String processEditForm(@Valid Logros logro, BindingResult result, @PathVariable("id") int id, Map<String, Object> model){
 			
 			if(result.hasErrors()){
-				return "jugador/editarLogro";
+				return VIEWS_LOGROS_EDITAR_LOGROS;
 			} else {
-						//logro.setId(id);
-						//logro.setDescription(image);
 						Logros logrosToUpdate=this.logrosService.findByIdlOGRO(id);
 						BeanUtils.copyProperties(logro, logrosToUpdate, "id","image","is_unlocked","jugador"); 
 						this.logrosService.save(logrosToUpdate);

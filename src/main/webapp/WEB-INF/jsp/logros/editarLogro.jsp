@@ -8,9 +8,11 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 <petclinic:layout pageName="logroEditar">
-    <h2>
-        <p class="align-center " style="font-size: 3em;"> EDITAR LOGRO</p>
-    </h2>
+    <div class="mx-auto" style="justify-content: center; display: flex;">
+        <p style="font-size: 2em;"><b>EDITAR LOGRO</b></p>
+    </br>
+    </br>
+    </div>
 
 </br>
 </br>

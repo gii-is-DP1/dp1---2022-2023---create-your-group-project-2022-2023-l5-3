@@ -348,13 +348,14 @@ public class PartidaController {
 					if(currentUser.getUsername().equals(player.getUser().getUsername()) || credencial.equals("admin")){
 						List<Partida> partidas = new ArrayList<>();
 						partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
-						List<Partida> mazosInter = new ArrayList<>(); 
+						List<Partida> partidasUsuario = new ArrayList<>(); 
 						for(Partida partida : partidas){
 							if(partida.getJugador().getUser().getUsername().equals(username)){
-								mazosInter.add(partida);
+								partidasUsuario.add(partida);
 							}
 						}
-						model.put("partidas", mazosInter);
+						model.put("partidas", partidasUsuario);
+						model.put("jugador",player);
 						return "partidas/partidaListUser";
 					
 					} else {
@@ -382,13 +383,14 @@ public class PartidaController {
 					if(currentUser.getUsername().equals(player.getUser().getUsername()) || credencial.equals("admin")){
 						List<Partida> partidas = new ArrayList<>();
 						partidas = (List<Partida>) partidaService.findPartidasFinalizadas();
-						List<Partida> mazosInter = new ArrayList<>(); 
+						List<Partida> partidasUsuario = new ArrayList<>(); 
 						for(Partida partida : partidas){
 							if(partida.getJugador().getId().equals(id)){
-								mazosInter.add(partida);
+								partidasUsuario.add(partida);
 							}
 						}
-						model.put("partidas", mazosInter);
+						model.put("partidas", partidasUsuario);
+						model.put("jugador",player);
 						return "partidas/partidaListUser";
 					
 					} else {

@@ -23,7 +23,7 @@
         </div>
 
 
-        <div class="container" style="background-color:#51C967;">
+        <div class="container">
 
             <!-- MAZO INICIAL -->
             <c:url value="/partidas/moverCartaIni/${partidaId}" var="moverCartaIni"/>
