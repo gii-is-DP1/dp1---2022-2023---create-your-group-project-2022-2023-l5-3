@@ -77,6 +77,7 @@ class EstadisticasControllerTests {
 		george.setLastName("Franklin");
 		george.setId(10);
 		given(this.jugadorService.findJugadorByUsername("test")).willReturn(george);
+		given(this.jugadorService.findJugadorById(10)).willReturn(george);
 	}
 
 
