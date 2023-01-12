@@ -90,6 +90,7 @@ public class LogrosController {
 			String credencial = usuarioR.getAuthority();
 			if(credencial.equals("admin")){
 				List<Logros> logrosDefinidos = logrosService.findAll().stream().limit(3).collect(Collectors.toList());
+				logrosService.setLogrosDeCadaJugador();
 				model.put("logros",logrosDefinidos);
 				return "jugador/editarLogrosGeneral";
 			}else{
