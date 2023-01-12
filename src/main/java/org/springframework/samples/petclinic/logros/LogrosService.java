@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.logros;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LogrosService {
 	
 	private LogrosRepository logrosRepository;
-		private JugadorRepository jugadorRepository;
+	private JugadorRepository jugadorRepository;
 	
 	@Autowired
 	public LogrosService(LogrosRepository logrosRepository, JugadorRepository jugadorRepository) {

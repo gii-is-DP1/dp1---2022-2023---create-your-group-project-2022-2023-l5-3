@@ -123,9 +123,6 @@ public class PartidaBuilder {
 	@Autowired
 	private CartasPartidaRepository cartasPartidaRepository;
 
-	@Autowired
-	private CartasPartidaService cartasPartidaService;
-
 	// Añade cartas a los mazos intermedios, cada una a una posición
 	public void crearMazosIntermedios(Partida p) {
 

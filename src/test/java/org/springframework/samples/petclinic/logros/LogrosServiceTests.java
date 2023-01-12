@@ -112,7 +112,6 @@ class LogrosServiceTests {
 		logro.setName(newName);
 		this.logrosService.save(logro);
 
-		// retrieving new name from database
 		logro = this.logrosService.findByIdlOGRO(1);
 		assertThat(logro.getName().equals(newName));
 	}
