@@ -4,7 +4,8 @@
 
 
 - Repositorio: https://github.com/gii-is-DP1/dp1-2022-2023-l5-3.git
-- Vídeo: https://youtu.be/65uOcDNLOZI
+- Vídeo explicando el juego: https://youtu.be/65uOcDNLOZI
+- Vídeo navegando por el juego ya desarrollado: https://www.youtube.com/watch?v=9wx4hu8YVYM
 
 ## Miembros:
 - Barba Trejo, Francisco Javier.
