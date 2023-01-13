@@ -106,7 +106,7 @@ public class UserController {
 					logrosService.save(lista.get(2));
 					
 			
-					return "jugador/showJugador";
+					return "redirect:/jugador/perfil/" + jugador.getId();
 		}
 	}
 	
