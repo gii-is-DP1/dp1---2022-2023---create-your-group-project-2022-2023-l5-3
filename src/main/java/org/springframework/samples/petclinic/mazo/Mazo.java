@@ -24,7 +24,6 @@ public class Mazo extends BaseEntity{
     @Range(min = 1, max = 7)
     private Integer posicion;
 
-    @NotNull
     private Integer cantidad;
 
     @OneToMany(mappedBy = "mazo")
