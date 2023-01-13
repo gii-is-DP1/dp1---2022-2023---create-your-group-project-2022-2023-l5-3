@@ -27,12 +27,12 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findAll (){
-		return (logrosRepository.findAllLogros());
+		return logrosRepository.findAll();
 	}
 
 	@Transactional
 	public List<Logros> findById(int id) throws DataAccessException{
-		return (logrosRepository.findLogrosByIdJugador(id));
+		return logrosRepository.findLogrosByIdJugador(id);
 	}
 
 	@Transactional
@@ -53,12 +53,7 @@ public class LogrosService {
 
 	@Transactional
 	public List<Logros> findLogrosJugadorNull(){
-		return (logrosRepository.findByjugadorIsNull());
-	}
-
-	@Transactional
-	public List<Logros> findLogrosByName(String logroName){
-		return (logrosRepository.findLogrosByName(logroName));
+		return logrosRepository.findByjugadorIsNull();
 	}
 
 
