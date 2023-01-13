@@ -179,7 +179,7 @@ public class JugadorController {
 					jugadorService.setCreatorYCreatedDate(jugador);
 					model.put("message","Jugador editado correctamente");
 					
-					return "jugador/showJugador";
+					return "redirect:/jugador/perfil/" + jugador.getId();
 
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
@@ -265,7 +265,7 @@ public class JugadorController {
 					Page<User> users = pageUser.findAllUsers(pageable);
 					model.put("users", users);
 					model.put("message","Jugador eliminado correctamente");
-					return "users/UsersList";
+					return "redirect:/users/all?page=0";
 				}
 				
 			}
