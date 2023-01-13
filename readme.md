@@ -1,5 +1,5 @@
  
-# Proyecto SOLITARIO - GRUPO G5-3
+# Proyecto SOLITARIO - GRUPO L5-3
 
 
 
