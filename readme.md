@@ -3,16 +3,16 @@
 
 
 
-Repositorio: https://github.com/gii-is-DP1/dp1-2022-2023-l5-3.git
-Vídeo: https://youtu.be/65uOcDNLOZI
+- Repositorio: https://github.com/gii-is-DP1/dp1-2022-2023-l5-3.git
+- Vídeo: https://youtu.be/65uOcDNLOZI
 
 ## Miembros:
-Barba Trejo, Francisco Javier.
-Caro Albarrán, Francisco Andrés.
-Gallego Huerta, Alberto.
-Navarro Rivera, Álvaro.
-Sánchez Naranjo,Mario.
-Sillero Manchón, Jorge.
+- Barba Trejo, Francisco Javier.
+- Caro Albarrán, Francisco Andrés.
+- Gallego Huerta, Alberto.
+- Navarro Rivera, Álvaro.
+- Sánchez Naranjo,Mario.
+- Sillero Manchón, Jorge.
 
 
 Tutor: José Antonio Parejo
