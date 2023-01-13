@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>603</x><y>306</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+<diagram program="umletino" version="15.0.0"><zoom_level>15</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>660</x><y>120</y><w>315</w><h>165</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 User
 --
 -username:String{NotEmpty}
@@ -6,7 +6,7 @@ User
 -enabled:boolean
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>306</y><w>189</w><h>117</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>120</y><w>315</w><h>240</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 Jugador
 --
 -partidasJugadas:int
@@ -16,17 +16,18 @@ Jugador
 -numTotalMovimientos:int
 -numTotalPuntos:int
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>342</y><w>126</w><h>45</h></coordinates><panel_attributes>m1=1
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>180</y><w>210</w><h>75</h></coordinates><panel_attributes>m1=1
 m2=1
-Es registrado &gt;</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>522</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Es registrado &gt;</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>180</x><y>480</y><w>315</w><h>195</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 Logros
 --
--Metrica: metrica
--Threshold: double
--Imagen: String
+-Nombre:String
 -Descripcion: String
+-Desbloqueado:Boolean
+-Imagen:String
+-numCondicion:Integer
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>405</x><y>414</y><w>81</w><h>126</h></coordinates><panel_attributes>lt=-
-m1=0..n
-m2=0..n
-consigue &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>345</y><w>135</w><h>165</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+consigue &gt;</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element></diagram>

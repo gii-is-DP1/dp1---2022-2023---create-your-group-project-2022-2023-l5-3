@@ -29,6 +29,6 @@ Logros
 -Descripcion: String
 
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>306</x><y>417</y><w>81</w><h>99</h></coordinates><panel_attributes>lt=-&gt;
-m1=0..n
-m2=0..n
+m1=1
+m2=1
 consigue &gt;</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element></diagram>
