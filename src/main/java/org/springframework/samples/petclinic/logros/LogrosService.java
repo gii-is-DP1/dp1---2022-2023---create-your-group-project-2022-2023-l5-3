@@ -62,7 +62,6 @@ public class LogrosService {
 	}
 
 
-	//HAY QUE EDITARLO
 	public void setLogrosDeCadaJugador() {
 		List<Jugador> players = jugadorRepository.findAll();
 		
