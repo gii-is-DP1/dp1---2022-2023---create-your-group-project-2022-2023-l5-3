@@ -1,0 +1,119 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>11</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>143</x><y>552</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Carta
+--
+-valor:Integer{min=1,max=13}
+-palo:Palo
+-imagen:String
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>233</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Mazo
+--
+-posición:Integer{Range(1,7)
+-cantidad:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>552</y><w>231</w><h>154</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+CartasPartida
+--
+-idCarta: Carta
+-idPartida: Partida
+-idMazo:Mazo
+-idMazoFinal:MazoFinal
+-idMazoInicial:MazoInicial
+-posCartaEnMazo:Integer
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>233</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoInicial
+--
+-cantidad:Integer{NotNull}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1144</x><y>233</y><w>308</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+MazoFinal
+--
+-posición:Integer{NotNull}
+-cantidad:Integer{Max(52)}
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>781</x><y>805</y><w>231</w><h>176</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Partida
+--
+-momentoInicio:LocalDate{NotNull}
+-momentoFin:LocalDate{NotNull}
+-victoria:boolean
+-/duración:String
+-numMovimientos: long
+-/puntos: long
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>363</x><y>607</y><w>440</w><h>55</h></coordinates><panel_attributes>lt=&lt;-
+
+m1=1
+m2=1
+</panel_attributes><additional_attributes>380;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>343</y><w>165</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>10;190;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>891</x><y>695</y><w>44</w><h>132</h></coordinates><panel_attributes>m1=1
+m2=n
+lt=-&gt;
+</panel_attributes><additional_attributes>10;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>343</y><w>44</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>10;190;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1606</x><y>849</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+User
+--
+-username:String{NotEmpty}
+-password:String{NotNull}
+-enabled:boolean
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1595</x><y>1080</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Authorities
+--
+-authority:String{Size(3,50)}
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1353</x><y>728</y><w>33</w><h>143</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>1705</x><y>959</y><w>55</w><h>143</h></coordinates><panel_attributes>m1=1..n
+m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1254</x><y>849</y><w>231</w><h>385</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+Jugador
+--
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1232</x><y>618</y><w>231</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+AuditableEntity
+--
+-creator:String
+-createdDate:LocalDateTime
+-modifier:String
+-lastModifiedDate:LocalDateTime
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1474</x><y>893</y><w>154</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=1
+Es registrado
+lt=&lt;-</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>255</y><w>231</w><h>154</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Palos
+--
+color:Color
+-DIAMANTES
+-PICAS
+-TREBOLES
+-CORAZONES
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>11</x><y>112</y><w>209</w><h>121</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
+Color
+--
+-ROJO
+-NEGRO</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>341</x><y>123</y><w>363</w><h>77</h></coordinates><panel_attributes>Los diamantes y los corazones tienen color ROJO
+Los treboles y las picas tienen color NEGRO
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>506</x><y>343</y><w>297</w><h>231</h></coordinates><panel_attributes>lt=&lt;-
+m1=n
+m2=1</panel_attributes><additional_attributes>250;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>882</y><w>275</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=1
+Juega 
+lt=-&gt;
+</panel_attributes><additional_attributes>230;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1001</x><y>849</y><w>275</w><h>55</h></coordinates><panel_attributes>m1=1
+m2=n
+Ha jugado 
+lt=-&gt;</panel_attributes><additional_attributes>230;20;10;20</additional_attributes></element><element><id>UMLNote</id><coordinates><x>319</x><y>431</y><w>297</w><h>99</h></coordinates><panel_attributes>Una carta no puede nunca ir al mazo inicial,
+ de este mazo únicamente se permiten
+ las acciones de pasar a la siguiente carta
+ o mover una carta del mazo inicial a un
+ mazo intermedio o final. 
+bg=yellow
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>935</x><y>992</y><w>275</w><h>110</h></coordinates><panel_attributes>Un jugador no podrá jugar más de una
+ partida de forma simultánea.En caso de 
+que haya ya una partida abierta,
+se le notificará al jugador que no puede
+ crear otra partida.
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>363</x><y>607</y><w>440</w><h>66</h></coordinates><panel_attributes>lt=&lt;-
+
+
+</panel_attributes><additional_attributes>10;20;380;20</additional_attributes></element></diagram>

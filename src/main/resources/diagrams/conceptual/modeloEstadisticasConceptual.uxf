@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>522</x><y>255</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>603</x><y>306</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 User
 --
 -username:String{NotEmpty}
@@ -6,7 +6,7 @@ User
 -enabled:boolean
 
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>156</y><w>27</w><h>117</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>234</x><y>255</y><w>189</w><h>117</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>306</y><w>189</w><h>117</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 Jugador
 --
 -partidasJugadas:int
@@ -16,14 +16,9 @@ Jugador
 -numTotalMovimientos:int
 -numTotalPuntos:int
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>216</x><y>66</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
-Person
---
--firstName:String{NotEmpty}
--lastName:String{NotEmpty}
-
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>414</x><y>300</y><w>126</w><h>36</h></coordinates><panel_attributes>m1=1
-m2=1</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>234</x><y>471</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>342</y><w>126</w><h>45</h></coordinates><panel_attributes>m1=1
+m2=1
+Es registrado &gt;</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>522</y><w>189</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Entity&gt;&gt;
 Logros
 --
 -Metrica: metrica
@@ -31,18 +26,7 @@ Logros
 -Imagen: String
 -Descripcion: String
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>363</y><w>81</w><h>126</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>405</x><y>414</y><w>81</w><h>126</h></coordinates><panel_attributes>lt=-
 m1=0..n
 m2=0..n
-consigue &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>246</y><w>144</w><h>135</h></coordinates><panel_attributes>&lt;&lt;Enumerate&gt;&gt;
-Metrica
---
--PartidasJugadas
--PartidasGanadas
--PuntosConseguidos
--MáxPuntosPartidaGanada
--TotalTiempoJugado
--GanarPartidaEnTiempo
--NumTotalMovimientos
-
-</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+consigue &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element></diagram>
