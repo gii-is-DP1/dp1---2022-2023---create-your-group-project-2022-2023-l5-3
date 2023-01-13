@@ -178,9 +178,19 @@ public class JugadorController {
 					}
 					jugadorService.setCreatorYCreatedDate(jugador);
 					model.put("message","Jugador editado correctamente");
-					
-					return "redirect:/jugador/perfil/" + jugador.getId();
-
+					Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+					org.springframework.security.core.userdetails.User currentUser =  (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+					Collection<GrantedAuthority> usuario = currentUser.getAuthorities();
+					for (GrantedAuthority usuarioR : usuario){
+						String credencial = usuarioR.getAuthority();
+						if(credencial.equals("admin")){
+							return "redirect:/jugador/perfil/" + jugador.getId();
+						} else {
+							return "redirect:/jugador/perfil";
+						}
+					}
+					return "welcome";
+				
 				}catch (DataIntegrityViolationException ex){
 					result.rejectValue("user.username", "Nombre de usuario duplicado","Este nombre de usuario ya esta en uso");
 					return VIEWS_JUGADOR_CREATE_OR_UPDATE_FORM;
@@ -254,7 +264,7 @@ public class JugadorController {
 					Page<User> users = pageUser.findAllUsers(pageable);
 					model.put("users", users);
 					model.put("message","Un administrador no puede eliminarse a sí mismo");
-					return "users/UsersList";
+					return "redirect:/users/all?page=0";
 				} else {
 					List<Logros> listaLogros = logrosService.findById(jugador.getId());
 					for(Logros logro : listaLogros){
